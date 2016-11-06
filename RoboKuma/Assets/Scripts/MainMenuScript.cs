@@ -6,23 +6,26 @@ using UnityEngine.SceneManagement;
 public class MainMenuScript : MonoBehaviour {
 
 	public Canvas MainScreen;
-	public Button MainMenuBtn;
-	public Button MinigameBtn;
-	public GameObject PetScreen;
+    public GameObject PetScreen;
 	public GameObject MinigameScreen;
-    public GameObject StatisticScreen;
+    public GameObject CustomizationScreen;
+    public GameObject AchievementScreen;
+    public GameObject StatisticsScreen;
+
 
     // Use this for initialization
     void Start () {
 
 		MainScreen = MainScreen.GetComponent<Canvas>();
-		MainMenuBtn = MainMenuBtn.GetComponent<Button>();
-		MinigameBtn = MinigameBtn.GetComponent<Button>();
-		MinigameScreen = GameObject.Find ("MinigameScreen");
+        MinigameScreen = GameObject.Find ("MinigameScreen");
 		PetScreen = GameObject.Find ("PetScreen");
-        StatisticScreen = GameObject.Find("StatisticScreen");
+        CustomizationScreen = GameObject.Find("CustomizationScreen");
+        AchievementScreen = GameObject.Find("AchievementScreen");
+        StatisticsScreen = GameObject.Find("StatisticsScreen");
         MinigameScreen.gameObject.SetActive (false);
-        StatisticScreen.gameObject.SetActive(false);
+        //CustomizationScreen.gameObject.SetActive(false);
+        AchievementScreen.gameObject.SetActive(false);
+        StatisticsScreen.gameObject.SetActive(false);
 
     }
 	
@@ -36,6 +39,9 @@ public class MainMenuScript : MonoBehaviour {
 
 		PetScreen.gameObject.SetActive(false);
 		MinigameScreen.gameObject.SetActive (false);
+        AchievementScreen.gameObject.SetActive(false);
+        StatisticsScreen.gameObject.SetActive(false);
+        //CustomizationScreen.gameObject.SetActive(false);
         PetScreen.gameObject.SetActive(true);
 	}
 
@@ -43,6 +49,41 @@ public class MainMenuScript : MonoBehaviour {
 	{
 		PetScreen.gameObject.SetActive(false);
 		MinigameScreen.gameObject.SetActive (false);
-		MinigameScreen.gameObject.SetActive(true);
+        AchievementScreen.gameObject.SetActive(false);
+        StatisticsScreen.gameObject.SetActive(false);
+        //CustomizationScreen.gameObject.SetActive(false);
+        MinigameScreen.gameObject.SetActive(true);
 	}
+
+    public void achievementPress()
+    {
+        PetScreen.gameObject.SetActive(false);
+        MinigameScreen.gameObject.SetActive(false);
+        AchievementScreen.gameObject.SetActive(false);
+        StatisticsScreen.gameObject.SetActive(false);
+        //CustomizationScreen.gameObject.SetActive(false);
+        AchievementScreen.gameObject.SetActive(true);
+    }
+
+    public void statisticsPress()
+    {
+        PetScreen.gameObject.SetActive(false);
+        MinigameScreen.gameObject.SetActive(false);
+        AchievementScreen.gameObject.SetActive(false);
+        StatisticsScreen.gameObject.SetActive(false);
+        //CustomizationScreen.gameObject.SetActive(false);
+        StatisticsScreen.gameObject.SetActive(true);
+    }
+
+    /*public void customizationPress()
+    {
+        PetScreen.gameObject.SetActive(false);
+        MinigameScreen.gameObject.SetActive(false);
+        AchievementScreen.gameObject.SetActive(false);
+        StatisticsScreen.gameObject.SetActive(false);
+        CustomizationScreen.gameObject.SetActive(false);
+        CustomizationScreen.gameObject.SetActive(true);
+
+    }*/
+
 }
