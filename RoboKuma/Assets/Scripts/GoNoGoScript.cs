@@ -63,7 +63,7 @@ public class GoNoGoScript : MonoBehaviour {
         {
             this.gameObject.SetActive(false);
             End.gameObject.SetActive(true);
-            endTxt.text = "Good Job!\n" + "You got " + score + " out of 10\n\n\nTap Anywhere to Continue";
+            endTxt.text = "GOOD JOB!\n" + "YOU GOT " + score + " OUT OF 10\n\n\nTAP ANYWHERE TO CONTINUE";
         }
         
     }

@@ -10,7 +10,7 @@ public class MainMenuScript : MonoBehaviour {
 	public GameObject MinigameScreen;
     public GameObject CustomizationScreen;
     public GameObject AchievementScreen;
-    public GameObject StatisticsScreen;
+    public GameObject AttributeScreen;
 
 
     // Use this for initialization
@@ -21,11 +21,11 @@ public class MainMenuScript : MonoBehaviour {
 		PetScreen = GameObject.Find ("PetScreen");
         CustomizationScreen = GameObject.Find("CustomizationScreen");
         AchievementScreen = GameObject.Find("AchievementScreen");
-        StatisticsScreen = GameObject.Find("StatisticsScreen");
+        AttributeScreen = GameObject.Find("AttributeScreen");
         MinigameScreen.gameObject.SetActive (false);
-        //CustomizationScreen.gameObject.SetActive(false);
+        CustomizationScreen.gameObject.SetActive(false);
         AchievementScreen.gameObject.SetActive(false);
-        StatisticsScreen.gameObject.SetActive(false);
+        AttributeScreen.gameObject.SetActive(false);
 
     }
 	
@@ -40,8 +40,8 @@ public class MainMenuScript : MonoBehaviour {
 		PetScreen.gameObject.SetActive(false);
 		MinigameScreen.gameObject.SetActive (false);
         AchievementScreen.gameObject.SetActive(false);
-        StatisticsScreen.gameObject.SetActive(false);
-        //CustomizationScreen.gameObject.SetActive(false);
+        AttributeScreen.gameObject.SetActive(false);
+        CustomizationScreen.gameObject.SetActive(false);
         PetScreen.gameObject.SetActive(true);
 	}
 
@@ -50,8 +50,8 @@ public class MainMenuScript : MonoBehaviour {
 		PetScreen.gameObject.SetActive(false);
 		MinigameScreen.gameObject.SetActive (false);
         AchievementScreen.gameObject.SetActive(false);
-        StatisticsScreen.gameObject.SetActive(false);
-        //CustomizationScreen.gameObject.SetActive(false);
+        AttributeScreen.gameObject.SetActive(false);
+        CustomizationScreen.gameObject.SetActive(false);
         MinigameScreen.gameObject.SetActive(true);
 	}
 
@@ -60,8 +60,8 @@ public class MainMenuScript : MonoBehaviour {
         PetScreen.gameObject.SetActive(false);
         MinigameScreen.gameObject.SetActive(false);
         AchievementScreen.gameObject.SetActive(false);
-        StatisticsScreen.gameObject.SetActive(false);
-        //CustomizationScreen.gameObject.SetActive(false);
+        AttributeScreen.gameObject.SetActive(false);
+        CustomizationScreen.gameObject.SetActive(false);
         AchievementScreen.gameObject.SetActive(true);
     }
 
@@ -70,20 +70,20 @@ public class MainMenuScript : MonoBehaviour {
         PetScreen.gameObject.SetActive(false);
         MinigameScreen.gameObject.SetActive(false);
         AchievementScreen.gameObject.SetActive(false);
-        StatisticsScreen.gameObject.SetActive(false);
-        //CustomizationScreen.gameObject.SetActive(false);
-        StatisticsScreen.gameObject.SetActive(true);
+        AttributeScreen.gameObject.SetActive(false);
+        CustomizationScreen.gameObject.SetActive(false);
+        AttributeScreen.gameObject.SetActive(true);
     }
 
-    /*public void customizationPress()
+    public void customizationPress()
     {
         PetScreen.gameObject.SetActive(false);
         MinigameScreen.gameObject.SetActive(false);
         AchievementScreen.gameObject.SetActive(false);
-        StatisticsScreen.gameObject.SetActive(false);
+        AttributeScreen.gameObject.SetActive(false);
         CustomizationScreen.gameObject.SetActive(false);
         CustomizationScreen.gameObject.SetActive(true);
 
-    }*/
+    }
 
 }
