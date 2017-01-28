@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboKuma", "RoboKuma.csproj", "{EEF6D004-185F-1074-43DF-3A1A06464558}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboKuma.CSharp", "RoboKuma.CSharp.csproj", "{7380333E-4EE1-6FE3-3D5A-1D0DAB208D96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EEF6D004-185F-1074-43DF-3A1A06464558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EEF6D004-185F-1074-43DF-3A1A06464558}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EEF6D004-185F-1074-43DF-3A1A06464558}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EEF6D004-185F-1074-43DF-3A1A06464558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7380333E-4EE1-6FE3-3D5A-1D0DAB208D96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7380333E-4EE1-6FE3-3D5A-1D0DAB208D96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7380333E-4EE1-6FE3-3D5A-1D0DAB208D96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7380333E-4EE1-6FE3-3D5A-1D0DAB208D96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
