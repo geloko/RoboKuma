@@ -7,7 +7,9 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     public Button[] buttons;
     public Sprite bearSprite, blankSprite;
     public Text display;
-    public Text end;
+    public Text endTxt;
+
+    public GameObject End;
 
     public int[] sequence;
     public int sequenceLength = 4;
@@ -18,7 +20,8 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 	void Start ()
     {
 	    buttons = this.GetComponentsInChildren<Button>();
-        end.text = "";
+        endTxt.text = "";
+
     }
 	
 	void Update ()
@@ -73,7 +76,8 @@ public class CorsiBlockTappingScript : MonoBehaviour {
             if(clickSequence >= 4)
             {
                 this.gameObject.SetActive(false);
-                end.text = "GOOD JOB!\n" + "YOU GOT " + score + " OUT OF 4\n\n\nTAP ANYWHERE TO CONTINUE";
+                End.gameObject.SetActive(true);
+                endTxt.text = "GOOD JOB!\n" + "YOU GOT " + score + " OUT OF 4\n\n\nTAP ANYWHERE TO CONTINUE";
             }
         }
     }
