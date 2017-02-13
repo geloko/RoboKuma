@@ -10,11 +10,25 @@ public class EriksenFlankerScript : MonoBehaviour {
 	public Vector2 firstPressPos;
 	public Vector2 secondPressPos;
 	public Vector2 currentSwipe;
-	public int x;
+	public int x, y;
 	public Text feedbackText;
+	public int[] nMiddleRow, nXPattern, nInnerBoxPattern, nOuterBoxPattern;
 	// Use this for initialization
+	/*
+	 * LEGEND:
+	 * 1  2  3  4  5
+	 * 6  7  8  9  10
+	 * 11 12 0  13 14
+	 * 15 16 17 18 19
+	 * 20 21 22 23 24
+	*/
 	void Start () {
-		
+
+		nMiddleRow = new int[] {11,12,13,14};
+		nXPattern = new int[]{ 7, 9, 16, 18 };
+		nInnerBoxPattern = new int[]{ 7, 8, 9, 12, 13, 16, 17, 18 };
+		nOuterBoxPattern = new int[]{ 1, 2, 3, 4, 5, 6, 10, 11, 14, 15, 19, 20, 21, 22, 23, 24 };
+
 	}
 	
 	// Update is called once per frame
@@ -22,25 +36,51 @@ public class EriksenFlankerScript : MonoBehaviour {
 		SwipeForComputer();
 		//SwipeForMobile ();
 	}
-
 	public void startGame(){
 		x = Random.Range (0, 100);
 		if (x < 50) {
-			images [4].sprite = sprites [0];
+			images [0].sprite = sprites [0];
 		} else {
-			images [4].sprite = sprites [1];
+			images [0].sprite = sprites [1];
 		}
-		for (int i = 0; i < images.Length; i++) {
-			if (i != 4) {
-				if (x >= 50) {
-					images [i].sprite = sprites [0];
-				} else {
-				images [i].sprite = sprites [1];
-				}
+		for (int i = 1; i < images.Length; i++)
+		{
+			images [i].enabled = false;
+		}
+		y = Random.Range (0, 100);
+		var pattern = getRandomPattern ();
+		for (int i = 0; i < pattern.Length; i++) {
+			images [pattern [i]].enabled = true;
+			if (y >= 50) {
+				images [pattern[i]].sprite = sprites [0];
+			} else {
+				images [pattern[i]].sprite = sprites [1];
 			}
 		}
 
 	}
+
+	public int[] getRandomPattern(){
+		int x;
+		x = Random.Range (0, 4);
+		switch (x) {
+		case 0:
+			return nMiddleRow;
+		case 1:
+			return nXPattern;
+		case 2:
+			return nInnerBoxPattern;
+		case 3:
+			return nOuterBoxPattern;
+		case 4:
+			var z = new int[nMiddleRow.Length + nInnerBoxPattern.Length];
+			nMiddleRow.CopyTo (z, 0);
+			nInnerBoxPattern.CopyTo(z, nMiddleRow.Length);
+			return z;
+		}
+		return nMiddleRow;
+	}
+
 
 	public void SwipeForComputer()
 	{
