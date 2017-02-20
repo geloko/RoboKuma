@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Diagnostics;
 
 public class EriksenFlankerScript : MonoBehaviour {
 
@@ -10,9 +11,16 @@ public class EriksenFlankerScript : MonoBehaviour {
 	public Vector2 firstPressPos;
 	public Vector2 secondPressPos;
 	public Vector2 currentSwipe;
+	public GameObject End, mainPanel;
+	public int score;
+	public Stopwatch stopwatch;
+	public Text endTxt;
 	public int x, y;
+	public int iteration;
 	public Text feedbackText;
 	public int[] nMiddleRow, nXPattern, nInnerBoxPattern, nOuterBoxPattern;
+
+
 	// Use this for initialization
 	/*
 	 * LEGEND:
@@ -23,12 +31,19 @@ public class EriksenFlankerScript : MonoBehaviour {
 	 * 20 21 22 23 24
 	*/
 	void Start () {
-
+		iteration = 0;
+		score = 0;
 		nMiddleRow = new int[] {11,12,13,14};
 		nXPattern = new int[]{ 7, 9, 16, 18 };
 		nInnerBoxPattern = new int[]{ 7, 8, 9, 12, 13, 16, 17, 18 };
 		nOuterBoxPattern = new int[]{ 1, 2, 3, 4, 5, 6, 10, 11, 14, 15, 19, 20, 21, 22, 23, 24 };
 
+		feedbackText = feedbackText.GetComponent<Text> ();
+		endTxt = endTxt.GetComponent<Text> ();
+		End = GameObject.Find("End");
+		mainPanel = GameObject.Find ("MainPanel");
+		End.gameObject.SetActive(false);
+		stopwatch = new Stopwatch();
 	}
 	
 	// Update is called once per frame
@@ -37,32 +52,42 @@ public class EriksenFlankerScript : MonoBehaviour {
 		//SwipeForMobile ();
 	}
 	public void startGame(){
-		x = Random.Range (0, 100);
-		if (x < 50) {
-			images [0].sprite = sprites [0];
-		} else {
-			images [0].sprite = sprites [1];
-		}
-		for (int i = 1; i < images.Length; i++)
-		{
-			images [i].enabled = false;
-		}
-		y = Random.Range (0, 100);
-		var pattern = getRandomPattern ();
-		for (int i = 0; i < pattern.Length; i++) {
-			images [pattern [i]].enabled = true;
-			if (y >= 50) {
-				images [pattern[i]].sprite = sprites [0];
-			} else {
-				images [pattern[i]].sprite = sprites [1];
-			}
-		}
+		
+		if (iteration != 10) {
 
+			iteration++;
+			x = Random.Range (0, 100);
+			if (x < 50) {
+				images [0].sprite = sprites [0];
+			} else {
+				images [0].sprite = sprites [1];
+			}
+			for (int i = 1; i < images.Length; i++) {
+				images [i].enabled = false;
+			}
+			y = Random.Range (0, 100);
+			var pattern = getRandomPattern ();
+			for (int i = 0; i < pattern.Length; i++) {
+				images [pattern [i]].enabled = true;
+				if (y >= 50) {
+					images [pattern [i]].sprite = sprites [0];
+				} else {
+					images [pattern [i]].sprite = sprites [1];
+				}
+			}
+			stopwatch.Reset ();
+			stopwatch.Start ();
+		} else {
+			mainPanel.gameObject.SetActive(false);
+			End.gameObject.SetActive(true);
+			stopwatch.Stop();
+			endTxt.text = "GOOD JOB!\n" + "YOU GOT " + score + " OUT OF 10\n\n\nTAP ANYWHERE TO CONTINUE";
+		}
 	}
 
 	public int[] getRandomPattern(){
 		int x;
-		x = Random.Range (0, 4);
+		x = Random.Range (0, 5);
 		switch (x) {
 		case 0:
 			return nMiddleRow;
@@ -103,18 +128,17 @@ public class EriksenFlankerScript : MonoBehaviour {
 			//swipe upwards
 			if(currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
 			{
-				Debug.Log("up swipe");
 			}
 			//swipe down
 			if(currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
 			{
-				Debug.Log("down swipe");
 			}
 			//swipe left
 			if(currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 			{
 				if (x < 50) {
-					feedbackText.text = "CORRECT";
+					feedbackText.text = "CORRECT " + "TIME: " + stopwatch.ElapsedMilliseconds + "ms";
+					score++;
 				} else {
 					feedbackText.text = "WRONG";
 				}
@@ -124,7 +148,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 			if(currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 			{
 				if (x >= 50) {
-					feedbackText.text = "CORRECT";
+					feedbackText.text = "CORRECT " + "TIME: " + stopwatch.ElapsedMilliseconds + "ms";
+					score++;
 				} else {
 					feedbackText.text = "WRONG";
 				}
@@ -157,22 +182,32 @@ public class EriksenFlankerScript : MonoBehaviour {
 				//swipe upwards
 				if(currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
 				{
-					Debug.Log("up swipe");
 				}
 				//swipe down
 				if(currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
 				{
-					Debug.Log("down swipe");
 				}
 				//swipe left
 				if(currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 				{
-					Debug.Log("left swipe");
+					if (x < 50) {
+						feedbackText.text = "CORRECT " + "TIME: " + stopwatch.ElapsedMilliseconds + "ms";
+						score++;
+					} else {
+						feedbackText.text = "WRONG";
+					}
+					startGame ();
 				}
 				//swipe right
 				if(currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 				{
-					Debug.Log("right swipe");
+					if (x >= 50) {
+						feedbackText.text = "CORRECT " + "TIME: " + stopwatch.ElapsedMilliseconds + "ms";
+						score++;
+					} else {
+						feedbackText.text = "WRONG";
+					}
+					startGame ();
 				}
 			}
 		}
