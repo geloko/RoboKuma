@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class NBackScript : MonoBehaviour {
 
-	public Sprite[] sprites;
+    /*public Sprite[] sprites;
 	public Image mainImage;
 	public Text feedbackText;
 	public ArrayList gameSprites;
@@ -15,9 +15,14 @@ public class NBackScript : MonoBehaviour {
 	public Image twoImageAgo;
 	public int n = 2;
 	public int count = 10;
-	// Use this for initialization
-	void Start () {
-		gameSprites = new ArrayList();
+	*/
+
+    public GameObject[] objects = new GameObject[2];
+
+    // Use this for initialization
+
+    void Start () {
+		//gameSprites = new ArrayList();
 	}
 	
 	// Update is called once per frame
@@ -26,15 +31,25 @@ public class NBackScript : MonoBehaviour {
 	}
 
 	public void startGame(){
-		StartCoroutine(displayImage ());
-	}
+        //StartCoroutine(displayImage ());
+        
+        int item0 = Random.Range(0, objects.Length);
+        GameObject obj = (GameObject)Instantiate(objects[item0], new Vector3(0, 356, 0), Quaternion.identity);
+        obj.transform.SetParent(this.transform, false);
 
-	public void startLoop(){
+        ItemScript itemScript = obj.GetComponent<ItemScript>();
+        itemScript.item0 = item0;
+        itemScript.item1 = -1;
+        itemScript.score = 0;
+
+    }
+
+	/*public void startLoop(){
 
 
 		if(count != 10){
 			if (count != 0) {
-				if (mainImage.sprite == gameSprites [gameSprites.Count - 3]) {
+				if (mainImage.sprite == (Object)gameSprites [gameSprites.Count - 3]) {
 					if (isYes) {
 						feedbackText.text = "CORRECT!";
 					} else {
@@ -79,5 +94,5 @@ public class NBackScript : MonoBehaviour {
 	public void IsNoButton()
 	{
 		isYes = false;
-	}
+	}*/
 }

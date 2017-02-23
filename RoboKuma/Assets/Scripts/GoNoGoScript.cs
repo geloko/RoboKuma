@@ -6,15 +6,17 @@ using System.Diagnostics;
 public class GoNoGoScript : MonoBehaviour {
 
     public Button[] buttons;
-    public Sprite bearSprite;
+    public Sprite goSprite, noGoSprite;
     public Text scoreTxt;
     public Text timeTxt;
     public Text endTxt;
 
     public GameObject End;
 
-    public int bearIndex;
+    public int goIndex;
     public int score = 0;
+    public int[] noGoIndices;
+
     public Stopwatch stopwatch;
     public int iterations = 0;
 
@@ -49,13 +51,29 @@ public class GoNoGoScript : MonoBehaviour {
 
         if(iterations <= 10)
         {
-            bearIndex = Random.Range(0, 5);
+            goIndex = Random.Range(0, 5);
+            int numNoGo = Random.Range(0, 3);
             for (int i = 0; i < 6; i++)
             {
                 buttons[i].image.overrideSprite = null;
             }
 
-            buttons[bearIndex].image.overrideSprite = bearSprite;
+            noGoIndices = new int[numNoGo];
+
+            for(int i = 0; i < numNoGo; i++)
+            {
+                int temp = Random.Range(0, 5); 
+                while(temp == goIndex)
+                {
+                    temp = Random.Range(0, 5);
+                }
+
+                noGoIndices[i] = temp;
+                buttons[i].image.overrideSprite = noGoSprite;
+
+            }
+
+            buttons[goIndex].image.overrideSprite = goSprite;
             stopwatch.Reset();
             stopwatch.Start();
         }
@@ -70,7 +88,7 @@ public class GoNoGoScript : MonoBehaviour {
 
     public void calculateScore(int iClicked)
     {
-        if(iClicked == bearIndex)
+        if(iClicked == goIndex)
         {
             score++;
             scoreTxt.text = "Score: " + score;
