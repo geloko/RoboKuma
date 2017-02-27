@@ -38,11 +38,11 @@ public class EriksenFlankerScript : MonoBehaviour {
 		nInnerBoxPattern = new int[]{ 7, 8, 9, 12, 13, 16, 17, 18 };
 		nOuterBoxPattern = new int[]{ 1, 2, 3, 4, 5, 6, 10, 11, 14, 15, 19, 20, 21, 22, 23, 24 };
 
-		feedbackText = feedbackText.GetComponent<Text> ();
-		endTxt = endTxt.GetComponent<Text> ();
-		End = GameObject.Find("End");
-		mainPanel = GameObject.Find ("MainPanel");
-		End.gameObject.SetActive(false);
+		//feedbackText = feedbackText.GetComponent<Text> ();
+		//endTxt = endTxt.GetComponent<Text> ();
+		//End = GameObject.Find("End");
+		//mainPanel = GameObject.Find ("MainPanel");
+		//End.gameObject.SetActive(false);
 		stopwatch = new Stopwatch();
 	}
 	

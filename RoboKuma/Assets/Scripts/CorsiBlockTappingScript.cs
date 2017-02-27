@@ -5,13 +5,15 @@ using System.Collections;
 public class CorsiBlockTappingScript : MonoBehaviour {
 
     public Button[] buttons;
-    public Sprite bearSprite, blankSprite;
+    public Sprite blankSprite, incorrectSprite;
+    public Sprite[] sequenceSprites;
     public Text display;
     public Text endTxt;
 
     public GameObject End;
 
     public int[] sequence;
+    //public int[] spriteSequence;
     public int sequenceLength = 4;
     public bool start = true;
     public int clickSequence;
@@ -19,6 +21,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 
 	void Start ()
     {
+        //spriteSequence = new int[sequenceLength];
 	    buttons = this.GetComponentsInChildren<Button>();
         endTxt.text = "";
 
@@ -34,7 +37,12 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         start = false;
         clickSequence = 0;
 
-        sequence = new int[4];
+        /*for(int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].image.overrideSprite = null;
+        }*/
+
+        sequence = new int[sequenceLength];
         for (int i = 0; i < 4; i++)
         {
             sequence[i] = Random.Range(0, buttons.Length);
@@ -45,11 +53,14 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 
     public IEnumerator displaySequence()
     {
+        int rand;
         for (int i = 0; i < sequence.Length; i++)
         {
-            buttons[sequence[i]].image.overrideSprite = bearSprite;
+            rand = Random.Range(0, sequenceSprites.Length);
+            buttons[sequence[i]].image.overrideSprite = sequenceSprites[rand];
+            //spriteSequence[i] = rand;
             yield return new WaitForSecondsRealtime(1);
-            buttons[sequence[i]].image.overrideSprite = blankSprite;
+            buttons[sequence[i]].image.overrideSprite = null;
             yield return new WaitForSecondsRealtime(1);
         }
         start = true;
@@ -64,6 +75,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
             if (btn == sequence[clickSequence])
             {
                 display.text = "GREAT!";
+                //buttons[sequence[clickSequence]].image.overrideSprite = sequenceSprites[spriteSequence[clickSequence]];
                 score++;
             }
             else
@@ -73,7 +85,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 
             clickSequence++;
 
-            if(clickSequence >= 4)
+            if(clickSequence >= sequenceLength)
             {
                 this.gameObject.SetActive(false);
                 End.gameObject.SetActive(true);

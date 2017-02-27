@@ -18,4 +18,19 @@ public class MiniGameMenuScript : MonoBehaviour {
     {
         SceneManager.LoadScene(1);
     }
+
+    public void nbackPress()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public void corsiPress()
+    {
+        SceneManager.LoadScene(3);
+    }
+
+    public void eriksenPress()
+    {
+        SceneManager.LoadScene(4);
+    }
 }
