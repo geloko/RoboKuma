@@ -17,6 +17,7 @@ public class ItemScript : MonoBehaviour {
     public Text display;
     public Text cheat;
     public Text scoreTxt;
+    public Text endTxt;
 
 
     public Transform panel;
@@ -25,8 +26,10 @@ public class ItemScript : MonoBehaviour {
 
     public int item0 = 0;
     public int item1 = -1;
+    public int item2 = -1;
     public bool swiped = false;
     public int score = 0;
+    public int count;
 
 
     void Start()
@@ -43,15 +46,15 @@ public class ItemScript : MonoBehaviour {
 
         rb = GetComponent<Rigidbody2D>();
 
-        rb.AddForce(-transform.up * 10000);
+        rb.AddForce(-transform.up * 20000);
 
-        if (item1 == 0)
+        if (item2 == 0)
         {
-            cheat.text = "Lamp";
+            cheat.text = "Wrench";
         }
-        else if(item1 == 1)
+        else if(item2 == 1)
         {
-            cheat.text = "Cabinet";
+            cheat.text = "Water Bottle";
         }
     }
 
@@ -67,29 +70,42 @@ public class ItemScript : MonoBehaviour {
 
     public void createObject()
     {
-        item1 = item0;
-        item0 = Random.Range(0, objects.Length);
-        GameObject obj = (GameObject)Instantiate(objects[item0], new Vector3(0, 356, 0), Quaternion.identity);
-        obj.transform.SetParent(panel.transform, false);
-
-        ItemScript itemScript = obj.GetComponent<ItemScript>();
-        itemScript.item0 = item0;
-        itemScript.item1 = item1;
-        itemScript.score = score;
-
-        if (item1 == 0)
+        if(count <= 12)
         {
-            cheat.text = "Lamp";
+            item2 = item1;
+            item1 = item0;
+            item0 = Random.Range(0, objects.Length);
+            GameObject obj = (GameObject)Instantiate(objects[item0], new Vector3(0, 356, 0), Quaternion.identity);
+            obj.transform.SetParent(panel.transform, false);
+
+            ItemScript itemScript = obj.GetComponent<ItemScript>();
+            itemScript.item0 = item0;
+            itemScript.item1 = item1;
+            itemScript.item2 = item2;
+            itemScript.score = score;
+            itemScript.count = count + 1;
+            itemScript.endTxt = endTxt;
+
+            if (item2 == 0)
+            {
+                cheat.text = "Wrench";
+            }
+            else if (item2 == 1)
+            {
+                cheat.text = "Water Bottle";
+            }
+
         }
-        else if (item1 == 1)
+        else
         {
-            cheat.text = "Cabinet";
+            endTxt.text = "YOU GOT " + score + " OUT OF 10\n" + "TAP ANYWHERE TO CONTINUE";
+            panel.gameObject.SetActive(false);
         }
     }
 
     void OnTriggerEnter2D()
     {
-        if (item1 != -1 && gameObject.Equals(objects[item1]) && !swiped)
+        if (item2 != -1 && gameObject.Equals(objects[item2]) && !swiped)
         {
             display.text = "Missed";
         }
@@ -97,9 +113,18 @@ public class ItemScript : MonoBehaviour {
         {
             swiped = false;
         }
+        else if(count > 2)
+        {
+            display.text = "Correct";
+            score++;
+            scoreTxt.text = "Score:" + score;
+        }
         else
         {
             display.text = "";
+
+            
+
         }
         createObject();
         Destroy(gameObject);
@@ -136,36 +161,44 @@ public class ItemScript : MonoBehaviour {
             //swipe left
             if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
             {
-                if (item1 != -1 && gameObject.Equals(objects[item1]))
+                if (item2 != -1 && gameObject.Equals(objects[item2]))
                 {
                     display.text = "Correct";
                     score++;
                     scoreTxt.text = "Score:" + score;
                 }
-                else if (item1 != -1)
+                else if (item2 != -1)
                 {
                     display.text = "Wrong";
                 }
                 //createObject();
-                rb.AddForce(-transform.right * 500000);
-                swiped = true;
+
+                if(count > 2)
+                {
+                    rb.AddForce(-transform.right * 500000);
+                    swiped = true;
+                }
+                    
             }
             //swipe right
             if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
             {
-                if (item1 != -1 && gameObject.Equals(objects[item1]))
+                if (item2 != -1 && gameObject.Equals(objects[item2]))
                 {
                     display.text = "Correct";
                     score++;
                     scoreTxt.text = "Score:" + score;
                 }
-                else if (item1 != -1)
+                else if (item2 != -1)
                 {
                     display.text = "Wrong";
                 }
                 //createObject();
-                rb.AddForce(transform.right * 500000);
-                swiped = true;
+                if (count > 2)
+                {
+                    rb.AddForce(transform.right * 500000);
+                    swiped = true;
+                }
             }
         }
     }
@@ -204,12 +237,43 @@ public class ItemScript : MonoBehaviour {
                 //swipe left
                 if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
                 {
-                    Debug.Log("left swipe");
+                    if (item2 != -1 && gameObject.Equals(objects[item2]))
+                    {
+                        display.text = "Correct";
+                        score++;
+                        scoreTxt.text = "Score:" + score;
+                    }
+                    else if (item2 != -1)
+                    {
+                        display.text = "Wrong";
+                    }
+                    //createObject();
+
+                    if (count > 2)
+                    {
+                        rb.AddForce(-transform.right * 500000);
+                        swiped = true;
+                    }
                 }
                 //swipe right
                 if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
                 {
-                    Debug.Log("right swipe");
+                    if (item2 != -1 && gameObject.Equals(objects[item2]))
+                    {
+                        display.text = "Correct";
+                        score++;
+                        scoreTxt.text = "Score:" + score;
+                    }
+                    else if (item2 != -1)
+                    {
+                        display.text = "Wrong";
+                    }
+                    //createObject();
+                    if (count > 2)
+                    {
+                        rb.AddForce(transform.right * 500000);
+                        swiped = true;
+                    }
                 }
             }
         }

@@ -13,9 +13,11 @@ public class GoNoGoScript : MonoBehaviour {
 
     public GameObject End;
 
-    public int goIndex;
+    public int gngIndex;
     public int score = 0;
-    public int[] noGoIndices;
+
+    public bool isGo;
+    //public int[] noGoIndices;
 
     public Stopwatch stopwatch;
     public int iterations = 0;
@@ -51,31 +53,23 @@ public class GoNoGoScript : MonoBehaviour {
 
         if(iterations <= 10)
         {
-            goIndex = Random.Range(0, 5);
-            int numNoGo = Random.Range(0, 3);
+            gngIndex = Random.Range(0, 5);
             for (int i = 0; i < 6; i++)
             {
                 buttons[i].image.overrideSprite = null;
             }
-
-            noGoIndices = new int[numNoGo];
-
-            for(int i = 0; i < numNoGo; i++)
+            
+            isGo = Random.value >= 0.5;
+            if(isGo)
             {
-                int temp = Random.Range(0, 5); 
-                while(temp == goIndex)
-                {
-                    temp = Random.Range(0, 5);
-                }
-
-                noGoIndices[i] = temp;
-                buttons[i].image.overrideSprite = noGoSprite;
-
+                buttons[gngIndex].image.overrideSprite = goSprite;
+                stopwatch.Reset();
+                stopwatch.Start();
             }
-
-            buttons[goIndex].image.overrideSprite = goSprite;
-            stopwatch.Reset();
-            stopwatch.Start();
+            else
+            {
+                StartCoroutine(displayNoGo());
+            }
         }
         else
         {
@@ -86,9 +80,21 @@ public class GoNoGoScript : MonoBehaviour {
         
     }
 
+    public IEnumerator displayNoGo()
+    {
+        buttons[gngIndex].image.overrideSprite = noGoSprite;
+        yield return new WaitForSecondsRealtime(1);
+
+        score++;
+        scoreTxt.text = "Score: " + score;
+        timeTxt.text = "Great!";
+
+        spawnBear();
+    }
+
     public void calculateScore(int iClicked)
     {
-        if(iClicked == goIndex)
+        if(iClicked == gngIndex && isGo)
         {
             score++;
             scoreTxt.text = "Score: " + score;

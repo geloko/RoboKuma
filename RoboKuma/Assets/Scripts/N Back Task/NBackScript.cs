@@ -18,6 +18,7 @@ public class NBackScript : MonoBehaviour {
 	*/
 
     public GameObject[] objects = new GameObject[2];
+    public Text endText;
 
     // Use this for initialization
 
@@ -40,7 +41,10 @@ public class NBackScript : MonoBehaviour {
         ItemScript itemScript = obj.GetComponent<ItemScript>();
         itemScript.item0 = item0;
         itemScript.item1 = -1;
+        itemScript.item2 = -1;
         itemScript.score = 0;
+        itemScript.count = 1;
+        itemScript.endTxt = endText;
 
     }
 
