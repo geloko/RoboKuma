@@ -1,7 +1,7 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboKuma.CSharp", "RoboKuma.CSharp.csproj", "{7380333E-4EE1-6FE3-3D5A-1D0DAB208D96}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{D5C3696C-1254-F42D-5883-57567F2A7ED8}") = "RoboKuma", "Assembly-CSharp.csproj", "{5F153920-5250-31CD-2B63-6BDC3C282B5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,12 +9,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7380333E-4EE1-6FE3-3D5A-1D0DAB208D96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7380333E-4EE1-6FE3-3D5A-1D0DAB208D96}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7380333E-4EE1-6FE3-3D5A-1D0DAB208D96}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7380333E-4EE1-6FE3-3D5A-1D0DAB208D96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F153920-5250-31CD-2B63-6BDC3C282B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F153920-5250-31CD-2B63-6BDC3C282B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F153920-5250-31CD-2B63-6BDC3C282B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F153920-5250-31CD-2B63-6BDC3C282B5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal
