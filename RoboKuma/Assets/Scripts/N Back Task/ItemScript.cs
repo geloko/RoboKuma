@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Diagnostics;
 
 public class ItemScript : MonoBehaviour {
 
@@ -35,8 +36,7 @@ public class ItemScript : MonoBehaviour {
     public double[] time;
 
     public int count;
-
-
+    public Stopwatch stopwatch;
 
     void Start()
     {
@@ -62,6 +62,19 @@ public class ItemScript : MonoBehaviour {
         {
             cheat.text = "Water Bottle";
         }
+
+        stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+
+        UnityEngine.Debug.Log(count - 3 + "____" + count);
+
+        if (count > 2)
+        {
+            time[count - 3] = -1;
+        }
+
+
     }
 
 
@@ -110,6 +123,10 @@ public class ItemScript : MonoBehaviour {
         }
         else
         {
+            for(int i = 0; i < 10; i++)
+            {
+                UnityEngine.Debug.Log("Time: " + time[i]);
+            }
             end.gameObject.SetActive(true);
             endTxt.text = "You got " + score + " out of 10\n" + "Tap anywhere to CONTINUE";
             panel.gameObject.SetActive(false);
@@ -128,6 +145,10 @@ public class ItemScript : MonoBehaviour {
         }
         else if(count > 2)
         {
+            //double timeElapsed = stopwatch.ElapsedMilliseconds;
+            //time[count - 3] = timeElapsed;
+            //UnityEngine.Debug.Log(timeElapsed + "----" + (count - 3));
+
             display.text = "Correct";
             score++;
             scoreTxt.text = "Score:" + score;
@@ -164,18 +185,22 @@ public class ItemScript : MonoBehaviour {
             //swipe upwards
             if (currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
             {
-                Debug.Log("up swipe");
+                UnityEngine.Debug.Log("up swipe");
             }
             //swipe down
             if (currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
             {
-                Debug.Log("down swipe");
+                UnityEngine.Debug.Log("down swipe");
             }
             //swipe left
             if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
             {
                 if (item2 != -1 && gameObject.Equals(objects[item2]))
                 {
+                    double timeElapsed = stopwatch.ElapsedMilliseconds;
+                    time[count - 3] = timeElapsed;
+                    UnityEngine.Debug.Log(timeElapsed + "----" + (count - 3));
+
                     display.text = "Correct";
                     score++;
                     scoreTxt.text = "Score:" + score;
@@ -198,6 +223,10 @@ public class ItemScript : MonoBehaviour {
             {
                 if (item2 != -1 && gameObject.Equals(objects[item2]))
                 {
+                    double timeElapsed = stopwatch.ElapsedMilliseconds;
+                    time[count - 3] = timeElapsed;
+                    UnityEngine.Debug.Log(timeElapsed + "----" + (count - 3));
+
                     display.text = "Correct";
                     score++;
                     scoreTxt.text = "Score:" + score;
@@ -240,18 +269,20 @@ public class ItemScript : MonoBehaviour {
                 //swipe upwards
                 if (currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
                 {
-                    Debug.Log("up swipe");
                 }
                 //swipe down
                 if (currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
                 {
-                    Debug.Log("down swipe");
                 }
                 //swipe left
                 if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
                 {
                     if (item2 != -1 && gameObject.Equals(objects[item2]))
                     {
+                        double timeElapsed = stopwatch.ElapsedMilliseconds;
+                        time[count - 3] = timeElapsed;
+                        UnityEngine.Debug.Log(timeElapsed + "----" + (count - 3));
+
                         display.text = "Correct";
                         score++;
                         scoreTxt.text = "Score:" + score;
@@ -273,6 +304,10 @@ public class ItemScript : MonoBehaviour {
                 {
                     if (item2 != -1 && gameObject.Equals(objects[item2]))
                     {
+                        double timeElapsed = stopwatch.ElapsedMilliseconds;
+                        time[count - 3] = timeElapsed;
+                        UnityEngine.Debug.Log(timeElapsed + "----" + (count - 3));
+
                         display.text = "Correct";
                         score++;
                         scoreTxt.text = "Score:" + score;
