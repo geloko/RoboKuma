@@ -25,6 +25,8 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 	    buttons = this.GetComponentsInChildren<Button>();
         endTxt.text = "";
 
+        End.gameObject.SetActive(false);
+
     }
 	
 	void Update ()
@@ -87,9 +89,8 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 
             if(clickSequence >= sequenceLength)
             {
-                this.gameObject.SetActive(false);
                 End.gameObject.SetActive(true);
-                endTxt.text = "GOOD JOB!\n" + "YOU GOT " + score + " OUT OF 4\n\n\nTAP ANYWHERE TO CONTINUE";
+                endTxt.text = "YOU GOT " + score + " OUT OF 4\n\nTAP ANYWHERE TO CONTINUE";
             }
         }
     }

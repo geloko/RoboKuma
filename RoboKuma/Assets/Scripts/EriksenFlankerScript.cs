@@ -14,7 +14,7 @@ public class EriksenFlankerScript : MonoBehaviour {
 	public GameObject End, mainPanel;
 	public int score;
 	public Stopwatch stopwatch;
-	public Text endTxt;
+	public Text endTxt, scoreTxt;
 	public int x, y;
 	public int iteration;
 	public Text feedbackText;
@@ -42,7 +42,7 @@ public class EriksenFlankerScript : MonoBehaviour {
 		//endTxt = endTxt.GetComponent<Text> ();
 		//End = GameObject.Find("End");
 		//mainPanel = GameObject.Find ("MainPanel");
-		//End.gameObject.SetActive(false);
+		End.gameObject.SetActive(false);
 		stopwatch = new Stopwatch();
 	}
 	
@@ -81,7 +81,7 @@ public class EriksenFlankerScript : MonoBehaviour {
 			mainPanel.gameObject.SetActive(false);
 			End.gameObject.SetActive(true);
 			stopwatch.Stop();
-			endTxt.text = "GOOD JOB!\n" + "YOU GOT " + score + " OUT OF 10\n\n\nTAP ANYWHERE TO CONTINUE";
+			endTxt.text = "You got " + score + " out of 10\n\nTap anywhere to CONTINUE";
 		}
 	}
 
@@ -139,6 +139,7 @@ public class EriksenFlankerScript : MonoBehaviour {
 				if (x < 50) {
 					feedbackText.text = "CORRECT " + "TIME: " + stopwatch.ElapsedMilliseconds + "ms";
 					score++;
+                    scoreTxt.text = "Score: " + score;
 				} else {
 					feedbackText.text = "WRONG";
 				}
@@ -150,7 +151,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 				if (x >= 50) {
 					feedbackText.text = "CORRECT " + "TIME: " + stopwatch.ElapsedMilliseconds + "ms";
 					score++;
-				} else {
+                    scoreTxt.text = "Score: " + score;
+                } else {
 					feedbackText.text = "WRONG";
 				}
 				startGame ();

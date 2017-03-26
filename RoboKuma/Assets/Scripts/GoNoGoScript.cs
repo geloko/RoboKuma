@@ -5,18 +5,20 @@ using System.Diagnostics;
 
 public class GoNoGoScript : MonoBehaviour {
 
-    public Button[] buttons;
+    public Button button;
     public Sprite goSprite, noGoSprite;
     public Text scoreTxt;
     public Text timeTxt;
     public Text endTxt;
 
     public GameObject End;
-
-    public int gngIndex;
+    
     public int score = 0;
+    public int noGoCnt = 0;
+    public double[] time;
 
     public bool isGo;
+    public bool clicked;
     //public int[] noGoIndices;
 
     public Stopwatch stopwatch;
@@ -24,13 +26,14 @@ public class GoNoGoScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        buttons = this.GetComponentsInChildren<Button>();
         scoreTxt = scoreTxt.GetComponent<Text>();
         timeTxt = timeTxt.GetComponent<Text>();
         endTxt = endTxt.GetComponent<Text>();
 
         End = GameObject.Find("End");
         End.gameObject.SetActive(false);
+
+        time = new double[10];
 
         stopwatch = new Stopwatch();
     }
@@ -53,57 +56,85 @@ public class GoNoGoScript : MonoBehaviour {
 
         if(iterations <= 10)
         {
-            gngIndex = Random.Range(0, 5);
-            for (int i = 0; i < 6; i++)
-            {
-                buttons[i].image.overrideSprite = null;
-            }
+            button.image.overrideSprite = null;
+            clicked = false;
             
-            isGo = Random.value >= 0.5;
+            isGo = Random.value >= 0.4;
             if(isGo)
             {
-                buttons[gngIndex].image.overrideSprite = goSprite;
+                button.image.overrideSprite = goSprite;
                 stopwatch.Reset();
                 stopwatch.Start();
             }
             else
             {
+                noGoCnt++;
                 StartCoroutine(displayNoGo());
+                
+                time[iterations - 1] = -1;
             }
         }
         else
         {
             this.gameObject.SetActive(false);
             End.gameObject.SetActive(true);
-            endTxt.text = "GOOD JOB!\n" + "YOU GOT " + score + " OUT OF 10\n\n\nTAP ANYWHERE TO CONTINUE";
+            endTxt.text = "YOU GOT " + score + " OUT OF 10\n\nTAP TO CONTINUE";
         }
         
     }
 
+    public IEnumerator WaitSeconds(int i)
+    {
+        button.image.overrideSprite = null;
+        button.gameObject.SetActive(false);
+        yield return new WaitForSecondsRealtime(i);
+        button.gameObject.SetActive(true);
+        spawnBear();
+    }
+
     public IEnumerator displayNoGo()
     {
-        buttons[gngIndex].image.overrideSprite = noGoSprite;
-        yield return new WaitForSecondsRealtime(1);
+        button.image.overrideSprite = noGoSprite;
+        yield return new WaitForSecondsRealtime(2);
 
-        score++;
-        scoreTxt.text = "Score: " + score;
-        timeTxt.text = "Great!";
+        if(!clicked)
+        {
+            score++;
+            scoreTxt.text = "Score: " + score;
+            timeTxt.text = "GREAT!";
+        
+            button.image.overrideSprite = null;
+            button.gameObject.SetActive(false);
+            yield return new WaitForSecondsRealtime(2);
+            button.gameObject.SetActive(true);
 
-        spawnBear();
+            spawnBear();
+
+        }
     }
 
     public void calculateScore(int iClicked)
     {
-        if(iClicked == gngIndex && isGo)
+        clicked = true;
+        if(isGo)
         {
             score++;
             scoreTxt.text = "Score: " + score;
-            timeTxt.text = stopwatch.ElapsedMilliseconds + " ms";
+
+            double timeElapsed = stopwatch.ElapsedMilliseconds;
+            time[iterations - 1] = timeElapsed;
+
+            timeTxt.text = "GREAT!\n" + timeElapsed + " ms";
+            
+            StartCoroutine(WaitSeconds(2));
+
         }
         else
         {
+            time[iterations - 1] = -1;
 
-            timeTxt.text = "Incorrect!";
+            timeTxt.text = "OOPS!";
+            StartCoroutine(WaitSeconds(2));
         }
 
 

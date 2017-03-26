@@ -19,15 +19,22 @@ public class NBackScript : MonoBehaviour {
 
     public GameObject[] objects = new GameObject[2];
     public Text endText;
+    public GameObject end;
+
+    public double[] time;
 
     // Use this for initialization
 
     void Start () {
-		//gameSprites = new ArrayList();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        //gameSprites = new ArrayList();
+        end.gameObject.SetActive(false);
+
+        time = new double[10];
+
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
@@ -45,6 +52,8 @@ public class NBackScript : MonoBehaviour {
         itemScript.score = 0;
         itemScript.count = 1;
         itemScript.endTxt = endText;
+        itemScript.end = end;
+        itemScript.time = time;
 
     }
 

@@ -19,7 +19,8 @@ public class ItemScript : MonoBehaviour {
     public Text scoreTxt;
     public Text endTxt;
 
-
+    public GameObject end;
+    
     public Transform panel;
 
     public GameObject[] objects = new GameObject[2];
@@ -27,9 +28,14 @@ public class ItemScript : MonoBehaviour {
     public int item0 = 0;
     public int item1 = -1;
     public int item2 = -1;
+
     public bool swiped = false;
+
     public int score = 0;
+    public double[] time;
+
     public int count;
+
 
 
     void Start()
@@ -43,7 +49,7 @@ public class ItemScript : MonoBehaviour {
 
         child = panel.transform.Find("Score");
         scoreTxt = child.GetComponent<Text>();
-
+        
         rb = GetComponent<Rigidbody2D>();
 
         rb.AddForce(-transform.up * 20000);
@@ -70,7 +76,7 @@ public class ItemScript : MonoBehaviour {
 
     public void createObject()
     {
-        if(count <= 12)
+        if(count <= 11)
         {
             item2 = item1;
             item1 = item0;
@@ -85,6 +91,12 @@ public class ItemScript : MonoBehaviour {
             itemScript.score = score;
             itemScript.count = count + 1;
             itemScript.endTxt = endTxt;
+            itemScript.end = end;
+            itemScript.time = time;
+
+            rb = GetComponent<Rigidbody2D>();
+
+            rb.AddForce(-transform.up * 20000);
 
             if (item2 == 0)
             {
@@ -98,7 +110,8 @@ public class ItemScript : MonoBehaviour {
         }
         else
         {
-            endTxt.text = "YOU GOT " + score + " OUT OF 10\n" + "TAP ANYWHERE TO CONTINUE";
+            end.gameObject.SetActive(true);
+            endTxt.text = "You got " + score + " out of 10\n" + "Tap anywhere to CONTINUE";
             panel.gameObject.SetActive(false);
         }
     }

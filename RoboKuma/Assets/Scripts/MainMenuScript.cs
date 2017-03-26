@@ -11,6 +11,7 @@ public class MainMenuScript : MonoBehaviour {
     public GameObject CustomizationScreen;
     public GameObject AchievementScreen;
     public GameObject AttributeScreen;
+    public GameObject ResultsPanel;
 
 
     // Use this for initialization
@@ -26,6 +27,11 @@ public class MainMenuScript : MonoBehaviour {
         CustomizationScreen.gameObject.SetActive(false);
         AchievementScreen.gameObject.SetActive(false);
         AttributeScreen.gameObject.SetActive(false);
+
+        if(Manager.Instance.score == -1)
+            ResultsPanel.gameObject.SetActive(false);
+        else
+            ResultsPanel.gameObject.SetActive(true);
 
     }
 	
@@ -84,6 +90,11 @@ public class MainMenuScript : MonoBehaviour {
         CustomizationScreen.gameObject.SetActive(false);
         CustomizationScreen.gameObject.SetActive(true);
 
+    }
+
+    public void resultsPress()
+    {
+        ResultsPanel.gameObject.SetActive(false);
     }
 
 }
