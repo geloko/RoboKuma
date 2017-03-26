@@ -66,9 +66,6 @@ public class ItemScript : MonoBehaviour {
         stopwatch = new Stopwatch();
         stopwatch.Start();
 
-
-        UnityEngine.Debug.Log(count - 3 + "____" + count);
-
         if (count > 2)
         {
             time[count - 3] = -1;
@@ -157,8 +154,6 @@ public class ItemScript : MonoBehaviour {
         {
             display.text = "";
 
-            
-
         }
         createObject();
         Destroy(gameObject);
@@ -199,7 +194,6 @@ public class ItemScript : MonoBehaviour {
                 {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[count - 3] = timeElapsed;
-                    UnityEngine.Debug.Log(timeElapsed + "----" + (count - 3));
 
                     display.text = "Correct";
                     score++;
@@ -225,7 +219,6 @@ public class ItemScript : MonoBehaviour {
                 {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[count - 3] = timeElapsed;
-                    UnityEngine.Debug.Log(timeElapsed + "----" + (count - 3));
 
                     display.text = "Correct";
                     score++;
@@ -281,7 +274,6 @@ public class ItemScript : MonoBehaviour {
                     {
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[count - 3] = timeElapsed;
-                        UnityEngine.Debug.Log(timeElapsed + "----" + (count - 3));
 
                         display.text = "Correct";
                         score++;
@@ -306,7 +298,6 @@ public class ItemScript : MonoBehaviour {
                     {
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[count - 3] = timeElapsed;
-                        UnityEngine.Debug.Log(timeElapsed + "----" + (count - 3));
 
                         display.text = "Correct";
                         score++;
