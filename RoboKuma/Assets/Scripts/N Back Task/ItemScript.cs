@@ -127,6 +127,8 @@ public class ItemScript : MonoBehaviour {
             end.gameObject.SetActive(true);
             endTxt.text = "You got " + score + " out of 10\n" + "Tap anywhere to CONTINUE";
             panel.gameObject.SetActive(false);
+			SQLiteDatabase sn = new SQLiteDatabase();
+			sn.insertinto ("nback", 1 , score, 10, 0.01);
         }
     }
 

@@ -79,6 +79,8 @@ public class GoNoGoScript : MonoBehaviour {
             this.gameObject.SetActive(false);
             End.gameObject.SetActive(true);
             endTxt.text = "YOU GOT " + score + " OUT OF 10\n\nTAP TO CONTINUE";
+			SQLiteDatabase sn = new SQLiteDatabase();
+			sn.insertinto ("gonogo", 1 , score, 10, 0.01);
         }
         
     }

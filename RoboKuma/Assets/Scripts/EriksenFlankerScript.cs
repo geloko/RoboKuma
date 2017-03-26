@@ -20,7 +20,6 @@ public class EriksenFlankerScript : MonoBehaviour {
 	public Text feedbackText;
 	public int[] nMiddleRow, nXPattern, nInnerBoxPattern, nOuterBoxPattern;
 
-
 	// Use this for initialization
 	/*
 	 * LEGEND:
@@ -81,6 +80,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 			mainPanel.gameObject.SetActive(false);
 			End.gameObject.SetActive(true);
 			stopwatch.Stop();
+			SQLiteDatabase sn = new SQLiteDatabase ();
+			sn.insertinto ("eriksenflanker", 1 , score, 10, 0.01);
 			endTxt.text = "You got " + score + " out of 10\n\nTap anywhere to CONTINUE";
 		}
 	}

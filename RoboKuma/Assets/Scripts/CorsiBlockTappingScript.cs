@@ -91,6 +91,8 @@ public class CorsiBlockTappingScript : MonoBehaviour {
             {
                 End.gameObject.SetActive(true);
                 endTxt.text = "YOU GOT " + score + " OUT OF 4\n\nTAP ANYWHERE TO CONTINUE";
+				SQLiteDatabase sn = new SQLiteDatabase();
+				sn.insertinto ("corsiblocktapping", 1 , score, 4, 0.01);
             }
         }
     }
