@@ -156,11 +156,11 @@ public class SQLiteDatabase : MonoBehaviour {
 						break;
 		case "corsiblocktapping":
 			pCorrect = correct / total;
+			memory = (pCorrect * 10) * difficulty;
 			if (pCorrect == 1) {
-				memory = (pCorrect * 10) * difficulty;
 				newMemory = oMemory + Convert.ToInt32 (response);
 			} else {
-				newMemory = 0;
+				newMemory = oMemory - Convert.ToInt32 (response);;
 			}
 			sql = "UPDATE player SET memory = " + newMemory + " WHERE player_id = " + player_id + ";";
 						break;
