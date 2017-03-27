@@ -20,6 +20,9 @@ public class EriksenFlankerScript : MonoBehaviour {
 	public Text feedbackText;
 	public int[] nMiddleRow, nXPattern, nInnerBoxPattern, nOuterBoxPattern;
 
+    public bool hasEnded;
+
+
 	// Use this for initialization
 	/*
 	 * LEGEND:
@@ -43,11 +46,14 @@ public class EriksenFlankerScript : MonoBehaviour {
 		//mainPanel = GameObject.Find ("MainPanel");
 		End.gameObject.SetActive(false);
 		stopwatch = new Stopwatch();
+
+        hasEnded = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		SwipeForComputer();
+        if(!hasEnded)
+		    SwipeForComputer();
 		//SwipeForMobile ();
 	}
 	public void startGame(){
@@ -77,12 +83,13 @@ public class EriksenFlankerScript : MonoBehaviour {
 			stopwatch.Reset ();
 			stopwatch.Start ();
 		} else {
+            hasEnded = true;
 			mainPanel.gameObject.SetActive(false);
 			End.gameObject.SetActive(true);
 			stopwatch.Stop();
-			SQLiteDatabase sn = new SQLiteDatabase ();
-			sn.insertinto ("eriksenflanker", 1 , score, 10, 0.01);
-			endTxt.text = "You got " + score + " out of 10\n\nTap anywhere to CONTINUE";
+            SQLiteDatabase sn = new SQLiteDatabase();
+            sn.insertinto("eriksenflanker", 1, score, 10, 0.01);
+            endTxt.text = "You got " + score + " out of 10\n\nTap anywhere to CONTINUE";
 		}
 	}
 

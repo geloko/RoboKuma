@@ -18,7 +18,7 @@ public class NBackScript : MonoBehaviour {
 	*/
 
     public GameObject[] objects = new GameObject[2];
-    public Text endText;
+    public Text endText, helpText;
     public GameObject end;
 
     public double[] time;
@@ -52,6 +52,7 @@ public class NBackScript : MonoBehaviour {
         itemScript.score = 0;
         itemScript.count = 1;
         itemScript.endTxt = endText;
+        itemScript.helpTxt = helpText;
         itemScript.end = end;
         itemScript.time = time;
 

@@ -19,6 +19,7 @@ public class ItemScript : MonoBehaviour {
     public Text cheat;
     public Text scoreTxt;
     public Text endTxt;
+    public Text helpTxt;
 
     public GameObject end;
     
@@ -71,6 +72,14 @@ public class ItemScript : MonoBehaviour {
             time[count - 3] = -1;
         }
 
+        if (count == 3)
+            helpTxt.text = "The FIRST item appeared TWO items ago";
+        else if (count == 1)
+            helpTxt.text = "Remember the items shown";
+        else if (count == 2)
+            helpTxt.text = "The FIRST item appeared ONE item ago";
+        else if (count > 3)
+            helpTxt.text = "";
 
     }
 
@@ -101,6 +110,7 @@ public class ItemScript : MonoBehaviour {
             itemScript.score = score;
             itemScript.count = count + 1;
             itemScript.endTxt = endTxt;
+            itemScript.helpTxt = helpTxt;
             itemScript.end = end;
             itemScript.time = time;
 
@@ -127,8 +137,8 @@ public class ItemScript : MonoBehaviour {
             end.gameObject.SetActive(true);
             endTxt.text = "You got " + score + " out of 10\n" + "Tap anywhere to CONTINUE";
             panel.gameObject.SetActive(false);
-			SQLiteDatabase sn = new SQLiteDatabase();
-			sn.insertinto ("nback", 1 , score, 10, 0.01);
+            SQLiteDatabase sn = new SQLiteDatabase();
+            sn.insertinto("nback", 1, score, 10, 0.01);
         }
     }
 

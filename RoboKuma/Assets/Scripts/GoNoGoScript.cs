@@ -79,8 +79,9 @@ public class GoNoGoScript : MonoBehaviour {
             this.gameObject.SetActive(false);
             End.gameObject.SetActive(true);
             endTxt.text = "YOU GOT " + score + " OUT OF 10\n\nTAP TO CONTINUE";
-			SQLiteDatabase sn = new SQLiteDatabase();
-			sn.insertinto ("gonogo", 1 , score, 10, 0.01);
+
+            SQLiteDatabase sn = new SQLiteDatabase();
+            sn.insertinto("gonogo", 1, score, 10, 0.01);
         }
         
     }
@@ -89,7 +90,11 @@ public class GoNoGoScript : MonoBehaviour {
     {
         button.image.overrideSprite = null;
         button.gameObject.SetActive(false);
-        yield return new WaitForSecondsRealtime(i);
+
+        if (i == 0)
+            yield return new WaitForSecondsRealtime(0.5F);
+        else
+            yield return new WaitForSecondsRealtime(i);
         button.gameObject.SetActive(true);
         spawnBear();
     }
@@ -128,7 +133,7 @@ public class GoNoGoScript : MonoBehaviour {
 
             timeTxt.text = "GREAT!\n" + timeElapsed + " ms";
             
-            StartCoroutine(WaitSeconds(2));
+            StartCoroutine(WaitSeconds(Random.Range(0, 3)));
 
         }
         else
@@ -136,7 +141,7 @@ public class GoNoGoScript : MonoBehaviour {
             time[iterations - 1] = -1;
 
             timeTxt.text = "OOPS!";
-            StartCoroutine(WaitSeconds(2));
+            StartCoroutine(WaitSeconds(Random.Range(0, 3)));
         }
 
 

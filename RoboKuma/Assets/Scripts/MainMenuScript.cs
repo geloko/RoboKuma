@@ -31,7 +31,10 @@ public class MainMenuScript : MonoBehaviour {
         if(Manager.Instance.score == -1)
             ResultsPanel.gameObject.SetActive(false);
         else
+        {
             ResultsPanel.gameObject.SetActive(true);
+        }
+            
 
     }
 	
@@ -94,6 +97,12 @@ public class MainMenuScript : MonoBehaviour {
 
     public void resultsPress()
     {
+        StartCoroutine(dosomething());
+    }
+
+    public IEnumerator dosomething()
+    {
+        yield return new WaitForSecondsRealtime(0.5F);
         ResultsPanel.gameObject.SetActive(false);
     }
 

@@ -5,7 +5,7 @@ using System.Collections;
 public class CorsiBlockTappingScript : MonoBehaviour {
 
     public Button[] buttons;
-    public Sprite blankSprite, incorrectSprite;
+    public Sprite blankSprite, incorrectSprite, correctSprite;
     public Sprite[] sequenceSprites;
     public Text display;
     public Text endTxt;
@@ -71,29 +71,61 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 
     public void ButtonClicked(int btn)
     {
-        if(start)
+        
+        for(int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].image.overrideSprite = null;
+        }
+
+        if (start)
         {
             bool correct = false;
             if (btn == sequence[clickSequence])
             {
                 display.text = "GREAT!";
-                //buttons[sequence[clickSequence]].image.overrideSprite = sequenceSprites[spriteSequence[clickSequence]];
                 score++;
+
+                StartCoroutine(showCorrect(btn));
             }
             else
             {
                 display.text = "INCORRECT!";
+
+                StartCoroutine(showIncorrect(btn));
             }
 
             clickSequence++;
 
             if(clickSequence >= sequenceLength)
             {
-                End.gameObject.SetActive(true);
-                endTxt.text = "YOU GOT " + score + " OUT OF 4\n\nTAP ANYWHERE TO CONTINUE";
-				SQLiteDatabase sn = new SQLiteDatabase();
-				sn.insertinto ("corsiblocktapping", 1 , score, 4, 0.01);
+                StartCoroutine(showResults());
             }
         }
+    }
+
+    public IEnumerator showCorrect(int btn)
+    {
+        buttons[btn].image.overrideSprite = correctSprite;
+        yield return new WaitForSecondsRealtime(0.5F);
+
+        buttons[btn].image.overrideSprite = null;
+    }
+
+    public IEnumerator showIncorrect(int btn)
+    {
+        buttons[btn].image.overrideSprite = incorrectSprite;
+        yield return new WaitForSecondsRealtime(0.5F);
+
+        buttons[btn].image.overrideSprite = null;
+    }
+
+    public IEnumerator showResults()
+    {
+        yield return new WaitForSecondsRealtime(0.5F);
+        End.gameObject.SetActive(true);
+        endTxt.text = "You got " + score + " out of 4\n\nTap anywhere to CONTINUE";
+        
+        SQLiteDatabase sn = new SQLiteDatabase();
+        sn.insertinto("corsiblocktapping", 1, score, 4, 0.01);
     }
 }
