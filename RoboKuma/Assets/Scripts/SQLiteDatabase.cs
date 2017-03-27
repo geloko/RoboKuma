@@ -14,19 +14,23 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc=new SqliteConnection(_constr);
 		_dbc.Open();
 		_dbcm=_dbc.CreateCommand();
-		sql = "CREATE TABLE nback (id INT, player_id INT, correct INT, total INT, time FLOAT)";
+		sql = "CREATE TABLE nback (id INT NOT NULL AUTO_INCREMENT, player_id INT NOT NULL, correct INT NOT NULL, total INT NOT NULL, time FLOAT NOT NULL)";
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
-		sql = "CREATE TABLE eriksenflanker (id INT, player_id INT, correct INT, total INT, time FLOAT)";
+		sql = "CREATE TABLE eriksenflanker (id INT NOT NULL AUTO_INCREMENT, player_id INT NOT NULL, correct INT NOT NULL, total INT NOT NULL, time FLOAT NOT NULL)";
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
-		sql = "CREATE TABLE corsiblocktapping (id INT, player_id INT, correct INT, total INT, time FLOAT)";
+		sql = "CREATE TABLE corsiblocktapping (id INT NOT NULL AUTO_INCREMENT, player_id INT NOT NULL, correct INT NOT NULL, total INT NOT NULL, time FLOAT NOT NULL)";
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
-		sql = "CREATE TABLE gonogo (id INT, player_id INT, correct INT, total INT, time FLOAT)";
+		sql = "CREATE TABLE gonogo (id INT NOT NULL AUTO_INCREMENT, player_id INT NOT NULL, correct INT NOT NULL, total INT NOT NULL, time FLOAT NOT NULL)";
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
-		sql = "CREATE TABLE player (id INT, name VARCHAR(20))";
+		sql = "CREATE TABLE player (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(20) NOT NULL, memory INT NOT NULL, accuracy INT NOT NULL, speed INT NOT NULL, response INT NOT NULL)";
+		_dbcm.CommandText = sql;
+		_dbcm.ExecuteNonQuery();
+
+		sql = "INSERT INTO " + table + " (name, memory, accuracy, speed, response) VALUES (testName, 0 ,0 ,0, 0);";
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
 
