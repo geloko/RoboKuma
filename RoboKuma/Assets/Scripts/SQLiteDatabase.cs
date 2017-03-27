@@ -54,6 +54,13 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
 		Debug.Log (sql);
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+
+
 	}
 
 	public void select (string table)
@@ -69,5 +76,115 @@ public class SQLiteDatabase : MonoBehaviour {
 			int total = _idr.GetInt32 (3);
 			Debug.Log (correct + "/" + total);
 		}
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+		_idr.Close ();
+		_idr = null;
+	}
+
+	public int[] getPlayerStatistics(int player_id)
+	{
+		sql = "SELECT * FROM player WHERE player_id = " + player_id;
+		_dbc=new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm=_dbc.CreateCommand();
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader ();
+		int oResponse, oSpeed, oAccuracy, oMemory;
+		while (_idr.Read ()) {
+			oMemory = _idr.GetInt32 (2);
+			oAccuracy = _idr.GetInt32 (3);
+			oSpeed = _idr.GetInt32 (4);
+			oResponse = _idr.GetInt32 (5);
+			Debug.Log ("Memory: " + oMemory);
+			Debug.Log ("Accuracy: " + oAccuracy);
+			Debug.Log ("Speed: " + oSpeed);
+			Debug.Log ("Response: " + oResponse);
+		}
+
+		return new int[oMemory, oAccuracy, oSpeed, oResponse];
+	}
+
+
+	public void updatePlayerStatistics(int correct, int total, double time, int difficulty, string table, int player_id)
+	{
+		_dbc=new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm=_dbc.CreateCommand();
+		sql = "SELECT * FROM player WHERE player_id = " + player_id + ";";
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader ();
+		int oResponse, oSpeed, oAccuracy, oMemory;
+		while (_idr.Read ()) {
+			oMemory = _idr.GetInt32 (2);
+			oAccuracy = _idr.GetInt32 (3);
+			oSpeed = _idr.GetInt32 (4);
+			oResponse = _idr.GetInt32 (5);
+			Debug.Log ("Memory: " + oMemory);
+			Debug.Log ("Accuracy: " + oAccuracy);
+			Debug.Log ("Speed: " + oSpeed);
+			Debug.Log ("Response: " + oResponse);
+		}
+		double response, speed, accuracy, memory;
+		int newResponse, newSpeed, newAccuracy;
+		switch (table) 
+		{
+		case "gonogo":
+			pCorrect = correct / total;
+			pWrong = (total - correct) / total;
+			response = (pCorrect - pWrong) * difficulty;
+			speed = (time * difficulty);
+			accuracy = (pCorrect - pWrong) * difficulty;
+			newResponse = oResponse + Convert.ToInt32 (response);
+			newSpeed = oSpeed + Convert.ToInt32 (speed);
+			newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
+			sql = "UPDATE player SET response = " + newResponse + " , speed = " + newSpeed + " , accuracy = " + newAccuracy + " WHERE player_id = " + player_id + ";";
+						break;
+		case "eriksenflanker":
+			pCorrect = correct / total;
+			pWrong = (total - correct) / total;
+			response = (pCorrect - pWrong) * difficulty;
+			speed = (time * difficulty);
+			accuracy = (pCorrect - pWrong) * difficulty;
+			newResponse = oResponse + Convert.ToInt32 (response);
+			newSpeed = oSpeed + Convert.ToInt32 (speed);
+			newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
+			sql = "UPDATE player SET response = " + newResponse + " , speed = " + newSpeed + " , accuracy = " + newAccuracy + " WHERE player_id = " + player_id + ";";
+						break;
+		case "corsiblocktapping":
+			pCorrect = correct / total;
+			if (pCorrect == 1) {
+				memory = (pCorrect * 10) * difficulty;
+				newMemory = oMemory + Convert.ToInt32 (response);
+			} else {
+				newMemory = 0;
+			}
+			sql = "UPDATE player SET memory = " + newMemory + " WHERE player_id = " + player_id + ";";
+						break;
+		case "nback":
+			pCorrect = correct / total;
+			pWrong = (total - correct) / total;
+			memory = (pCorrect - pWrong) * difficulty;
+			speed = (time * difficulty);
+			accuracy = (pCorrect - pWrong) * difficulty;
+			newMemory = oResponse + Convert.ToInt32 (response);
+			newSpeed = oSpeed + Convert.ToInt32 (speed);
+			newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
+			sql = "UPDATE player SET memory = " + newMemory + " , speed = " + newSpeed + " , accuracy = " + newAccuracy + " WHERE player_id = " + player_id + ";";
+						break;
+		default:
+			break;
+		}
+		_dbcm.CommandText = sql;
+		_dbcm.ExecuteNonQuery();
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+		_idr.Close ();
+		_idr = null;
 	}
 }
