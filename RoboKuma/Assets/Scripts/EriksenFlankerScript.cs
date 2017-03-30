@@ -12,15 +12,18 @@ public class EriksenFlankerScript : MonoBehaviour {
 	public Vector2 secondPressPos;
 	public Vector2 currentSwipe;
 	public GameObject End, mainPanel;
+
 	public int score;
-	public Stopwatch stopwatch;
+    public double[] time;
+
+    public Stopwatch stopwatch;
 	public Text endTxt, scoreTxt;
 	public int x, y;
 	public int iteration;
 	public Text feedbackText;
 	public int[] nMiddleRow, nXPattern, nInnerBoxPattern, nOuterBoxPattern;
 
-    public bool hasEnded;
+    public bool inGame;
 
 
 	// Use this for initialization
@@ -39,6 +42,7 @@ public class EriksenFlankerScript : MonoBehaviour {
 		nXPattern = new int[]{ 7, 9, 16, 18 };
 		nInnerBoxPattern = new int[]{ 7, 8, 9, 12, 13, 16, 17, 18 };
 		nOuterBoxPattern = new int[]{ 1, 2, 3, 4, 5, 6, 10, 11, 14, 15, 19, 20, 21, 22, 23, 24 };
+        time = new double[10];
 
 		//feedbackText = feedbackText.GetComponent<Text> ();
 		//endTxt = endTxt.GetComponent<Text> ();
@@ -47,48 +51,127 @@ public class EriksenFlankerScript : MonoBehaviour {
 		End.gameObject.SetActive(false);
 		stopwatch = new Stopwatch();
 
-        hasEnded = false;
+        inGame = true;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-        if(!hasEnded)
+
+    // Update is called once per frame
+    void Update () {
+        if(inGame)
 		    SwipeForComputer();
 		//SwipeForMobile ();
 	}
-	public void startGame(){
+
+    public IEnumerator startDelay()
+    {
+        feedbackText.text = "READY";
+        yield return new WaitForSecondsRealtime(1);
+        feedbackText.text = "GO!";
+        //int rand = Random.Range(1, 2);
+        yield return new WaitForSecondsRealtime(1);
+        feedbackText.text = "";
+
+        iteration++;
+        x = Random.Range(0, 100);
+
+        if (x < 50)
+        {
+            images[0].sprite = sprites[0];
+        }
+        else
+        {
+            images[0].sprite = sprites[1];
+        }
+
+        for (int i = 1; i < images.Length; i++)
+        {
+            images[i].enabled = false;
+        }
+
+        y = Random.Range(0, 100);
+        var pattern = getRandomPattern();
+
+        for (int i = 0; i < pattern.Length; i++)
+        {
+            images[pattern[i]].enabled = true;
+
+            if (y >= 50)
+            {
+                images[pattern[i]].sprite = sprites[0];
+            }
+            else
+            {
+                images[pattern[i]].sprite = sprites[1];
+            }
+        }
+
+        stopwatch.Reset();
+        stopwatch.Start();
+    }
+
+    public void startGame(){
 		
-		if (iteration != 10) {
+        if(iteration == 0)
+        {
+            StartCoroutine(startDelay());
+        }
+		else if (iteration != 10)
+        {
 
 			iteration++;
 			x = Random.Range (0, 100);
-			if (x < 50) {
+
+			if (x < 50)
+            {
 				images [0].sprite = sprites [0];
-			} else {
+			}
+            else
+            {
 				images [0].sprite = sprites [1];
 			}
-			for (int i = 1; i < images.Length; i++) {
+
+            for (int i = 1; i < images.Length; i++)
+            {
 				images [i].enabled = false;
 			}
+
 			y = Random.Range (0, 100);
 			var pattern = getRandomPattern ();
-			for (int i = 0; i < pattern.Length; i++) {
+
+			for (int i = 0; i < pattern.Length; i++)
+            {
 				images [pattern [i]].enabled = true;
-				if (y >= 50) {
+				if (y >= 50)
+                {
 					images [pattern [i]].sprite = sprites [0];
-				} else {
+				}
+                else
+                {
 					images [pattern [i]].sprite = sprites [1];
 				}
 			}
 			stopwatch.Reset ();
 			stopwatch.Start ();
-		} else {
-            hasEnded = true;
+		} else
+        {
+            inGame = false;
 			mainPanel.gameObject.SetActive(false);
 			End.gameObject.SetActive(true);
 			stopwatch.Stop();
             SQLiteDatabase sn = new SQLiteDatabase();
-            sn.insertinto("eriksenflanker", 1, score, 10, 0.01);
+
+            double ave = 0;
+            int cnt = 0;
+            for (int i = 0; i < time.Length; i++)
+            {
+                if (time[i] != -1)
+                {
+                    ave += time[i];
+                    cnt++;
+                }
+            }
+            ave /= cnt;
+
+            sn.insertinto("eriksenflanker", 1, score, 10, ave / 1000);
             endTxt.text = "You got " + score + " out of 10\n\nTap anywhere to CONTINUE";
 		}
 	}
@@ -145,10 +228,15 @@ public class EriksenFlankerScript : MonoBehaviour {
 			if(currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 			{
 				if (x < 50) {
-					feedbackText.text = "CORRECT " + "TIME: " + stopwatch.ElapsedMilliseconds + "ms";
+                    double timeElapsed = stopwatch.ElapsedMilliseconds;
+                    time[iteration - 1] = timeElapsed;
+                    feedbackText.text = "CORRECT " + "TIME: " + timeElapsed  + "ms";
 					score++;
-                    scoreTxt.text = "Score: " + score;
-				} else {
+                    scoreTxt.text = "" + score;
+				}
+                else
+                {
+                    time[iteration - 1] = -1;
 					feedbackText.text = "WRONG";
 				}
 				startGame ();
@@ -156,12 +244,17 @@ public class EriksenFlankerScript : MonoBehaviour {
 			//swipe right
 			if(currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 			{
-				if (x >= 50) {
-					feedbackText.text = "CORRECT " + "TIME: " + stopwatch.ElapsedMilliseconds + "ms";
+				if (x >= 50)
+                {
+                    double timeElapsed = stopwatch.ElapsedMilliseconds;
+                    time[iteration - 1] = timeElapsed;
+                    feedbackText.text = "CORRECT " + "TIME: " + timeElapsed + "ms";
 					score++;
-                    scoreTxt.text = "Score: " + score;
-                } else {
-					feedbackText.text = "WRONG";
+                    scoreTxt.text = "" + score;
+                } else
+                {
+                    time[iteration - 1] = -1;
+                    feedbackText.text = "WRONG";
 				}
 				startGame ();
 			}
@@ -200,10 +293,16 @@ public class EriksenFlankerScript : MonoBehaviour {
 				//swipe left
 				if(currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 				{
-					if (x < 50) {
-						feedbackText.text = "CORRECT " + "TIME: " + stopwatch.ElapsedMilliseconds + "ms";
+					if (x < 50)
+                    {
+                        double timeElapsed = stopwatch.ElapsedMilliseconds;
+                        time[iteration - 1] = timeElapsed;
+                        feedbackText.text = "CORRECT " + "TIME: " + timeElapsed + "ms";
 						score++;
-					} else {
+					}
+                    else
+                    {
+                        time[iteration - 1] = -1;
 						feedbackText.text = "WRONG";
 					}
 					startGame ();
@@ -211,10 +310,16 @@ public class EriksenFlankerScript : MonoBehaviour {
 				//swipe right
 				if(currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 				{
-					if (x >= 50) {
-						feedbackText.text = "CORRECT " + "TIME: " + stopwatch.ElapsedMilliseconds + "ms";
+					if (x >= 50)
+                    {
+                        double timeElapsed = stopwatch.ElapsedMilliseconds;
+                        time[iteration - 1] = timeElapsed;
+                        feedbackText.text = "CORRECT " + "TIME: " + timeElapsed + "ms";
 						score++;
-					} else {
+					}
+                    else
+                    {
+                        time[iteration - 1] = -1;
 						feedbackText.text = "WRONG";
 					}
 					startGame ();

@@ -79,7 +79,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 
         if (start)
         {
-            bool correct = false;
+            //bool correct = false;
             if (btn == sequence[clickSequence])
             {
                 display.text = "GREAT!";

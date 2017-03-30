@@ -45,6 +45,17 @@ public class GoNoGoScript : MonoBehaviour {
 
     public void startGame()
     {
+        StartCoroutine(startDelay());
+    }
+
+    public IEnumerator startDelay()
+    {
+        timeTxt.text = "READY";
+        yield return new WaitForSecondsRealtime(1F);
+        timeTxt.text = "GO!";
+        int rand = Random.Range(1, 2);
+        yield return new WaitForSecondsRealtime(rand);
+
         stopwatch.Start();
         spawnBear();
     }
@@ -81,7 +92,15 @@ public class GoNoGoScript : MonoBehaviour {
             endTxt.text = "YOU GOT " + score + " OUT OF 10\n\nTAP TO CONTINUE";
 
             SQLiteDatabase sn = new SQLiteDatabase();
-            sn.insertinto("gonogo", 1, score, 10, 0.01);
+            double ave = 0;
+            for(int i = 0; i < time.Length; i++)
+            {
+                if(time[i] != -1)
+                    ave += time[i];
+            }
+            ave /= (10 - noGoCnt);
+
+            sn.insertinto("gonogo", 1, score, 10, ave / 1000);
         }
         
     }
@@ -107,7 +126,7 @@ public class GoNoGoScript : MonoBehaviour {
         if(!clicked)
         {
             score++;
-            scoreTxt.text = "Score: " + score;
+            scoreTxt.text = "" + score;
             timeTxt.text = "GREAT!";
         
             button.image.overrideSprite = null;
@@ -126,7 +145,7 @@ public class GoNoGoScript : MonoBehaviour {
         if(isGo)
         {
             score++;
-            scoreTxt.text = "Score: " + score;
+            scoreTxt.text = "" + score;
 
             double timeElapsed = stopwatch.ElapsedMilliseconds;
             time[iterations - 1] = timeElapsed;

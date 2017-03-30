@@ -16,9 +16,14 @@ public class ReturnMainScript : MonoBehaviour {
 	
 	}
 
-    public void returntomain()
+    public void returnResult()
     {
         StartCoroutine(dosomething());
+    }
+
+    public void returnMain()
+    {
+        SceneManager.LoadScene(0);
     }
 
     public IEnumerator dosomething()

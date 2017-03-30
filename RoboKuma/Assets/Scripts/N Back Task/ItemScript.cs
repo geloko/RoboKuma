@@ -47,9 +47,6 @@ public class ItemScript : MonoBehaviour {
 
         child = panel.transform.Find("CheatSheet");
         cheat = child.GetComponent<Text>();
-
-        child = panel.transform.Find("Score");
-        scoreTxt = child.GetComponent<Text>();
         
         rb = GetComponent<Rigidbody2D>();
 
@@ -113,6 +110,7 @@ public class ItemScript : MonoBehaviour {
             itemScript.helpTxt = helpTxt;
             itemScript.end = end;
             itemScript.time = time;
+            itemScript.scoreTxt = scoreTxt;
 
             rb = GetComponent<Rigidbody2D>();
 
@@ -138,7 +136,20 @@ public class ItemScript : MonoBehaviour {
             endTxt.text = "You got " + score + " out of 10\n" + "Tap anywhere to CONTINUE";
             panel.gameObject.SetActive(false);
             SQLiteDatabase sn = new SQLiteDatabase();
-            sn.insertinto("nback", 1, score, 10, 0.01);
+
+            double ave = 0;
+            int cnt = 0;
+            for (int i = 0; i < time.Length; i++)
+            {
+                if (time[i] != -1)
+                {
+                    ave += time[i];
+                    cnt++;
+                }
+            }
+            ave /= cnt;
+
+            sn.insertinto("nback", 1, score, 10, ave / 1000);
         }
     }
 
@@ -160,7 +171,7 @@ public class ItemScript : MonoBehaviour {
 
             display.text = "Correct";
             score++;
-            scoreTxt.text = "Score:" + score;
+            scoreTxt.text = "" + score;
         }
         else
         {
@@ -209,7 +220,7 @@ public class ItemScript : MonoBehaviour {
 
                     display.text = "Correct";
                     score++;
-                    scoreTxt.text = "Score:" + score;
+                    scoreTxt.text = "" + score;
                 }
                 else if (item2 != -1)
                 {
@@ -234,7 +245,7 @@ public class ItemScript : MonoBehaviour {
 
                     display.text = "Correct";
                     score++;
-                    scoreTxt.text = "Score:" + score;
+                    scoreTxt.text = "" + score;
                 }
                 else if (item2 != -1)
                 {
@@ -289,7 +300,7 @@ public class ItemScript : MonoBehaviour {
 
                         display.text = "Correct";
                         score++;
-                        scoreTxt.text = "Score:" + score;
+                        scoreTxt.text = "" + score;
                     }
                     else if (item2 != -1)
                     {
@@ -313,7 +324,7 @@ public class ItemScript : MonoBehaviour {
 
                         display.text = "Correct";
                         score++;
-                        scoreTxt.text = "Score:" + score;
+                        scoreTxt.text = "" + score;
                     }
                     else if (item2 != -1)
                     {
