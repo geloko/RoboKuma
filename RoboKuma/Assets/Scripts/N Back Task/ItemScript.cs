@@ -149,6 +149,9 @@ public class ItemScript : MonoBehaviour {
             }
             ave /= cnt;
 
+            PlayerPrefs.SetInt("Experience", (int)(score / 10.0 * 100));
+            PlayerPrefs.SetInt("Bearya", (int)(score / 10.0 * 500));
+
             sn.insertinto("nback", 1, score, 10, ave / 1000);
         }
     }
@@ -224,6 +227,8 @@ public class ItemScript : MonoBehaviour {
                 }
                 else if (item2 != -1)
                 {
+                    double timeElapsed = stopwatch.ElapsedMilliseconds;
+                    time[count - 3] = timeElapsed;
                     display.text = "Wrong";
                 }
                 //createObject();
@@ -249,6 +254,8 @@ public class ItemScript : MonoBehaviour {
                 }
                 else if (item2 != -1)
                 {
+                    double timeElapsed = stopwatch.ElapsedMilliseconds;
+                    time[count - 3] = timeElapsed;
                     display.text = "Wrong";
                 }
                 //createObject();
@@ -304,6 +311,8 @@ public class ItemScript : MonoBehaviour {
                     }
                     else if (item2 != -1)
                     {
+                        double timeElapsed = stopwatch.ElapsedMilliseconds;
+                        time[count - 3] = timeElapsed;
                         display.text = "Wrong";
                     }
                     //createObject();
@@ -328,6 +337,8 @@ public class ItemScript : MonoBehaviour {
                     }
                     else if (item2 != -1)
                     {
+                        double timeElapsed = stopwatch.ElapsedMilliseconds;
+                        time[count - 3] = timeElapsed;
                         display.text = "Wrong";
                     }
                     //createObject();

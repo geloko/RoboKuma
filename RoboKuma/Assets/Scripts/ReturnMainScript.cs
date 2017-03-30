@@ -18,18 +18,12 @@ public class ReturnMainScript : MonoBehaviour {
 
     public void returnResult()
     {
-        StartCoroutine(dosomething());
+        PlayerPrefs.SetInt("Score", 1);
+        SceneManager.LoadScene(0);
     }
 
     public void returnMain()
     {
-        SceneManager.LoadScene(0);
-    }
-
-    public IEnumerator dosomething()
-    {
-        yield return new WaitForSecondsRealtime(0.5F);
-        Manager.Instance.score = 0;
         SceneManager.LoadScene(0);
     }
 }

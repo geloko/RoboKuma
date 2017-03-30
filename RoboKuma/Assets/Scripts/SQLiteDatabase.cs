@@ -39,6 +39,9 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
+
+        Debug.Log("Started");
+
 	}
 	
 	// Update is called once per frame
@@ -62,7 +65,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = null;
 
         updatePlayerStatistics(correct, total, time, 1, table, player_id);
-        Debug.Log("Updated");
+        //Debug.Log("Updated");
 	}
 
 	public void select (string table)
@@ -101,10 +104,10 @@ public class SQLiteDatabase : MonoBehaviour {
 			oAccuracy = _idr.GetInt32 (3);
 			oSpeed = _idr.GetInt32 (4);
 			oResponse = _idr.GetInt32 (5);
-			Debug.Log ("Memory: " + oMemory);
-			Debug.Log ("Accuracy: " + oAccuracy);
-			Debug.Log ("Speed: " + oSpeed);
-			Debug.Log ("Response: " + oResponse);
+			//Debug.Log ("Memory: " + oMemory);
+			//Debug.Log ("Accuracy: " + oAccuracy);
+			//Debug.Log ("Speed: " + oSpeed);
+			//Debug.Log ("Response: " + oResponse);
 		}
 
         int[] result = new int[4] { oMemory, oAccuracy, oSpeed, oResponse };
@@ -122,15 +125,18 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader ();
 		int oResponse = 0, oSpeed = 0, oAccuracy = 0, oMemory = 0;
+
+        time += 0.001;
+
 		while (_idr.Read ()) {
 			oMemory = _idr.GetInt32 (2);
 			oAccuracy = _idr.GetInt32 (3);
 			oSpeed = _idr.GetInt32 (4);
 			oResponse = _idr.GetInt32 (5);
-			Debug.Log ("Memory: " + oMemory);
-			Debug.Log ("Accuracy: " + oAccuracy);
-			Debug.Log ("Speed: " + oSpeed);
-			Debug.Log ("Response: " + oResponse);
+			//Debug.Log ("Memory: " + oMemory);
+			//Debug.Log ("Accuracy: " + oAccuracy);
+			//Debug.Log ("Speed: " + oSpeed);
+			//Debug.Log ("Response: " + oResponse);
 		}
 		double response = 0, speed, accuracy, memory, pCorrect, pWrong;
 		int newResponse, newSpeed, newAccuracy, newMemory;
@@ -138,7 +144,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		{
 		case "gonogo":
 			pCorrect = correct * 1.0 / total;
-			pWrong = (total * 1.0 - correct) / total;
+			pWrong = (total - correct) * 1.0 / total;
 			response = (pCorrect - pWrong) * difficulty;
 			speed = (difficulty / time);
 			accuracy = (pCorrect - pWrong) * difficulty;
@@ -149,7 +155,7 @@ public class SQLiteDatabase : MonoBehaviour {
 						break;
 		case "eriksenflanker":
 			pCorrect = correct * 1.0 / total;
-			pWrong = (total * 1.0 - correct) / total;
+			pWrong = (total - correct) * 1.0 / total;
 			response = (pCorrect - pWrong) * difficulty;
 			speed = (difficulty / time);
 			accuracy = (pCorrect - pWrong) * difficulty;
@@ -160,9 +166,10 @@ public class SQLiteDatabase : MonoBehaviour {
 						break;
 		case "corsiblocktapping":
 			pCorrect = correct * 1.0 / total;
-			memory = pCorrect * difficulty;
-			//if (pCorrect == 1) {
-				newMemory = oMemory + Convert.ToInt32 (memory);
+            pWrong = (total - correct) * 1.0 / total;
+            memory = (pCorrect - pWrong) * difficulty;
+                //if (pCorrect == 1) {
+                newMemory = oMemory + Convert.ToInt32 (memory);
 			/*} else {
 				newMemory = oMemory - Convert.ToInt32 (memory);
 			}*/
@@ -170,10 +177,10 @@ public class SQLiteDatabase : MonoBehaviour {
 						break;
 		case "nback":
 			pCorrect = correct * 1.0 / total;
-			pWrong = (total * 1.0 - correct) / total;
-			memory = (pCorrect - pWrong) * difficulty * 2;
+			pWrong = (total - correct) * 1.0 / total;
+			memory = (pCorrect - pWrong) * difficulty;
 			speed = (difficulty / time);
-			accuracy = (pCorrect - pWrong) * difficulty * 2;
+			accuracy = (pCorrect - pWrong) * difficulty;
 			newMemory = oMemory + Convert.ToInt32 (memory);
 			newSpeed = oSpeed + Convert.ToInt32 (speed);
 			newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);

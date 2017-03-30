@@ -127,5 +127,9 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         
         SQLiteDatabase sn = new SQLiteDatabase();
         sn.insertinto("corsiblocktapping", 1, score, 4, 0.01);
+
+        PlayerPrefs.SetInt("Experience", (int)(score / 4.0 * 100));
+        PlayerPrefs.SetInt("Bearya", (int)(score / 4.0 * 500));
+
     }
 }

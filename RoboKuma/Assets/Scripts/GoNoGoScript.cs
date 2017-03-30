@@ -100,6 +100,10 @@ public class GoNoGoScript : MonoBehaviour {
             }
             ave /= (10 - noGoCnt);
 
+            PlayerPrefs.SetInt("Experience", (int) (score / 10.0 * 100));
+            PlayerPrefs.SetInt("Bearya", (int) (score / 10.0 * 500));
+
+
             sn.insertinto("gonogo", 1, score, 10, ave / 1000);
         }
         

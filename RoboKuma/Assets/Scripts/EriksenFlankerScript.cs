@@ -169,9 +169,15 @@ public class EriksenFlankerScript : MonoBehaviour {
                     cnt++;
                 }
             }
-            ave /= cnt;
+            if (cnt != 0)
+                ave = ave/cnt/1000;
+            else
+                ave = 0;
 
-            sn.insertinto("eriksenflanker", 1, score, 10, ave / 1000);
+            PlayerPrefs.SetInt("Experience", (int)(score / 10.0 * 100));
+            PlayerPrefs.SetInt("Bearya", (int)(score / 10.0 * 500));
+
+            sn.insertinto("eriksenflanker", 1, score, 10, ave);
             endTxt.text = "You got " + score + " out of 10\n\nTap anywhere to CONTINUE";
 		}
 	}
@@ -236,8 +242,9 @@ public class EriksenFlankerScript : MonoBehaviour {
 				}
                 else
                 {
-                    time[iteration - 1] = -1;
-					feedbackText.text = "WRONG";
+                    double timeElapsed = stopwatch.ElapsedMilliseconds;
+                    time[iteration - 1] = timeElapsed;
+                    feedbackText.text = "WRONG";
 				}
 				startGame ();
 			}
@@ -253,7 +260,8 @@ public class EriksenFlankerScript : MonoBehaviour {
                     scoreTxt.text = "" + score;
                 } else
                 {
-                    time[iteration - 1] = -1;
+                    double timeElapsed = stopwatch.ElapsedMilliseconds;
+                    time[iteration - 1] = timeElapsed;
                     feedbackText.text = "WRONG";
 				}
 				startGame ();
@@ -302,8 +310,9 @@ public class EriksenFlankerScript : MonoBehaviour {
 					}
                     else
                     {
-                        time[iteration - 1] = -1;
-						feedbackText.text = "WRONG";
+                        double timeElapsed = stopwatch.ElapsedMilliseconds;
+                        time[iteration - 1] = timeElapsed;
+                        feedbackText.text = "WRONG";
 					}
 					startGame ();
 				}
@@ -319,8 +328,9 @@ public class EriksenFlankerScript : MonoBehaviour {
 					}
                     else
                     {
-                        time[iteration - 1] = -1;
-						feedbackText.text = "WRONG";
+                        double timeElapsed = stopwatch.ElapsedMilliseconds;
+                        time[iteration - 1] = timeElapsed;
+                        feedbackText.text = "WRONG";
 					}
 					startGame ();
 				}
