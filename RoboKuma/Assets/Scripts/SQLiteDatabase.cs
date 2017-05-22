@@ -2,10 +2,11 @@
 using System.Data;
 using Mono.Data.SqliteClient;
 using System;
+using System.IO;
 
 public class SQLiteDatabase : MonoBehaviour {
 
-	private string _constr="URI=file:SQLite.db";
+	private string _constr="URI=file://" + Application.persistentDataPath + "/SQLite.db";
 	private IDbConnection _dbc;
 	private IDbCommand _dbcm;
 	private IDataReader _idr;
