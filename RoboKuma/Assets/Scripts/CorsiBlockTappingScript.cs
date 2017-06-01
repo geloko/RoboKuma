@@ -9,6 +9,8 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     public Sprite[] sequenceSprites;
     public Text display;
     public Text endTxt;
+    public Text coinsTxt;
+    public Text expTxt;
 
     public GameObject End;
 
@@ -54,6 +56,8 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 
     public IEnumerator displaySequence()
     {
+
+        yield return new WaitForSecondsRealtime(0.5F);
         int rand;
         for (int i = 0; i < sequence.Length; i++)
         {
@@ -120,15 +124,22 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 
     public IEnumerator showResults()
     {
+
+        int exp = (int)(score / 4.0 * 100);
+        int coins = (int)(score / 4.0 * 500);
+
         yield return new WaitForSecondsRealtime(0.5F);
         End.gameObject.SetActive(true);
         endTxt.text = score + "";
-        
+        coinsTxt.text = coins + "";
+        expTxt.text = exp + "";
+
+
         SQLiteDatabase sn = new SQLiteDatabase();
         sn.insertinto("corsiblocktapping", 1, score, 4, 0.01);
 
-        PlayerPrefs.SetInt("Experience", (int)(score / 4.0 * 100));
-        PlayerPrefs.SetInt("Bearya", (int)(score / 4.0 * 500));
+        PlayerPrefs.SetInt("Experience", exp);
+        PlayerPrefs.SetInt("Bearya", coins);
 
     }
 }

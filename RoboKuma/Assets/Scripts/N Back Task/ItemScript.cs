@@ -20,6 +20,7 @@ public class ItemScript : MonoBehaviour {
     public Text scoreTxt;
     public Text endTxt;
     public Text helpTxt;
+    public Text coinsTxt, expTxt;
 
     public GameObject end;
     
@@ -108,6 +109,8 @@ public class ItemScript : MonoBehaviour {
             itemScript.count = count + 1;
             itemScript.endTxt = endTxt;
             itemScript.helpTxt = helpTxt;
+            itemScript.coinsTxt = coinsTxt;
+            itemScript.expTxt = expTxt;
             itemScript.end = end;
             itemScript.time = time;
             itemScript.scoreTxt = scoreTxt;
@@ -132,8 +135,15 @@ public class ItemScript : MonoBehaviour {
             {
                 UnityEngine.Debug.Log("Time: " + time[i]);
             }
+
+
+            int exp = (int)(score / 10.0 * 100);
+            int coins = (int)(score / 10.0 * 500);
+
             end.gameObject.SetActive(true);
-            endTxt.text = "You got " + score + " out of 10\n" + "Tap anywhere to CONTINUE";
+            endTxt.text = score + "";
+            coinsTxt.text = coins + "";
+            expTxt.text = exp + "";
             panel.gameObject.SetActive(false);
             SQLiteDatabase sn = new SQLiteDatabase();
 
@@ -149,8 +159,8 @@ public class ItemScript : MonoBehaviour {
             }
             ave /= cnt;
 
-            PlayerPrefs.SetInt("Experience", (int)(score / 10.0 * 100));
-            PlayerPrefs.SetInt("Bearya", (int)(score / 10.0 * 500));
+            PlayerPrefs.SetInt("Experience", exp);
+            PlayerPrefs.SetInt("Bearya", coins);
 
             sn.insertinto("nback", 1, score, 10, ave / 1000);
         }

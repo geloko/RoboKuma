@@ -10,6 +10,8 @@ public class GoNoGoScript : MonoBehaviour {
     public Text scoreTxt;
     public Text timeTxt;
     public Text endTxt;
+    public Text expTxt;
+    public Text coinsTxt;
 
     public GameObject End;
     
@@ -64,7 +66,7 @@ public class GoNoGoScript : MonoBehaviour {
     {
 
         iterations++;
-
+        timeTxt.text = "";
         if(iterations <= 10)
         {
             button.image.overrideSprite = null;
@@ -88,8 +90,14 @@ public class GoNoGoScript : MonoBehaviour {
         else
         {
             this.gameObject.SetActive(false);
+
+            int exp = (int)(score / 10.0 * 100);
+            int coins = (int)(score / 10.0 * 500);
+            
             End.gameObject.SetActive(true);
-            endTxt.text = "YOU GOT " + score + " OUT OF 10\n\nTAP TO CONTINUE";
+            endTxt.text = score + "";
+            coinsTxt.text = coins + "";
+            expTxt.text = exp + "";
 
             SQLiteDatabase sn = new SQLiteDatabase();
             double ave = 0;
@@ -100,8 +108,8 @@ public class GoNoGoScript : MonoBehaviour {
             }
             ave /= (10 - noGoCnt);
 
-            PlayerPrefs.SetInt("Experience", (int) (score / 10.0 * 100));
-            PlayerPrefs.SetInt("Bearya", (int) (score / 10.0 * 500));
+            PlayerPrefs.SetInt("Experience", exp);
+            PlayerPrefs.SetInt("Bearya", coins);
 
 
             sn.insertinto("gonogo", 1, score, 10, ave / 1000);

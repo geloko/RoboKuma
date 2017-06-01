@@ -18,6 +18,7 @@ public class EriksenFlankerScript : MonoBehaviour {
 
     public Stopwatch stopwatch;
 	public Text endTxt, scoreTxt;
+    public Text coinsTxt, expTxt;
 	public int x, y;
 	public int iteration;
 	public Text feedbackText;
@@ -155,8 +156,15 @@ public class EriksenFlankerScript : MonoBehaviour {
         {
             inGame = false;
 			mainPanel.gameObject.SetActive(false);
-			End.gameObject.SetActive(true);
-			stopwatch.Stop();
+
+            int exp = (int)(score / 10.0 * 100);
+            int coins = (int)(score / 10.0 * 500);
+
+            End.gameObject.SetActive(true);
+            endTxt.text = score + "";
+            coinsTxt.text = coins + "";
+            expTxt.text = exp + "";
+            stopwatch.Stop();
             SQLiteDatabase sn = new SQLiteDatabase();
 
             double ave = 0;
@@ -174,11 +182,11 @@ public class EriksenFlankerScript : MonoBehaviour {
             else
                 ave = 0;
 
-            PlayerPrefs.SetInt("Experience", (int)(score / 10.0 * 100));
-            PlayerPrefs.SetInt("Bearya", (int)(score / 10.0 * 500));
+            PlayerPrefs.SetInt("Experience", exp);
+            PlayerPrefs.SetInt("Bearya", coins);
 
             sn.insertinto("eriksenflanker", 1, score, 10, ave);
-            endTxt.text = "You got " + score + " out of 10\n\nTap anywhere to CONTINUE";
+            endTxt.text = score + "";
 		}
 	}
 
