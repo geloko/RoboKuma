@@ -22,7 +22,6 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 	void Start ()
     {
         //spriteSequence = new int[sequenceLength];
-	    buttons = this.GetComponentsInChildren<Button>();
         endTxt.text = "";
 
         End.gameObject.SetActive(false);
@@ -123,7 +122,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     {
         yield return new WaitForSecondsRealtime(0.5F);
         End.gameObject.SetActive(true);
-        endTxt.text = "You got " + score + " out of 4\n\nTap anywhere to CONTINUE";
+        endTxt.text = score + "";
         
         SQLiteDatabase sn = new SQLiteDatabase();
         sn.insertinto("corsiblocktapping", 1, score, 4, 0.01);

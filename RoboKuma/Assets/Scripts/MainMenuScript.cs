@@ -51,9 +51,10 @@ public class MainMenuScript : MonoBehaviour {
         //PlayerPrefs.DeleteAll();
         Debug.Log(PlayerPrefs.GetInt("DB"));
 
+        sn.Start();
+
         if (PlayerPrefs.GetInt("DB", -1) == -1)
         {
-            sn.Start();
             PlayerPrefs.SetInt("DB", 1);
             Debug.Log("DB");
         }
@@ -144,7 +145,7 @@ public class MainMenuScript : MonoBehaviour {
             petStatus.text = "FIDGETY";
         }
 
-        if (stats[0] >= 5)
+        if (stats[0] >= 1)
         {
             isForgetful = false;
         }
@@ -253,6 +254,26 @@ public class MainMenuScript : MonoBehaviour {
     {
         Manager.Instance.pStats = sn.getPlayerStatistics(1);
         SceneManager.LoadScene(4);
+    }
+
+    public void accessoryPress()
+    {
+
+    }
+
+    public void headPress()
+    {
+
+    }
+
+    public void bodyPress()
+    {
+
+    }
+
+    public void legPress()
+    {
+
     }
 
     public void jump()

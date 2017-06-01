@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 7f9390f50016a9d4ab58b6e67fd18923
+timeCreated: 1495466231
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Hero Light
+  fontNames:
+  - Hero Light
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
