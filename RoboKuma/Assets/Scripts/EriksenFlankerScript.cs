@@ -117,8 +117,7 @@ public class EriksenFlankerScript : MonoBehaviour {
         }
 		else if (iteration != 10)
         {
-
-			iteration++;
+            iteration++;
 			x = Random.Range (0, 100);
 
 			if (x < 50)
@@ -254,7 +253,7 @@ public class EriksenFlankerScript : MonoBehaviour {
                     time[iteration - 1] = timeElapsed;
                     feedbackText.text = "WRONG";
 				}
-				startGame ();
+                StartCoroutine(gameDelay());
 			}
 			//swipe right
 			if(currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
@@ -271,9 +270,9 @@ public class EriksenFlankerScript : MonoBehaviour {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[iteration - 1] = timeElapsed;
                     feedbackText.text = "WRONG";
-				}
-				startGame ();
-			}
+                }
+                StartCoroutine(gameDelay());
+            }
 		}
 	}
 
@@ -321,9 +320,9 @@ public class EriksenFlankerScript : MonoBehaviour {
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[iteration - 1] = timeElapsed;
                         feedbackText.text = "WRONG";
-					}
-					startGame ();
-				}
+                    }
+                    StartCoroutine(gameDelay());
+                }
 				//swipe right
 				if(currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 				{
@@ -339,11 +338,23 @@ public class EriksenFlankerScript : MonoBehaviour {
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[iteration - 1] = timeElapsed;
                         feedbackText.text = "WRONG";
-					}
-					startGame ();
-				}
+                    }
+                    StartCoroutine(gameDelay());
+                }
 			}
 		}
 	}
+
+    public IEnumerator gameDelay()
+    {
+        for (int i = 0; i < images.Length; i++)
+        {
+            images[i].enabled = false;
+        }
+
+        yield return new WaitForSecondsRealtime(0.2F);
+        images[0].enabled = true;
+        startGame();
+    }
 
 }

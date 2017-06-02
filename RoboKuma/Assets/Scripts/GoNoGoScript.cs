@@ -172,6 +172,7 @@ public class GoNoGoScript : MonoBehaviour {
             time[iterations - 1] = -1;
 
             timeTxt.text = "OOPS!";
+            StopAllCoroutines();
             StartCoroutine(WaitSeconds(Random.Range(0, 3)));
         }
 

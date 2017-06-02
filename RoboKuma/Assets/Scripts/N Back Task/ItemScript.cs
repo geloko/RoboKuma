@@ -43,8 +43,7 @@ public class ItemScript : MonoBehaviour {
     void Start()
     {
         panel = this.transform.parent;
-        Transform child = panel.transform.Find("FeedbackText");
-        display = child.GetComponent<Text>();
+        Transform child;
 
         child = panel.transform.Find("CheatSheet");
         cheat = child.GetComponent<Text>();
@@ -70,13 +69,11 @@ public class ItemScript : MonoBehaviour {
             time[count - 3] = -1;
         }
 
-        if (count == 3)
-            helpTxt.text = "The FIRST item appeared TWO items ago";
-        else if (count == 1)
+        if (count == 1)
             helpTxt.text = "Remember the items shown";
         else if (count == 2)
             helpTxt.text = "The FIRST item appeared ONE item ago";
-        else if (count > 3)
+        else if (count >= 3)
             helpTxt.text = "";
 
     }
@@ -109,6 +106,7 @@ public class ItemScript : MonoBehaviour {
             itemScript.count = count + 1;
             itemScript.endTxt = endTxt;
             itemScript.helpTxt = helpTxt;
+            itemScript.display = display;
             itemScript.coinsTxt = coinsTxt;
             itemScript.expTxt = expTxt;
             itemScript.end = end;
@@ -170,7 +168,7 @@ public class ItemScript : MonoBehaviour {
     {
         if (item2 != -1 && gameObject.Equals(objects[item2]) && !swiped)
         {
-            display.text = "Missed";
+            display.text = "Oops!";
         }
         else if(swiped)
         {
@@ -182,7 +180,7 @@ public class ItemScript : MonoBehaviour {
             //time[count - 3] = timeElapsed;
             //UnityEngine.Debug.Log(timeElapsed + "----" + (count - 3));
 
-            display.text = "Correct";
+            display.text = "GREAT!";
             score++;
             scoreTxt.text = "" + score;
         }
@@ -231,7 +229,7 @@ public class ItemScript : MonoBehaviour {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[count - 3] = timeElapsed;
 
-                    display.text = "Correct";
+                    display.text = "GREAT!";
                     score++;
                     scoreTxt.text = "" + score;
                 }
@@ -239,7 +237,7 @@ public class ItemScript : MonoBehaviour {
                 {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[count - 3] = timeElapsed;
-                    display.text = "Wrong";
+                    display.text = "Oops!";
                 }
                 //createObject();
 
@@ -258,7 +256,7 @@ public class ItemScript : MonoBehaviour {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[count - 3] = timeElapsed;
 
-                    display.text = "Correct";
+                    display.text = "Great!";
                     score++;
                     scoreTxt.text = "" + score;
                 }
@@ -266,7 +264,7 @@ public class ItemScript : MonoBehaviour {
                 {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[count - 3] = timeElapsed;
-                    display.text = "Wrong";
+                    display.text = "Oops!";
                 }
                 //createObject();
                 if (count > 2)

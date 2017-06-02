@@ -178,12 +178,12 @@ public class MainMenuScript : MonoBehaviour {
 
 	public void minigamePress()
 	{
-		/*PetScreen.gameObject.SetActive(true);
+		PetScreen.gameObject.SetActive(true);
 		MinigameScreen.gameObject.SetActive (false);
         AchievementScreen.gameObject.SetActive(false);
         AttributeScreen.gameObject.SetActive(false);
-        CustomizationScreen.gameObject.SetActive(false);*/
-        MinigameScreen.gameObject.SetActive(!MinigameScreen.gameObject.activeSelf);
+        CustomizationScreen.gameObject.SetActive(false);
+        MinigameScreen.gameObject.SetActive(true);
         ResultsPanel.gameObject.SetActive(false);
     }
 
