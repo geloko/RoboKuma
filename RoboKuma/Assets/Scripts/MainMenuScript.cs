@@ -12,6 +12,7 @@ public class MainMenuScript : MonoBehaviour {
     public GameObject CustomizationScreen;
     public GameObject AchievementScreen;
     public GameObject AttributeScreen;
+    public GameObject SettingsScreen;
     public GameObject ResultsPanel;
     public GameObject RoboKuma;
     public GameObject Q1, Q2, Q3;
@@ -22,6 +23,8 @@ public class MainMenuScript : MonoBehaviour {
     public Text experience, bearya;
     public Text tLevel, tBearya;
     public Slider tExperience;
+
+    public Button back;
 
     public bool isForgetful;
 
@@ -172,6 +175,8 @@ public class MainMenuScript : MonoBehaviour {
         CustomizationScreen.gameObject.SetActive(false);
         PetScreen.gameObject.SetActive(true);
         ResultsPanel.gameObject.SetActive(false);
+        SettingsScreen.gameObject.SetActive(false);
+        back.gameObject.SetActive(false);
 
         updateAttributes();
     }
@@ -185,6 +190,8 @@ public class MainMenuScript : MonoBehaviour {
         CustomizationScreen.gameObject.SetActive(false);
         MinigameScreen.gameObject.SetActive(true);
         ResultsPanel.gameObject.SetActive(false);
+        SettingsScreen.gameObject.SetActive(false);
+        back.gameObject.SetActive(true);
     }
 
     public void achievementPress()
@@ -196,6 +203,8 @@ public class MainMenuScript : MonoBehaviour {
         CustomizationScreen.gameObject.SetActive(false);
         AchievementScreen.gameObject.SetActive(true);
         ResultsPanel.gameObject.SetActive(false);
+        SettingsScreen.gameObject.SetActive(false);
+        back.gameObject.SetActive(true);
     }
 
     public void statisticsPress()
@@ -207,6 +216,8 @@ public class MainMenuScript : MonoBehaviour {
         CustomizationScreen.gameObject.SetActive(false);
         AttributeScreen.gameObject.SetActive(true);
         ResultsPanel.gameObject.SetActive(false);
+        SettingsScreen.gameObject.SetActive(false);
+        back.gameObject.SetActive(true);
     }
 
     public void customizationPress()
@@ -218,6 +229,21 @@ public class MainMenuScript : MonoBehaviour {
         CustomizationScreen.gameObject.SetActive(false);
         CustomizationScreen.gameObject.SetActive(true);
         ResultsPanel.gameObject.SetActive(false);
+        SettingsScreen.gameObject.SetActive(false);
+        back.gameObject.SetActive(true);
+
+    }
+
+    public void settingsPress()
+    {
+        PetScreen.gameObject.SetActive(false);
+        MinigameScreen.gameObject.SetActive(false);
+        AchievementScreen.gameObject.SetActive(false);
+        AttributeScreen.gameObject.SetActive(false);
+        CustomizationScreen.gameObject.SetActive(false);
+        ResultsPanel.gameObject.SetActive(false);
+        SettingsScreen.gameObject.SetActive(true);
+        back.gameObject.SetActive(true);
 
     }
 
