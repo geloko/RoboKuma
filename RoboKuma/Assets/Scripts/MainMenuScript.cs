@@ -17,8 +17,8 @@ public class MainMenuScript : MonoBehaviour {
     public GameObject RoboKuma;
     public GameObject Q1, Q2, Q3;
 
-    public Slider Memory, Response, Speed, Accuracy, MemoryR, ResponseR, SpeedR, AccuracyR;
-    public Text MemoryT, ResponseT, SpeedT, AccuracyT, MemoryRT, ResponseRT, SpeedRT, AccuracyRT;
+    public Slider Memory, Response, Speed, Accuracy, MemoryR, ResponseR, SpeedR, AccuracyR, MemoryS, ResponseS, SpeedS, AccuracyS;
+    public Text  MemoryRT, ResponseRT, SpeedRT, AccuracyRT;
     public Text petStatus;
     public Text experience, bearya;
     public Text tLevel, tBearya;
@@ -42,11 +42,14 @@ public class MainMenuScript : MonoBehaviour {
         AttributeScreen = GameObject.Find("AttributeScreen");
         MinigameScreen.gameObject.SetActive (false);
         CustomizationScreen.gameObject.SetActive(false);
+        SettingsScreen.gameObject.SetActive(false);
         AchievementScreen.gameObject.SetActive(false);
         AttributeScreen.gameObject.SetActive(false);
         Q1.gameObject.SetActive(false);
         Q2.gameObject.SetActive(false);
         Q3.gameObject.SetActive(false);
+
+        back.gameObject.SetActive(false);
 
         sn = new SQLiteDatabase();
         isForgetful = false;
@@ -111,30 +114,31 @@ public class MainMenuScript : MonoBehaviour {
     public void updateAttributes()
     {
         int[] stats = sn.getPlayerStatistics(1);
-        //Debug.Log("STATS " + stats[0] + " " + stats[1] + " " + stats[2] +  " " + stats[3] + "");
-        //Debug.Log("PSTATS " + Manager.Instance.pStats[0] + " " + Manager.Instance.pStats[1] + " " + Manager.Instance.pStats[2] + " " + Manager.Instance.pStats[3] + "");
+        Debug.Log("STATS " + stats[0] + " " + stats[1] + " " + stats[2] +  " " + stats[3] + "");
+        Debug.Log("PSTATS " + Manager.Instance.pStats[0] + " " + Manager.Instance.pStats[1] + " " + Manager.Instance.pStats[2] + " " + Manager.Instance.pStats[3] + "");
         Memory.value = stats[0];
-        MemoryR.value = stats[0];
+        MemoryS.value = stats[0];
         Accuracy.value = stats[1];
-        AccuracyR.value = stats[1];
+        AccuracyS.value = stats[1];
         Speed.value = stats[2];
-        SpeedR.value = stats[2];
+        SpeedS.value = stats[2];
         Response.value = stats[3];
-        ResponseR.value = stats[3];
+        ResponseS.value = stats[3];
+        MemoryR.value = Manager.Instance.pStats[0];
+        AccuracyR.value = Manager.Instance.pStats[1];
+        SpeedR.value = Manager.Instance.pStats[2];
+        ResponseR.value = Manager.Instance.pStats[3];
 
-        MemoryT.text = stats[0] + "";
+
         MemoryRT.text = "" + (stats[0] - Manager.Instance.pStats[0]);
         if (stats[0] - Manager.Instance.pStats[0] >= 0)
             MemoryRT.text = "+" + MemoryRT.text;
-        AccuracyT.text = "" + stats[1];
         AccuracyRT.text = "" + (stats[1] - Manager.Instance.pStats[1]);
         if (stats[1] - Manager.Instance.pStats[1] >= 0)
             AccuracyRT.text = "+" + AccuracyRT.text;
-        SpeedT.text = "" + stats[2];
         SpeedRT.text = "" + (stats[2] - Manager.Instance.pStats[2]);
         if (stats[2] - Manager.Instance.pStats[2] >= 0)
             SpeedRT.text = "+" + SpeedRT.text;
-        ResponseT.text = "" + stats[3];
         ResponseRT.text = "" + (stats[3] - Manager.Instance.pStats[3]);
         if (stats[3] - Manager.Instance.pStats[3] >= 0)
             ResponseRT.text = "+" + ResponseRT.text;
