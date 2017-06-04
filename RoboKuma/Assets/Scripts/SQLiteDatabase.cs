@@ -102,15 +102,14 @@ public class SQLiteDatabase : MonoBehaviour {
 
 		int oResponse = 0, oSpeed = 0, oAccuracy = 0, oMemory = 0;
 		while (_idr.Read ()) {
-            Debug.Log("READ SOME SHIT");
 			oMemory = _idr.GetInt32 (2);
 			oAccuracy = _idr.GetInt32 (3);
 			oSpeed = _idr.GetInt32 (4);
 			oResponse = _idr.GetInt32 (5);
-            //Debug.Log ("Memory: " + oMemory);
-            //Debug.Log ("Accuracy: " + oAccuracy);
-            //Debug.Log ("Speed: " + oSpeed);
-            //Debug.Log ("Response: " + oResponse);
+            Debug.Log ("Memory: " + oMemory);
+            Debug.Log ("Accuracy: " + oAccuracy);
+            Debug.Log ("Speed: " + oSpeed);
+            Debug.Log ("Response: " + oResponse);
         }
         Debug.Log(sql);
         Debug.Log(_idr);

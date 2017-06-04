@@ -18,7 +18,7 @@ public class MainMenuScript : MonoBehaviour {
     public GameObject Q1, Q2, Q3;
 
     public Slider Memory, Response, Speed, Accuracy, MemoryR, ResponseR, SpeedR, AccuracyR, MemoryS, ResponseS, SpeedS, AccuracyS;
-    public Text  MemoryRT, ResponseRT, SpeedRT, AccuracyRT;
+    public Text  MemoryRT, ResponseRT, SpeedRT, AccuracyRT, MemoryT, ResponseT, SpeedT, AccuracyT;
     public Text petStatus;
     public Text experience, bearya;
     public Text tLevel, tBearya;
@@ -57,10 +57,11 @@ public class MainMenuScript : MonoBehaviour {
         //PlayerPrefs.DeleteAll();
         Debug.Log(PlayerPrefs.GetInt("DB"));
 
-        sn.Start();
+        
 
         if (PlayerPrefs.GetInt("DB", -1) == -1)
         {
+            sn.Start();
             PlayerPrefs.SetInt("DB", 1);
             Debug.Log("DB");
         }
@@ -128,6 +129,11 @@ public class MainMenuScript : MonoBehaviour {
         AccuracyR.value = Manager.Instance.pStats[1];
         SpeedR.value = Manager.Instance.pStats[2];
         ResponseR.value = Manager.Instance.pStats[3];
+
+        MemoryT.text = stats[0] + "";
+        AccuracyT.text = stats[1] + "";
+        SpeedT.text = stats[2] + "";
+        ResponseT.text = stats[3] + "";
 
 
         MemoryRT.text = "" + (stats[0] - Manager.Instance.pStats[0]);
