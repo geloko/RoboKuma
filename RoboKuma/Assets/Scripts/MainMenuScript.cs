@@ -17,9 +17,11 @@ public class MainMenuScript : MonoBehaviour {
     public GameObject RoboKuma;
     public GameObject Q1, Q2, Q3;
     public GameObject SpeechBubble;
+    public GameObject popup;
 
     public Slider Memory, Response, Speed, Accuracy, MemoryR, ResponseR, SpeedR, AccuracyR, MemoryS, ResponseS, SpeedS, AccuracyS;
     public Text  MemoryRT, ResponseRT, SpeedRT, AccuracyRT, MemoryT, ResponseT, SpeedT, AccuracyT;
+    public Text popupText;
     public Text petStatus;
     public Text petMessage;
     public Text experience, bearya;
@@ -54,6 +56,7 @@ public class MainMenuScript : MonoBehaviour {
         back.gameObject.SetActive(false);
 
         SpeechBubble.SetActive(false);
+        popup.SetActive(false);
 
         sn = new SQLiteDatabase();
         isForgetful = false;
@@ -353,12 +356,16 @@ public class MainMenuScript : MonoBehaviour {
 
     }
 
-    public void pressExperience()
+    public void statusPress()
     {
-        SpeechBubble.SetActive(true);
-        petMessage.text = "Experience";
+        popup.SetActive(true);
+        popupText.text = "";
     }
 
-    public void
+    public void popupPress()
+    {
+        popup.SetActive(false);
+        popupText.text = "";
+    }
 
 }
