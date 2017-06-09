@@ -485,4 +485,27 @@ public class SQLiteDatabase : MonoBehaviour {
 		_idr.Close ();
 		_idr = null;
 	}
+
+	public int count(String gameName)
+	{
+		if (gameName == "gonogo") {
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 1";
+		} else if(gameName == "corsi") {
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 2";
+		} else if(gameName == "nback"){
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 3";
+		} else if(gameName == "eriksen"){
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 4";
+		}
+
+		_dbcm.CommandText = sql;
+		Int64 generated_count64 = -999;
+		int generated_count32;
+		generated_count64 = (Int64) _dbcm.ExecuteScalar ();
+
+		generated_count32 = Convert.ToInt32 (generated_count64);
+		Debug.Log ("Generated Count:" + generated_count32 + "");
+
+		return generated_count32;
+	}
 }

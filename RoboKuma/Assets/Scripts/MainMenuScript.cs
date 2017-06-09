@@ -27,6 +27,8 @@ public class MainMenuScript : MonoBehaviour {
     public Text experience, bearya;
     public Text tLevel, tBearya;
     public Slider tExperience;
+	public Slider achievementsGoNoGo, achievementsEriksen, achievementsCorsi, achievementsNback;
+	public Text achievementsGoNoGoText, achievementsEriksenText, achievementsCorsiText, achievementsNbackText;
 
     public Button back;
 
@@ -107,6 +109,8 @@ public class MainMenuScript : MonoBehaviour {
 
         tExperience.value = (float) (PlayerPrefs.GetInt("TExperience", 0) - Math.Pow((PlayerPrefs.GetInt("Level", 1)), 3));
         tExperience.maxValue = (float) (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - Math.Pow(PlayerPrefs.GetInt("Level", 1), 3));
+
+		updateAchievements ();
     }
 	
 	// Update is called once per frame
@@ -364,4 +368,30 @@ public class MainMenuScript : MonoBehaviour {
         popupText.text = "";
     }
 
+	public void updateAchievements(){
+		int gonogoCount = sn.count ("gonogo");
+		int eriksenCount = sn.count ("eriksen");
+		int nbackCount = sn.count ("nback");
+		int corsiCount = sn.count ("corsi");
+
+		if (gonogoCount > 20) {
+			gonogoCount = 20;
+		} else if (eriksenCount > 20) {
+			eriksenCount = 20;
+		} else if (nbackCount > 20) {
+			nbackCount = 20;
+		} else if (corsiCount > 20) {
+			corsiCount = 20;
+		}
+
+		achievementsGoNoGo.value = gonogoCount;
+		achievementsCorsi.value = corsiCount;
+		achievementsNback.value = nbackCount;
+		achievementsEriksen.value = eriksenCount;
+
+		achievementsCorsiText.text = corsiCount + "/20";
+		achievementsGoNoGoText.text = gonogoCount + "/20";
+		achievementsEriksenText.text = eriksenCount + "/20";
+		achievementsNbackText.text = nbackCount + "/20";
+	}
 }
