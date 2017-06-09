@@ -21,13 +21,20 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     public int clickSequence;
     public int score = 0;
 
+	public int log_id { get; set; }
+	SQLiteDatabase sn;
 	void Start ()
     {
         //spriteSequence = new int[sequenceLength];
         endTxt.text = "";
 
-        End.gameObject.SetActive(false);
+		End.gameObject.SetActive(false);
+		sn = new SQLiteDatabase();
 
+		string currentTime = System.DateTime.Now + "";
+		//player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
+		log_id = sn.insertintoPlayerLog (PlayerPrefs.GetInt("player_id"), 2, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
+		PlayerPrefs.SetInt ("log_id", log_id);
     }
 	
 	void Update ()
@@ -134,9 +141,16 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         coinsTxt.text = coins + "";
         expTxt.text = exp + "";
 
+		int correct_trials;
+		if (score == sequenceLength) {
+			correct_trials = 1;
+		} else {
+			correct_trials = 0;
+		}
 
-        SQLiteDatabase sn = new SQLiteDatabase();
-        sn.insertinto("corsiblocktapping", 1, score, 4, 0.01);
+		sn.insertintoCorsi(PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt("log_id"), correct_trials, score, sequenceLength, 1);
+
+		sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now + "", PlayerPrefs.GetString ("status"), "FINISHED");
         sn.getPlayerStatistics(1);
 
         PlayerPrefs.SetInt("Experience", exp);

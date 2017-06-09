@@ -40,6 +40,8 @@ public class ItemScript : MonoBehaviour {
     public int count;
     public Stopwatch stopwatch;
 
+	SQLiteDatabase sn;
+
     void Start()
     {
         panel = this.transform.parent;
@@ -76,6 +78,7 @@ public class ItemScript : MonoBehaviour {
         else if (count >= 3)
             helpTxt.text = "";
 
+		sn = new SQLiteDatabase();
     }
 
 
@@ -143,7 +146,6 @@ public class ItemScript : MonoBehaviour {
             coinsTxt.text = coins + "";
             expTxt.text = exp + "";
             panel.gameObject.SetActive(false);
-            SQLiteDatabase sn = new SQLiteDatabase();
 
             double ave = 0;
             int cnt = 0;
@@ -160,7 +162,9 @@ public class ItemScript : MonoBehaviour {
             PlayerPrefs.SetInt("Experience", exp);
             PlayerPrefs.SetInt("Bearya", coins);
 
-            sn.insertinto("nback", 1, score, 10, ave / 1000);
+			sn.insertintoNback(PlayerPrefs.GetInt("player_id"), PlayerPrefs.GetInt("log_id"), ave, score, 2, 2, 10);
+
+			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now + "", PlayerPrefs.GetString ("status"), "FINISHED");
         }
     }
 

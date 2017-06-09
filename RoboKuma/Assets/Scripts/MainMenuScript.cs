@@ -32,6 +32,7 @@ public class MainMenuScript : MonoBehaviour {
 
     public bool isForgetful;
 
+	public int log_id { get; set; }
     public SQLiteDatabase sn;
 
 
@@ -62,14 +63,14 @@ public class MainMenuScript : MonoBehaviour {
         isForgetful = false;
 
         //PlayerPrefs.DeleteAll();
-        Debug.Log(PlayerPrefs.GetInt("DB"));
-
+        Debug.Log("Has DB been made: " + PlayerPrefs.GetInt("DB"));
+		Debug.Log("Current Player ID: " + PlayerPrefs.GetInt("player_id"));
         
 
         if (PlayerPrefs.GetInt("DB", -1) == -1)
         {
             sn.Start();
-            PlayerPrefs.SetInt("DB", 1);
+			PlayerPrefs.SetInt ("DB", 1);
             Debug.Log("DB");
         }
 
@@ -106,12 +107,6 @@ public class MainMenuScript : MonoBehaviour {
 
         tExperience.value = (float) (PlayerPrefs.GetInt("TExperience", 0) - Math.Pow((PlayerPrefs.GetInt("Level", 1)), 3));
         tExperience.maxValue = (float) (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - Math.Pow(PlayerPrefs.GetInt("Level", 1), 3));
-
-
-
-
-
-
     }
 	
 	// Update is called once per frame
@@ -180,6 +175,7 @@ public class MainMenuScript : MonoBehaviour {
             petStatus.text = "NORMAL";
         }
 
+		PlayerPrefs.SetString ("status", petStatus.text);
     }
 
 	public void mainPress()

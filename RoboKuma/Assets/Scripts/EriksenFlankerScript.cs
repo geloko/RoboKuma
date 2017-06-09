@@ -14,8 +14,9 @@ public class EriksenFlankerScript : MonoBehaviour {
 	public GameObject End, mainPanel;
 
 	public int score;
-    public double[] time;
-
+    public double[] time, timeCongruent, timeIncongruent;
+	public double timeCongruentAve = 0, timeIncongruentAve = 0;
+	public int timeCongruentCtr = 0, timeIncongruentCtr = 0;
     public Stopwatch stopwatch;
 	public Text endTxt, scoreTxt;
     public Text coinsTxt, expTxt;
@@ -23,10 +24,11 @@ public class EriksenFlankerScript : MonoBehaviour {
 	public int iteration;
 	public Text feedbackText;
 	public int[] nMiddleRow, nXPattern, nInnerBoxPattern, nOuterBoxPattern;
-
+	public int congruentCount = 0, incongruentCount = 0, correctCongruent = 0, correctIncongruent = 0;
     public bool inGame;
-
-
+	public bool isCongruent;
+	public int log_id { get; set; }
+	SQLiteDatabase sn;
 	// Use this for initialization
 	/*
 	 * LEGEND:
@@ -44,7 +46,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 		nInnerBoxPattern = new int[]{ 7, 8, 9, 12, 13, 16, 17, 18 };
 		nOuterBoxPattern = new int[]{ 1, 2, 3, 4, 5, 6, 10, 11, 14, 15, 19, 20, 21, 22, 23, 24 };
         time = new double[10];
-
+		timeCongruent = new double[10];
+		timeIncongruent = new double[10];
 		//feedbackText = feedbackText.GetComponent<Text> ();
 		//endTxt = endTxt.GetComponent<Text> ();
 		//End = GameObject.Find("End");
@@ -53,6 +56,12 @@ public class EriksenFlankerScript : MonoBehaviour {
 		stopwatch = new Stopwatch();
 
         inGame = true;
+
+		sn = new SQLiteDatabase();
+		string currentTime = System.DateTime.Now + "";
+		//player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
+		log_id = sn.insertintoPlayerLog (PlayerPrefs.GetInt("player_id"), 4, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
+		PlayerPrefs.SetInt ("log_id", log_id);
 	}
 
     // Update is called once per frame
@@ -95,7 +104,7 @@ public class EriksenFlankerScript : MonoBehaviour {
         {
             images[pattern[i]].enabled = true;
 
-            if (y >= 50)
+            if (y < 50)
             {
                 images[pattern[i]].sprite = sprites[0];
             }
@@ -105,6 +114,15 @@ public class EriksenFlankerScript : MonoBehaviour {
             }
         }
 
+		if (y < 50 && x < 50 || y > 50 && x > 50) {
+			congruentCount++;
+			isCongruent = true;
+			UnityEngine.Debug.Log ("ERIKSEN TEST IS CONGRUENT");
+		} else {
+			incongruentCount++;
+			isCongruent = false;
+			UnityEngine.Debug.Log ("ERIKSEN TEST IS INCONGRUENT");
+		}
         stopwatch.Reset();
         stopwatch.Start();
     }
@@ -140,7 +158,7 @@ public class EriksenFlankerScript : MonoBehaviour {
 			for (int i = 0; i < pattern.Length; i++)
             {
 				images [pattern [i]].enabled = true;
-				if (y >= 50)
+				if (y < 50)
                 {
 					images [pattern [i]].sprite = sprites [0];
 				}
@@ -148,6 +166,16 @@ public class EriksenFlankerScript : MonoBehaviour {
                 {
 					images [pattern [i]].sprite = sprites [1];
 				}
+			}
+
+			if (y < 50 && x < 50 || y > 50 && x > 50) {
+				congruentCount++;
+				isCongruent = true;
+				UnityEngine.Debug.Log ("ERIKSEN TEST IS CONGRUENT");
+			} else {
+				incongruentCount++;
+				isCongruent = false;
+				UnityEngine.Debug.Log ("ERIKSEN TEST IS INCONGRUENT");
 			}
 			stopwatch.Reset ();
 			stopwatch.Start ();
@@ -164,7 +192,6 @@ public class EriksenFlankerScript : MonoBehaviour {
             coinsTxt.text = coins + "";
             expTxt.text = exp + "";
             stopwatch.Stop();
-            SQLiteDatabase sn = new SQLiteDatabase();
 
             double ave = 0;
             int cnt = 0;
@@ -176,6 +203,15 @@ public class EriksenFlankerScript : MonoBehaviour {
                     cnt++;
                 }
             }
+
+			for (int i = 0; i < timeCongruent.Length; i++) {
+				timeCongruentAve += timeCongruent [i];
+			}
+			for (int i = 0; i < timeIncongruent.Length; i++) {
+				timeIncongruentAve += timeIncongruent [i];
+			}
+			timeCongruentAve = timeCongruentAve / timeCongruentCtr;
+			timeIncongruentAve = timeIncongruentAve / timeIncongruentCtr;
             if (cnt != 0)
                 ave = ave/cnt/1000;
             else
@@ -184,7 +220,9 @@ public class EriksenFlankerScript : MonoBehaviour {
             PlayerPrefs.SetInt("Experience", exp);
             PlayerPrefs.SetInt("Bearya", coins);
 
-            sn.insertinto("eriksenflanker", 1, score, 10, ave);
+			sn.insertintoEriksen (PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt("log_id"),correctCongruent, timeCongruentAve, correctIncongruent, timeIncongruentAve, congruentCount, 10);
+
+			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now + "", PlayerPrefs.GetString ("status"), "FINISHED");
             endTxt.text = score + "";
 		}
 	}
@@ -246,6 +284,15 @@ public class EriksenFlankerScript : MonoBehaviour {
                     feedbackText.text = "CORRECT " + "TIME: " + timeElapsed  + "ms";
 					score++;
                     scoreTxt.text = "" + score;
+					if (isCongruent) {
+						correctCongruent++;
+						timeCongruent [timeCongruentCtr] = timeElapsed;
+						timeCongruentCtr++;
+					} else {
+						correctIncongruent++;
+						timeIncongruent [timeIncongruentCtr] = timeElapsed;
+						timeIncongruentCtr++;
+					}
 				}
                 else
                 {
@@ -265,6 +312,15 @@ public class EriksenFlankerScript : MonoBehaviour {
                     feedbackText.text = "CORRECT " + "TIME: " + timeElapsed + "ms";
 					score++;
                     scoreTxt.text = "" + score;
+					if (isCongruent) {
+						correctCongruent++;
+						timeCongruent [timeCongruentCtr] = timeElapsed;
+						timeCongruentCtr++;
+					} else {
+						correctIncongruent++;
+						timeIncongruent [timeIncongruentCtr] = timeElapsed;
+						timeIncongruentCtr++;
+					}
                 } else
                 {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
@@ -314,6 +370,15 @@ public class EriksenFlankerScript : MonoBehaviour {
                         time[iteration - 1] = timeElapsed;
                         feedbackText.text = "CORRECT " + "TIME: " + timeElapsed + "ms";
 						score++;
+						if (isCongruent) {
+							correctCongruent++;
+							timeCongruent [timeCongruentCtr] = timeElapsed;
+							timeCongruentCtr++;
+						} else {
+							correctIncongruent++;
+							timeIncongruent [timeIncongruentCtr] = timeElapsed;
+							timeIncongruentCtr++;
+						}
 					}
                     else
                     {
@@ -338,6 +403,15 @@ public class EriksenFlankerScript : MonoBehaviour {
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[iteration - 1] = timeElapsed;
                         feedbackText.text = "WRONG";
+						if (isCongruent) {
+							correctCongruent++;
+							timeCongruent [timeCongruentCtr] = timeElapsed;
+							timeCongruentCtr++;
+						} else {
+							correctIncongruent++;
+							timeIncongruent [timeIncongruentCtr] = timeElapsed;
+							timeIncongruentCtr++;
+						}
                     }
                     StartCoroutine(gameDelay());
                 }

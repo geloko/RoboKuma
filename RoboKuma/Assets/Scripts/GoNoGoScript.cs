@@ -17,8 +17,11 @@ public class GoNoGoScript : MonoBehaviour {
     
     public int score = 0;
     public int noGoCnt = 0;
+	public int goCnt = 0;
+	public int noGoCorrect = 0;
+	public int goCorrect = 0;
     public double[] time;
-
+	public int log_id { get; set; }
     public bool isGo;
     public bool clicked;
     //public int[] noGoIndices;
@@ -26,6 +29,7 @@ public class GoNoGoScript : MonoBehaviour {
     public Stopwatch stopwatch;
     public int iterations = 0;
 
+	SQLiteDatabase sn;
     // Use this for initialization
     void Start () {
         scoreTxt = scoreTxt.GetComponent<Text>();
@@ -38,6 +42,12 @@ public class GoNoGoScript : MonoBehaviour {
         time = new double[10];
 
         stopwatch = new Stopwatch();
+		sn = new SQLiteDatabase();
+
+		string currentTime = System.DateTime.Now + "";
+		//player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
+		log_id = sn.insertintoPlayerLog (PlayerPrefs.GetInt("player_id"), 1, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
+		PlayerPrefs.SetInt ("log_id", log_id);
     }
 	
 	// Update is called once per frame
@@ -78,6 +88,7 @@ public class GoNoGoScript : MonoBehaviour {
                 button.image.overrideSprite = goSprite;
                 stopwatch.Reset();
                 stopwatch.Start();
+				goCnt++;
             }
             else
             {
@@ -99,7 +110,6 @@ public class GoNoGoScript : MonoBehaviour {
             coinsTxt.text = coins + "";
             expTxt.text = exp + "";
 
-            SQLiteDatabase sn = new SQLiteDatabase();
             double ave = 0;
             for(int i = 0; i < time.Length; i++)
             {
@@ -111,8 +121,9 @@ public class GoNoGoScript : MonoBehaviour {
             PlayerPrefs.SetInt("Experience", exp);
             PlayerPrefs.SetInt("Bearya", coins);
 
+			sn.insertintoGoNoGo (PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt ("log_id"), goCorrect, noGoCorrect, ave, goCnt, iterations);
 
-            sn.insertinto("gonogo", 1, score, 10, ave / 1000);
+			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now + "", PlayerPrefs.GetString ("status"), "FINISHED");
         }
         
     }
@@ -138,6 +149,7 @@ public class GoNoGoScript : MonoBehaviour {
         if(!clicked)
         {
             score++;
+			noGoCorrect++;
             scoreTxt.text = "" + score;
             timeTxt.text = "GREAT!";
         
@@ -157,6 +169,7 @@ public class GoNoGoScript : MonoBehaviour {
         if(isGo)
         {
             score++;
+			goCorrect++;
             scoreTxt.text = "" + score;
 
             double timeElapsed = stopwatch.ElapsedMilliseconds;
