@@ -25,7 +25,7 @@ public class MainMenuScript : MonoBehaviour {
     public Text popupText;
     public Text petStatus;
     public Text petMessage;
-    public Text experience, bearya;
+    public Text experience, bearya, resultLevel, resultText;
     public Text tLevel, tBearya, tXP;
     public Slider tExperience;
 
@@ -39,6 +39,8 @@ public class MainMenuScript : MonoBehaviour {
     public int log_id { get; set; }
 
     public String status;
+
+    public Boolean leveledup = false;
 
     public SQLiteDatabase sn;
 
@@ -98,7 +100,17 @@ public class MainMenuScript : MonoBehaviour {
             int tBear = PlayerPrefs.GetInt("TBearya", 0) + PlayerPrefs.GetInt("Bearya", 0);
 
             while (tExp >= Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3))
+            {
                 PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level", 1) + 1);
+                leveledup = true;
+            }
+
+            if(leveledup)
+            {
+                leveledup = false;
+                resultText.text = "Congratulations!\n\nYou've reached level";
+                resultLevel.text = PlayerPrefs.GetInt("Level") + "";
+            }
 
             tXP.text = "XP NEEDED TO LEVEL UP: " + (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - tExp);
 
