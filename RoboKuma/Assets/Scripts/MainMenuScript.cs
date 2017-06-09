@@ -18,6 +18,7 @@ public class MainMenuScript : MonoBehaviour {
     public GameObject Q1, Q2, Q3;
     public GameObject SpeechBubble;
     public GameObject popup;
+    public GameObject dailyPanel;
 
     public Slider Memory, Response, Speed, Accuracy, MemoryR, ResponseR, SpeedR, AccuracyR, MemoryS, ResponseS, SpeedS, AccuracyS;
     public Text  MemoryRT, ResponseRT, SpeedRT, AccuracyRT, MemoryT, ResponseT, SpeedT, AccuracyT;
@@ -25,17 +26,24 @@ public class MainMenuScript : MonoBehaviour {
     public Text petStatus;
     public Text petMessage;
     public Text experience, bearya;
-    public Text tLevel, tBearya;
+    public Text tLevel, tBearya, tXP;
     public Slider tExperience;
-	public Slider achievementsGoNoGo, achievementsEriksen, achievementsCorsi, achievementsNback;
-	public Text achievementsGoNoGoText, achievementsEriksenText, achievementsCorsiText, achievementsNbackText;
+
+    public Slider achievementsGoNoGo, achievementsEriksen, achievementsCorsi, achievementsNback;
+    public Text achievementsGoNoGoText, achievementsEriksenText, achievementsCorsiText, achievementsNbackText;
+
+    public Image leg, body;
 
     public Button back;
 
-    public bool isForgetful;
+    public int log_id { get; set; }
 
-	public int log_id { get; set; }
+    public String status;
+
     public SQLiteDatabase sn;
+
+    public Sprite body_1, body_2, body_3, body_4;
+    public Sprite leg_1, leg_2, leg_3;
 
 
     // Use this for initialization
@@ -60,19 +68,20 @@ public class MainMenuScript : MonoBehaviour {
 
         SpeechBubble.SetActive(false);
         popup.SetActive(false);
+        dailyPanel.SetActive(false);
 
         sn = new SQLiteDatabase();
-        isForgetful = false;
+        status = "STABLE";
 
         //PlayerPrefs.DeleteAll();
-        Debug.Log("Has DB been made: " + PlayerPrefs.GetInt("DB"));
-		Debug.Log("Current Player ID: " + PlayerPrefs.GetInt("player_id"));
+        Debug.Log(PlayerPrefs.GetInt("DB"));
+
         
 
         if (PlayerPrefs.GetInt("DB", -1) == -1)
         {
             sn.Start();
-			PlayerPrefs.SetInt ("DB", 1);
+            PlayerPrefs.SetInt("DB", 1);
             Debug.Log("DB");
         }
 
@@ -90,7 +99,10 @@ public class MainMenuScript : MonoBehaviour {
 
             while (tExp >= Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3))
                 PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level", 1) + 1);
-            
+
+            tXP.text = "XP NEEDED TO LEVEL UP: " + (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - tExp);
+
+
             PlayerPrefs.SetInt("TExperience", tExp);
             PlayerPrefs.SetInt("TBearya", tBear);
 
@@ -110,13 +122,83 @@ public class MainMenuScript : MonoBehaviour {
         tExperience.value = (float) (PlayerPrefs.GetInt("TExperience", 0) - Math.Pow((PlayerPrefs.GetInt("Level", 1)), 3));
         tExperience.maxValue = (float) (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - Math.Pow(PlayerPrefs.GetInt("Level", 1), 3));
 
-		updateAchievements ();
+
+        this.updateAchievements();
+        this.updateAssets();
+
+
     }
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    public void updateAchievements()
+    {
+        int gonogoCount = sn.count("gonogo");
+        int eriksenCount = sn.count("eriksen");
+        int nbackCount = sn.count("nback");
+        int corsiCount = sn.count("corsi");
+
+        if (gonogoCount > 20)
+        {
+            gonogoCount = 20;
+        }
+        else if (eriksenCount > 20)
+        {
+            eriksenCount = 20;
+        }
+        else if (nbackCount > 20)
+        {
+            nbackCount = 20;
+        }
+        else if (corsiCount > 20)
+        {
+            corsiCount = 20;
+        }
+
+        achievementsGoNoGo.value = gonogoCount;
+        achievementsCorsi.value = corsiCount;
+        achievementsNback.value = nbackCount;
+        achievementsEriksen.value = eriksenCount;
+
+        achievementsCorsiText.text = corsiCount + "/20";
+        achievementsGoNoGoText.text = gonogoCount + "/20";
+        achievementsEriksenText.text = eriksenCount + "/20";
+        achievementsNbackText.text = nbackCount + "/20";
+    }
+
+    public void updateAssets()
+    {
+        switch(PlayerPrefs.GetInt("leg"))
+        {
+            case 41: leg.overrideSprite = leg_1;
+                break;
+            case 42:
+                leg.overrideSprite = leg_2;
+                break;
+            case 43:
+                leg.overrideSprite = leg_3;
+                break;
+        }
+
+        switch (PlayerPrefs.GetInt("body"))
+        {
+            case 31:
+                body.overrideSprite = body_1;
+                break;
+            case 32:
+                body.overrideSprite = body_2;
+                break;
+            case 33:
+                body.overrideSprite = body_3;
+                break;
+            case 34:
+                body.overrideSprite = body_4;
+                break;
+        }
+    }
 
     public void updateAttributes()
     {
@@ -155,31 +237,25 @@ public class MainMenuScript : MonoBehaviour {
         if (stats[3] - Manager.Instance.pStats[3] >= 0)
             ResponseRT.text = "+" + ResponseRT.text;
 
-        if ((stats[1] * 1.5) >= stats[2])
+        if((stats[1] * 1.7) < stats[2])
         {
+            status = "FIDGETY";
+            RoboKuma.GetComponent<Animator>().SetBool("isFidgety", true);
+        }
+        else if(stats[0] < 1)
+        {
+            status = "FORGETFUL";
             RoboKuma.GetComponent<Animator>().SetBool("isFidgety", false);
         }
         else
         {
-            petStatus.text = "FIDGETY";
+            RoboKuma.GetComponent<Animator>().SetBool("isFidgety", false);
+            status = "STABLE";
+
         }
 
-        if (stats[0] >= 1)
-        {
-            isForgetful = false;
-        }
-        else
-        {
-            isForgetful = true;
-            petStatus.text = "FORGETFUL";
-        }
+        petStatus.text = status;
 
-        if(!RoboKuma.GetComponent<Animator>().GetBool("isFidgety") && !isForgetful)
-        {
-            petStatus.text = "NORMAL";
-        }
-
-		PlayerPrefs.SetString ("status", petStatus.text);
     }
 
 	public void mainPress()
@@ -299,38 +375,20 @@ public class MainMenuScript : MonoBehaviour {
         SceneManager.LoadScene(4);
     }
 
-    public void accessoryPress()
-    {
-
-    }
-
-    public void headPress()
-    {
-
-    }
-
-    public void bodyPress()
-    {
-
-    }
-
-    public void legPress()
-    {
-
-    }
-
     public void jump()
     {
-        
-        if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && isForgetful)
+        Debug.Log("Jump");
+
+        /*if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("FORGETFUL"))
         {
+            Debug.Log("Jump Forget");
             StartCoroutine(forgetfulJump());
         }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping())
-        {
+        {*/
             RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
             RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 15000);
-        }
+        //}
 
 
     }
@@ -359,7 +417,17 @@ public class MainMenuScript : MonoBehaviour {
     public void statusPress()
     {
         popup.SetActive(true);
-        popupText.text = "";
+
+        switch(status)
+        {
+            case "FORGETFUL": popupText.text = "Robokuma is currently forgetful since he currently has a low memory attribute. Play N-back and Corsi Block-Tapping games to increase his memory stat";
+                break;
+            case "FIDGETY": popupText.text = "Robokuma is fidgety because his accuracy attribute is too low when compared to his speed. Play some Go/No-Go, N-Back and Eriksen Flanker games to increase the accuracy attribute.";
+                break;
+            case "STABLE": popupText.text = "Robokuma is currently stable, keep up the good work!";
+                break;
+        }
+
     }
 
     public void popupPress()
@@ -368,30 +436,9 @@ public class MainMenuScript : MonoBehaviour {
         popupText.text = "";
     }
 
-	public void updateAchievements(){
-		int gonogoCount = sn.count ("gonogo");
-		int eriksenCount = sn.count ("eriksen");
-		int nbackCount = sn.count ("nback");
-		int corsiCount = sn.count ("corsi");
+    public void dailyObjPress()
+    {
+        dailyPanel.SetActive(!dailyPanel.activeSelf);
+    }
 
-		if (gonogoCount > 20) {
-			gonogoCount = 20;
-		} else if (eriksenCount > 20) {
-			eriksenCount = 20;
-		} else if (nbackCount > 20) {
-			nbackCount = 20;
-		} else if (corsiCount > 20) {
-			corsiCount = 20;
-		}
-
-		achievementsGoNoGo.value = gonogoCount;
-		achievementsCorsi.value = corsiCount;
-		achievementsNback.value = nbackCount;
-		achievementsEriksen.value = eriksenCount;
-
-		achievementsCorsiText.text = corsiCount + "/20";
-		achievementsGoNoGoText.text = gonogoCount + "/20";
-		achievementsEriksenText.text = eriksenCount + "/20";
-		achievementsNbackText.text = nbackCount + "/20";
-	}
 }
