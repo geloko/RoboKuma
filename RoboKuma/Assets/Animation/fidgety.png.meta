@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: abc8639ee3a47054ab03ae3606701b6e
-timeCreated: 1496994781
+timeCreated: 1497113183
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -89,12 +89,12 @@ TextureImporter:
       name: fidgety_0
       rect:
         serializedVersion: 2
-        x: 250
-        y: 2400
-        width: 600
-        height: 1050
+        x: 0
+        y: 426.5
+        width: 240
+        height: 426.5
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -102,12 +102,12 @@ TextureImporter:
       name: fidgety_1
       rect:
         serializedVersion: 2
-        x: 1330
-        y: 2409
-        width: 600
-        height: 1050
+        x: 240
+        y: 426.5
+        width: 240
+        height: 426.5
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -115,12 +115,12 @@ TextureImporter:
       name: fidgety_2
       rect:
         serializedVersion: 2
-        x: 3490
-        y: 2400
-        width: 600
-        height: 1050
+        x: 480
+        y: 426.5
+        width: 240
+        height: 426.5
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -128,12 +128,12 @@ TextureImporter:
       name: fidgety_3
       rect:
         serializedVersion: 2
-        x: 2410
-        y: 2400
-        width: 600
-        height: 1050
+        x: 720
+        y: 426.5
+        width: 240
+        height: 426.5
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -141,12 +141,12 @@ TextureImporter:
       name: fidgety_4
       rect:
         serializedVersion: 2
-        x: 250
-        y: 500
-        width: 600
-        height: 1050
+        x: 0
+        y: 0.5
+        width: 240
+        height: 426.5
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -154,12 +154,12 @@ TextureImporter:
       name: fidgety_5
       rect:
         serializedVersion: 2
-        x: 1330
-        y: 500
-        width: 600
-        height: 1050
+        x: 240
+        y: 0.5
+        width: 240
+        height: 426.5
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -167,12 +167,12 @@ TextureImporter:
       name: fidgety_6
       rect:
         serializedVersion: 2
-        x: 2410
-        y: 500
-        width: 600
-        height: 1050
+        x: 480
+        y: 0.5
+        width: 240
+        height: 426.5
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -180,12 +180,12 @@ TextureImporter:
       name: fidgety_7
       rect:
         serializedVersion: 2
-        x: 3490
-        y: 500
-        width: 600
-        height: 1050
+        x: 720
+        y: 0.5
+        width: 240
+        height: 426.5
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

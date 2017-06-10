@@ -117,7 +117,7 @@ public class MainMenuScript : MonoBehaviour {
             }
             else
             {
-                resultText.text = "\n\n\nThanks for the help!\n\n\n\n\n\nHere are the results";
+                resultText.text = "\n\n\nThanks for the help!\n\n\n\n\nHere are the results";
             }
 
             tXP.text = "XP NEEDED TO LEVEL UP: " + (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - tExp);
@@ -265,11 +265,11 @@ public class MainMenuScript : MonoBehaviour {
         else if(stats[0] < 1)
         {
             status = "FORGETFUL";
-            RoboKuma.GetComponent<Animator>().SetBool("isFidgety", false);
+            RoboKuma.GetComponent<Animator>().SetBool("isFidgety", true);
         }
         else
         {
-            RoboKuma.GetComponent<Animator>().SetBool("isFidgety", false);
+            RoboKuma.GetComponent<Animator>().SetBool("isFidgety", true);
             status = "STABLE";
 
         }
