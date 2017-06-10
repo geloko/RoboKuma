@@ -489,13 +489,13 @@ public class SQLiteDatabase : MonoBehaviour {
 	public int count(String gameName)
 	{
 		if (gameName == "gonogo") {
-			sql = "SELECT COUNT(*) FROM player_logs where test_id = 1";
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 1 AND game_progress = \"FINISHED\"";
 		} else if(gameName == "corsi") {
-			sql = "SELECT COUNT(*) FROM player_logs where test_id = 2";
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 2 AND game_progress = \"FINISHED\"";
 		} else if(gameName == "nback"){
-			sql = "SELECT COUNT(*) FROM player_logs where test_id = 3";
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 3 AND game_progress = \"FINISHED\"";
 		} else if(gameName == "eriksen"){
-			sql = "SELECT COUNT(*) FROM player_logs where test_id = 4";
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 4 AND game_progress = \"FINISHED\"";
 		}
 
 		_dbcm.CommandText = sql;

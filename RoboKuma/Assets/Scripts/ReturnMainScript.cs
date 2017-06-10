@@ -19,11 +19,18 @@ public class ReturnMainScript : MonoBehaviour {
     public void returnResult()
     {
         PlayerPrefs.SetInt("Score", 1);
-        SceneManager.LoadScene(0);
+        StartCoroutine(delayedLoad());
     }
 
     public void returnMain()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public IEnumerator delayedLoad()
+    {
+        yield return new WaitForSecondsRealtime(1);
+        SceneManager.LoadScene(0);
+
     }
 }

@@ -27,10 +27,12 @@ public class MainMenuScript : MonoBehaviour {
     public Text petMessage;
     public Text experience, bearya, resultLevel, resultText;
     public Text tLevel, tBearya, tXP;
+    public Image resultI;
     public Slider tExperience;
 
     public Slider achievementsGoNoGo, achievementsEriksen, achievementsCorsi, achievementsNback;
     public Text achievementsGoNoGoText, achievementsEriksenText, achievementsCorsiText, achievementsNbackText;
+    public Image achieveGI, achieveEI, achieveC, achieveN;
 
     public Image leg, body;
 
@@ -46,6 +48,7 @@ public class MainMenuScript : MonoBehaviour {
 
     public Sprite body_1, body_2, body_3, body_4;
     public Sprite leg_1, leg_2, leg_3;
+    public Sprite trophy;
 
 
     // Use this for initialization
@@ -110,6 +113,11 @@ public class MainMenuScript : MonoBehaviour {
                 leveledup = false;
                 resultText.text = "Congratulations!\n\nYou've reached level";
                 resultLevel.text = PlayerPrefs.GetInt("Level") + "";
+                resultI.overrideSprite = trophy;
+            }
+            else
+            {
+                resultText.text = "\n\n\nThanks for the help!\n\n\n\n\n\nHere are the results";
             }
 
             tXP.text = "XP NEEDED TO LEVEL UP: " + (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - tExp);
@@ -288,7 +296,7 @@ public class MainMenuScript : MonoBehaviour {
 
 	public void minigamePress()
 	{
-		PetScreen.gameObject.SetActive(true);
+		PetScreen.gameObject.SetActive(false);
 		MinigameScreen.gameObject.SetActive (false);
         AchievementScreen.gameObject.SetActive(false);
         AttributeScreen.gameObject.SetActive(false);
