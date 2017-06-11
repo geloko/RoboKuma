@@ -14,7 +14,7 @@ public class MainMenuScript : MonoBehaviour {
     public GameObject AttributeScreen;
     public GameObject SettingsScreen;
     public GameObject ResultsPanel;
-    public GameObject RoboKuma;
+    public GameObject RoboKuma, RKAnimation;
     public GameObject Q1, Q2, Q3;
     public GameObject SpeechBubble;
     public GameObject popup;
@@ -260,16 +260,16 @@ public class MainMenuScript : MonoBehaviour {
         if((stats[1] * 1.7) < stats[2])
         {
             status = "FIDGETY";
-            RoboKuma.GetComponent<Animator>().SetBool("isFidgety", true);
+            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", true);
         }
         else if(stats[0] < 1)
         {
             status = "FORGETFUL";
-            RoboKuma.GetComponent<Animator>().SetBool("isFidgety", true);
+            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
         }
         else
         {
-            RoboKuma.GetComponent<Animator>().SetBool("isFidgety", true);
+            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
             status = "STABLE";
 
         }
@@ -397,18 +397,16 @@ public class MainMenuScript : MonoBehaviour {
 
     public void jump()
     {
-        Debug.Log("Jump");
 
-        /*if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("FORGETFUL"))
+        if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("FORGETFUL"))
         {
-            Debug.Log("Jump Forget");
             StartCoroutine(forgetfulJump());
         }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping())
-        {*/
+        {
             RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
             RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 15000);
-        //}
+        }
 
 
     }

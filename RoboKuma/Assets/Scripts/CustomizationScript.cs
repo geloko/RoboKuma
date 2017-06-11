@@ -11,10 +11,13 @@ public class CustomizationScript : MonoBehaviour
     // 4 - Leg
 
     public GameObject leg, body, head, accessories;
-    public GameObject popup;
+    public GameObject popup, nmpopup;
 
     public Text popupTxt;
     public Text confirmTxt;
+    public Text TBearya;
+    public Text[] legA, bodyA;
+    //public Text leg_1, leg_2, leg_3, body_1, body_2, body_3, body_4;
 
     public GameObject coinIcon;
 
@@ -31,31 +34,47 @@ public class CustomizationScript : MonoBehaviour
         head.SetActive(false);
         accessories.SetActive(true);
         popup.SetActive(false);
+        nmpopup.SetActive(false);
 
         iAccessories.color = new Color32(238, 109, 88, 255);
         iHead.color = new Color32(246, 145, 116, 255);
         iBody.color = new Color32(246, 145, 116, 255);
         iLeg.color = new Color32(246, 145, 116, 255);
+
+        for(int i = 0; i < 4; i++)
+        {
+            if (PlayerPrefs.GetInt("item_3" + (i + 1)) == 1 && PlayerPrefs.GetInt("body") != 31 + i)
+                bodyA[i].text = "Purchased";
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (PlayerPrefs.GetInt("item_4" + (i + 1)) == 1 && PlayerPrefs.GetInt("leg") != 41 + i)
+                legA[i].text = "Purchased";
+        }
+
+        if (PlayerPrefs.GetInt("body") != 0)
+            bodyA[PlayerPrefs.GetInt("body") - 31].text = "Equipped";
+
+        if (PlayerPrefs.GetInt("leg") != 0)
+            legA[PlayerPrefs.GetInt("leg") - 41].text = "Equipped";
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     public void buyItem()
     {
         PlayerPrefs.SetInt("item_" + itemNum, 1);
         
-        if(itemNum > 30 && itemNum < 40)
-        {
-            PlayerPrefs.SetInt("body", itemNum);
-        }
-
         if (itemNum > 10 && itemNum < 20)
         {
             PlayerPrefs.SetInt("accessory", itemNum);
+
         }
 
         if (itemNum > 20 && itemNum < 30)
@@ -63,15 +82,27 @@ public class CustomizationScript : MonoBehaviour
             PlayerPrefs.SetInt("head", itemNum);
         }
 
+        if (itemNum > 30 && itemNum < 40)
+        {
+            if(PlayerPrefs.GetInt("body") != 0)
+                bodyA[PlayerPrefs.GetInt("body") - 31].text = "Purchased";
+            PlayerPrefs.SetInt("body", itemNum);
+            bodyA[itemNum - 31].text = "Equipped";
+        }
+
         if (itemNum > 40 && itemNum < 50)
         {
+            if (PlayerPrefs.GetInt("leg") != 0)
+                legA[PlayerPrefs.GetInt("leg") - 41].text = "Purchased";
             PlayerPrefs.SetInt("leg", itemNum);
+            legA[itemNum - 41].text = "Equipped";
         }
 
         confirmTxt.text = "buy";
         coinIcon.SetActive(true);
         popup.SetActive(false);
         PlayerPrefs.SetInt("TBearya", PlayerPrefs.GetInt("TBearya") - price);
+        TBearya.text = PlayerPrefs.GetInt("TBearya") + "";
 
     }
 
@@ -84,7 +115,7 @@ public class CustomizationScript : MonoBehaviour
         
         if (price > PlayerPrefs.GetInt("TBearya"))
         {
-
+            nmpopup.SetActive(true);
         }
         else if (PlayerPrefs.GetInt("item_" + item) == 1)
         {
@@ -92,6 +123,7 @@ public class CustomizationScript : MonoBehaviour
 
             confirmTxt.text = "equip";
             coinIcon.SetActive(false);
+            this.price = 0;
 
             popupTxt.text = "Do you wish to equip this item?";
                 
