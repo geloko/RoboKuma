@@ -1,7 +1,7 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{D5C3696C-1254-F42D-5883-57567F2A7ED8}") = "RoboKuma", "Assembly-CSharp.csproj", "{5F153920-5250-31CD-2B63-6BDC3C282B5B}"
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoboKuma", "Assembly-CSharp.csproj", "{5F153920-5250-31CD-2B63-6BDC3C282B5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
