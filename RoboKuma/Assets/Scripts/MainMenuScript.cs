@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;// we need this namespace in order to access UI elements within our script
+using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System;
@@ -187,6 +187,11 @@ public class MainMenuScript : MonoBehaviour {
         achievementsGoNoGoText.text = gonogoCount + "/20";
         achievementsEriksenText.text = eriksenCount + "/20";
         achievementsNbackText.text = nbackCount + "/20";
+
+        //Notify the user when an achievement is unlocked
+        //resultText.text = "\n\nCongratulations!\nYou've completed the task\n\n\n\n\nPlay Go/No-Go";
+
+
     }
 
     public void updateAssets()
