@@ -264,6 +264,23 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc.Close ();
 		_dbc = null;
 	}
+
+	public void updatePlayer(int temp_id, int player_id, int local_id, string date_start)
+	{
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		sql = "UPDATE player SET player_id = " + player_id + ", local_id = " + local_id + " WHERE local_id = " + temp_id + ";";
+		_dbcm = _dbc.CreateCommand();
+		_dbcm.CommandText = sql;
+		_dbcm.ExecuteNonQuery();
+
+		Debug.Log ("UPDATE player SQL Command: " + sql);
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+	}
 		
 	public void insertintoCorsi(int player_id, int log_id, int correct_trials, int correct_length, int seq_length, int trial_count)
 	{
