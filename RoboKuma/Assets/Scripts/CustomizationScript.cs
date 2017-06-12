@@ -16,7 +16,7 @@ public class CustomizationScript : MonoBehaviour
     public Text popupTxt;
     public Text confirmTxt;
     public Text TBearya;
-    public Text[] legA, bodyA;
+    public Text[] legA, bodyA, headA, accessoryA;
     //public Text leg_1, leg_2, leg_3, body_1, body_2, body_3, body_4;
 
     public GameObject coinIcon;
@@ -73,29 +73,74 @@ public class CustomizationScript : MonoBehaviour
         
         if (itemNum > 10 && itemNum < 20)
         {
-            PlayerPrefs.SetInt("accessory", itemNum);
+            if (PlayerPrefs.GetInt("accessory") != 0)
+                accessoryA[PlayerPrefs.GetInt("accessory") - 11].text = "Purchased";
+           
+            if (itemNum == PlayerPrefs.GetInt("accessory"))
+            {
+                PlayerPrefs.SetInt("accessory", 0);
+                accessoryA[itemNum - 11].text = "Purchased";
+            }
+            else
+            {
+                PlayerPrefs.SetInt("accessory", itemNum);
+                accessoryA[itemNum - 11].text = "Equipped";
+            }
 
         }
 
         if (itemNum > 20 && itemNum < 30)
         {
-            PlayerPrefs.SetInt("head", itemNum);
+            if (PlayerPrefs.GetInt("head") != 0)
+                headA[PlayerPrefs.GetInt("head") - 21].text = "Purchased";
+
+            if (itemNum == PlayerPrefs.GetInt("head"))
+            {
+                PlayerPrefs.SetInt("head", 0);
+                headA[itemNum - 21].text = "Purchased";
+            }
+            else
+            {
+                PlayerPrefs.SetInt("head", itemNum);
+                headA[itemNum - 21].text = "Equipped";
+            }
         }
 
         if (itemNum > 30 && itemNum < 40)
         {
             if(PlayerPrefs.GetInt("body") != 0)
                 bodyA[PlayerPrefs.GetInt("body") - 31].text = "Purchased";
-            PlayerPrefs.SetInt("body", itemNum);
-            bodyA[itemNum - 31].text = "Equipped";
+
+            if (itemNum == PlayerPrefs.GetInt("body"))
+            {
+                PlayerPrefs.SetInt("body", 0);
+                bodyA[itemNum - 31].text = "Purchased";
+            }
+            else
+            {
+                PlayerPrefs.SetInt("body", itemNum);
+                bodyA[itemNum - 31].text = "Equipped";
+            }
+
         }
 
         if (itemNum > 40 && itemNum < 50)
         {
             if (PlayerPrefs.GetInt("leg") != 0)
                 legA[PlayerPrefs.GetInt("leg") - 41].text = "Purchased";
-            PlayerPrefs.SetInt("leg", itemNum);
-            legA[itemNum - 41].text = "Equipped";
+            if (itemNum == PlayerPrefs.GetInt("leg"))
+            {
+                PlayerPrefs.SetInt("leg", 0);
+                legA[itemNum - 41].text = "Purchased";
+            }
+            else
+            {
+                PlayerPrefs.SetInt("leg", itemNum);
+                legA[itemNum - 41].text = "Equipped";
+            }
+
+            
+
         }
 
         confirmTxt.text = "buy";
@@ -110,23 +155,37 @@ public class CustomizationScript : MonoBehaviour
     {
 
         this.itemNum = item;
-        this.price = 25;
+        this.price = 250;
 
         
-        if (price > PlayerPrefs.GetInt("TBearya"))
-        {
-            nmpopup.SetActive(true);
-        }
-        else if (PlayerPrefs.GetInt("item_" + item) == 1)
+        
+        if (PlayerPrefs.GetInt("item_" + item) == 1)
         {
             popup.SetActive(true);
 
-            confirmTxt.text = "equip";
-            coinIcon.SetActive(false);
-            this.price = 0;
+            if(itemNum == PlayerPrefs.GetInt("accessory") || itemNum == PlayerPrefs.GetInt("head") || itemNum == PlayerPrefs.GetInt("body") || itemNum == PlayerPrefs.GetInt("leg"))
+            {
+                confirmTxt.text = "unequip";
+                coinIcon.SetActive(false);
+                this.price = 0;
 
-            popupTxt.text = "Do you wish to equip this item?";
+                popupTxt.text = "Do you wish to unequip this item?";
+            }
+            else
+            {
+                confirmTxt.text = "equip";
+                coinIcon.SetActive(false);
+                this.price = 0;
+
+                popupTxt.text = "Do you wish to equip this item?";
+            }
+
+            
                 
+        }
+        else if (price > PlayerPrefs.GetInt("TBearya"))
+        {
+            nmpopup.SetActive(true);
         }
         else
         {
@@ -134,26 +193,35 @@ public class CustomizationScript : MonoBehaviour
 
             switch (item)
             {
+                case 11:
+                    popupTxt.text = "Buy a Wristwatch for " + price + " bearyas?";
+                    break;
+                case 21:
+                    popupTxt.text = "Buy a Soul Ring for " + price + " bearyas?";
+                    break;
+                case 22:
+                    popupTxt.text = "Buy an Orange Drooping Cat for " + price + " bearyas?";
+                    break;
                 case 31:
-                    popupTxt.text = "Buy a green shirt for 25 bearyas?";
+                    popupTxt.text = "Buy a Green Shirt for "+ price + " bearyas?";
                     break;
                 case 32:
-                    popupTxt.text = "Buy a blue shirt for 25 bearyas?";
+                    popupTxt.text = "Buy a Blue Shirt for " + price + " bearyas?";
                     break;
                 case 33:
-                    popupTxt.text = "Buy a red shirt for 25 bearyas?";
+                    popupTxt.text = "Buy a Red Shirt for " + price + " bearyas?";
                     break;
                 case 34:
-                    popupTxt.text = "Buy a black shirt for 25 bearyas?";
+                    popupTxt.text = "Buy a Black Shirt for " + price + " bearyas?";
                     break;
                 case 41:
-                    popupTxt.text = "Buy a blue shorts for 25 bearyas?";
+                    popupTxt.text = "Buy a Blue Shorts for " + price + " bearyas?";
                     break;
                 case 42:
-                    popupTxt.text = "Buy a blue pants for 25 bearyas?";
+                    popupTxt.text = "Buy a Blue Pants for " + price + " bearyas?";
                     break;
                 case 43:
-                    popupTxt.text = "Buy a khaki pants for 25 bearyas?";
+                    popupTxt.text = "Buy a Khaki Pants for " + price + " bearyas?";
                     break;
             }
         }

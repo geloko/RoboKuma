@@ -34,7 +34,7 @@ public class MainMenuScript : MonoBehaviour {
     public Text achievementsGoNoGoText, achievementsEriksenText, achievementsCorsiText, achievementsNbackText;
     public Image achieveGI, achieveEI, achieveC, achieveN;
 
-    public Image leg, body;
+    public Image leg, body, head, accessory;
 
     public Button back;
 
@@ -48,6 +48,8 @@ public class MainMenuScript : MonoBehaviour {
 
     public Sprite body_1, body_2, body_3, body_4;
     public Sprite leg_1, leg_2, leg_3;
+    public Sprite head_1, head_2;
+    public Sprite accessory_1;
     public Sprite trophy;
 
 
@@ -196,15 +198,37 @@ public class MainMenuScript : MonoBehaviour {
 
     public void updateAssets()
     {
-        switch(PlayerPrefs.GetInt("leg"))
+        if (PlayerPrefs.GetInt("Accessory") == 11)
+            accessory.overrideSprite = accessory_1;
+        else
+            accessory.overrideSprite = null;
+
+        switch (PlayerPrefs.GetInt("head"))
         {
-            case 41: leg.overrideSprite = leg_1;
+            case 21:
+                head.overrideSprite = head_1;
+                break;
+            case 22:
+                head.overrideSprite = head_2;
+                break;
+            case 0:
+                head.overrideSprite = null;
+                break;
+        }
+
+        switch (PlayerPrefs.GetInt("leg"))
+        {
+            case 41:
+                leg.overrideSprite = leg_1;
                 break;
             case 42:
                 leg.overrideSprite = leg_2;
                 break;
             case 43:
                 leg.overrideSprite = leg_3;
+                break;
+            case 0:
+                leg.overrideSprite = null;
                 break;
         }
 
@@ -221,6 +245,9 @@ public class MainMenuScript : MonoBehaviour {
                 break;
             case 34:
                 body.overrideSprite = body_4;
+                break;
+            case 0:
+                body.overrideSprite = null;
                 break;
         }
     }
@@ -281,6 +308,63 @@ public class MainMenuScript : MonoBehaviour {
 
         petStatus.text = status;
 
+    }
+
+    public void tryAsset(int itemNum)
+    {
+        if(itemNum == PlayerPrefs.GetInt("accessory"))
+        {
+            accessory.overrideSprite = null;
+        }
+
+        if (itemNum == PlayerPrefs.GetInt("head"))
+        {
+            head.overrideSprite = null;
+        }
+
+        if (itemNum == PlayerPrefs.GetInt("body"))
+        {
+            body.overrideSprite = null;
+        }
+
+        if (itemNum == PlayerPrefs.GetInt("leg"))
+        {
+            leg.overrideSprite = null;
+        }
+
+        switch (itemNum)
+        {
+            case 11:
+                accessory.overrideSprite = accessory_1;
+                break;
+            case 21:
+                head.overrideSprite = head_1;
+                break;
+            case 22:
+                head.overrideSprite = head_2;
+                break;
+            case 31:
+                body.overrideSprite = body_1;
+                break;
+            case 32:
+                body.overrideSprite = body_2;
+                break;
+            case 33:
+                body.overrideSprite = body_3;
+                break;
+            case 34:
+                body.overrideSprite = body_4;
+                break;
+            case 41:
+                leg.overrideSprite = leg_1;
+                break;
+            case 42:
+                leg.overrideSprite = leg_2;
+                break;
+            case 43:
+                leg.overrideSprite = leg_3;
+                break;
+        }
     }
 
 	public void mainPress()
