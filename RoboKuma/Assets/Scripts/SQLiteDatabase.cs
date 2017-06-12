@@ -40,7 +40,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		sql = "DROP TABLE IF EXISTS player; " +
 		"CREATE TABLE player (" +
 		"player_id INTEGER PRIMARY KEY, " +
-		"local_id INTEGER, " +
+		"local_id varchar(45) NOT NULL, " +
 		"date_start varchar(45) NOT NULL" +
 		")";
 		_dbcm.CommandText = sql;
@@ -247,12 +247,38 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = null;
 	}
 
+	public void updateLogsPlayerID(int old_id, int new_id)
+	{
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+
+		_dbcm = _dbc.CreateCommand();
+		sql = "SELECT * FROM player_logs WHERE player_id = " + old_id + ";";
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		while(_idr.Read())
+		{
+			sql = "UPDATE player_logs SET player_id = " + new_id +" WHERE log_id = " + _idr["log_id"] + ";";
+			_dbcm = _dbc.CreateCommand();
+			_dbcm.CommandText = sql;
+			_dbcm.ExecuteNonQuery();
+		}
+
+		_idr.Close ();
+		_idr = null;
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+	}
+
 	public void insertintoPlayer(int player_id, int local_id, string date_start)
 	{
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		sql = "INSERT INTO player (player_id, local_id, date_start) VALUES (" + 
-			player_id + ", " + local_id + ", " + date_start + ");";
+			player_id + ", '" + local_id + "', '" + date_start + "');";
 		_dbcm = _dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
@@ -265,21 +291,49 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = null;
 	}
 
-	public void updatePlayer(int temp_id, int player_id, int local_id, string date_start)
+	public Player getPlayer(int temp_id)
+	{
+		Player temp = null;
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		sql = "SELECT * FROM player WHERE player_id = " + temp_id + ";";
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		if(_idr.Read())
+		{
+			temp = new Player();
+			temp.player_id = _idr["player_id"];
+			temp.local_id = _idr["local_id"];
+			temp.date_start = _idr["date_start"];
+		}
+
+		_idr.Close ();
+		_idr = null;
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+
+		return temp;
+	}
+
+	public void updatePlayer(int old_id, Player player)
 	{
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
-		sql = "UPDATE player SET player_id = " + player_id + ", local_id = " + local_id + " WHERE local_id = " + temp_id + ";";
+		sql = "UPDATE player SET player_id = " + player.player_id + ", local_id = '" + player.local_id + "' WHERE player_id = " + old_id + ";";
 		_dbcm = _dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
-
-		Debug.Log ("UPDATE player SQL Command: " + sql);
 
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
+
+		this.updateLogsPlayerID(old_id, player.player_id);
 	}
 		
 	public void insertintoCorsi(int player_id, int log_id, int correct_trials, int correct_length, int seq_length, int trial_count)
@@ -381,12 +435,12 @@ public class SQLiteDatabase : MonoBehaviour {
 			Debug.Log (correct + "/" + total);
 		}
 
+		_idr.Close ();
+		_idr = null;
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
-		_idr.Close ();
-		_idr = null;
 	}
 
 	public int[] getPlayerStatistics(int player_id)
@@ -491,14 +545,15 @@ public class SQLiteDatabase : MonoBehaviour {
 		default:
 			break;
 		}
+
+		_idr.Close ();
+		_idr = null;
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
-		_idr.Close ();
-		_idr = null;
 	}
 
 	public int count(String gameName)
@@ -543,12 +598,12 @@ public class SQLiteDatabase : MonoBehaviour {
 			mostPlayed = _idr["test_name"];
 		}
 
+		_idr.Close ();
+		_idr = null;
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
-		_idr.Close ();
-		_idr = null;
 
 		return mostPlayed;
 	}
@@ -572,12 +627,12 @@ public class SQLiteDatabase : MonoBehaviour {
 			leastPlayed = _idr["test_name"];
 		}
 
+		_idr.Close ();
+		_idr = null;
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
-		_idr.Close ();
-		_idr = null;
 
 		return leastPlayed;
 	}
@@ -598,12 +653,12 @@ public class SQLiteDatabase : MonoBehaviour {
 			averageStatus = _idr["new_status"];
 		}
 
+		_idr.Close ();
+		_idr = null;
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
-		_idr.Close ();
-		_idr = null;
 
 		return averageStatus;
 	}
@@ -633,12 +688,12 @@ public class SQLiteDatabase : MonoBehaviour {
 			bestGoNoGo.trial_count = _idr["trial_count"];
 		}
 
+		_idr.Close ();
+		_idr = null;
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
-		_idr.Close ();
-		_idr = null;
 
 		return bestGoNoGo;
 	}
@@ -668,12 +723,12 @@ public class SQLiteDatabase : MonoBehaviour {
 			bestNBack.trial_count = _idr["trial_count"];
 		}
 
+		_idr.Close ();
+		_idr = null;
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
-		_idr.Close ();
-		_idr = null;
 
 		return bestGoNoGo;
 	}
@@ -702,12 +757,12 @@ public class SQLiteDatabase : MonoBehaviour {
 			bestCorsi.trial_count = _idr["trial_count"];
 		}
 
+		_idr.Close ();
+		_idr = null;
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
-		_idr.Close ();
-		_idr = null;
 
 		return bestCorsi;
 	}
@@ -738,12 +793,12 @@ public class SQLiteDatabase : MonoBehaviour {
 			bestEriksen.trial_count = _idr["trial_count"];
 		}
 
+		_idr.Close ();
+		_idr = null;
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
-		_idr.Close ();
-		_idr = null;
 
 		return bestEriksen;
 	}
@@ -775,12 +830,12 @@ public class SQLiteDatabase : MonoBehaviour {
 			uploadList.add(temp);
 		}
 
+		_idr.Close ();
+		_idr = null;
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
-		_idr.Close ();
-		_idr = null;
 
 		return uploadList;
 	}
@@ -826,6 +881,13 @@ public class SQLiteDatabase : MonoBehaviour {
 			temp.trial_count = _idr["trial_count"];
 		}
 
+		_idr.Close ();
+		_idr = null;
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+
 		return temp;
 	}
 
@@ -851,6 +913,13 @@ public class SQLiteDatabase : MonoBehaviour {
 			temp.trial_count = _idr["trial_count"];
 		}
 
+		_idr.Close ();
+		_idr = null;
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+
 		return temp;
 	}
 
@@ -875,12 +944,12 @@ public class SQLiteDatabase : MonoBehaviour {
 			temp.trial_count = _idr["trial_count"];
 		}
 
+		_idr.Close ();
+		_idr = null;
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
-		_idr.Close ();
-		_idr = null;
 
 		return temp;
 	}
@@ -908,12 +977,12 @@ public class SQLiteDatabase : MonoBehaviour {
 			temp.trial_count = _idr["trial_count"];
 		}
 
+		_idr.Close ();
+		_idr = null;
 		_dbcm.Dispose ();
 		_dbcm = null;
 		_dbc.Close ();
 		_dbc = null;
-		_idr.Close ();
-		_idr = null;
 
 		return temp;
 	}
