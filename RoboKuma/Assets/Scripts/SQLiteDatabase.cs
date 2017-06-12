@@ -40,7 +40,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		sql = "DROP TABLE IF EXISTS player; " +
 		"CREATE TABLE player (" +
 		"player_id INTEGER PRIMARY KEY, " +
-		"local_id varchar(100) NOT NULL, " +
+		"local_id INTEGER, " +
 		"date_start varchar(45) NOT NULL" +
 		")";
 		_dbcm.CommandText = sql;
@@ -203,13 +203,11 @@ public class SQLiteDatabase : MonoBehaviour {
 
 	public int insertintoPlayerLog(int player_id, int test_id, string time_start, string time_end, string prev_status, string new_status, string game_progress, int is_uploaded)
 	{
-		_dbc=new SqliteConnection(_constr);
+		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		sql = "INSERT INTO player_logs (player_id, test_id, time_start, time_end, prev_status, new_status, game_progress, is_uploaded) VALUES(" +
 			player_id + ", " + test_id + ", '" + time_start + "', '" + time_end + "', '" + prev_status + "', '" + new_status + "', '" + game_progress + "', " + is_uploaded + ");";
-
-
-		_dbcm=_dbc.CreateCommand();
+		_dbcm = _dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
 
@@ -237,10 +235,10 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc=new SqliteConnection(_constr);
 		_dbc.Open();
 		sql = "UPDATE player_logs SET time_end = '" + time_end + "', new_status = '" + new_status + "', game_progress = '" + game_progress + "' WHERE log_id = " + log_id + ";";
-
 		_dbcm=_dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
+
 		Debug.Log ("UPDATE player_logs SQL Command: " + sql);
 
 		_dbcm.Dispose ();
@@ -251,14 +249,14 @@ public class SQLiteDatabase : MonoBehaviour {
 
 	public void insertintoPlayer(int player_id, int local_id, string date_start)
 	{
-		_dbc=new SqliteConnection(_constr);
+		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		sql = "INSERT INTO player (player_id, local_id, date_start) VALUES (" + 
 			player_id + ", " + local_id + ", " + date_start + ");";
-
-		_dbcm=_dbc.CreateCommand();
+		_dbcm = _dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
+
 		Debug.Log ("INSERT INTO player SQL Command: " + sql);
 
 		_dbcm.Dispose ();
@@ -269,14 +267,14 @@ public class SQLiteDatabase : MonoBehaviour {
 		
 	public void insertintoCorsi(int player_id, int log_id, int correct_trials, int correct_length, int seq_length, int trial_count)
 	{
-		_dbc=new SqliteConnection(_constr);
+		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		sql = "INSERT INTO corsi_data (log_id, correct_trials, correct_length, seq_length, trial_count) VALUES (" + 
 			log_id + ", " + correct_trials + ", " + correct_length + ", " + seq_length + ", " + trial_count + ");";
-			
-		_dbcm=_dbc.CreateCommand();
+		_dbcm = _dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
+
 		Debug.Log ("INSERT INTO corsi_data SQL Command: " + sql);
 
 		_dbcm.Dispose ();
@@ -290,14 +288,14 @@ public class SQLiteDatabase : MonoBehaviour {
 
 	public void insertintoEriksen(int player_id, int log_id, int correct_congruent, double time_congruent, int correct_incongruent, double time_incongruent, int congruent_count, int trial_count)
 	{
-		_dbc=new SqliteConnection(_constr);
+		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		Debug.Log ("INSERT INTO ERIKSEN VALUES: " + player_id + ", " + log_id + ", " + correct_congruent + ", " + time_congruent + ", " + correct_incongruent + ", " + time_incongruent + ", " + congruent_count + ", " + trial_count);
 		sql = "INSERT INTO eriksen_data (log_id, correct_congruent, time_congruent, correct_incongruent, time_incongruent, congruent_count, trial_count) VALUES (" + 
 			log_id + ", " + correct_congruent + ", " + time_congruent + ", " + correct_incongruent + ", " + time_incongruent + ", " + 
 			congruent_count + ", " + trial_count + ");";
+		_dbcm = _dbc.CreateCommand();
 
-		_dbcm=_dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
 		Debug.Log (sql);
@@ -312,13 +310,13 @@ public class SQLiteDatabase : MonoBehaviour {
 
 	public void insertintoGoNoGo(int player_id, int log_id, int correct_go_count, int correct_nogo_count, double mean_time, int go_count, int trial_count)
 	{
-		_dbc=new SqliteConnection(_constr);
+		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		sql = "INSERT INTO gonogo_data (log_id, correct_go_count, correct_nogo_count, mean_time, go_count, trial_count) VALUES (" + 
 			log_id + ", " + correct_go_count + ", " + correct_nogo_count + ", " + mean_time + ", " + 
 			go_count + ", " + trial_count + ");";
 
-		_dbcm=_dbc.CreateCommand();
+		_dbcm = _dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
 		Debug.Log (sql);
@@ -333,13 +331,13 @@ public class SQLiteDatabase : MonoBehaviour {
 
 	public void insertintoNback(int player_id, int log_id, double mean_time, int correct_count, int n_count, int element_count, int trial_count)
 	{
-		_dbc=new SqliteConnection(_constr);
+		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		sql = "INSERT INTO nback_data (log_id, mean_time, correct_count, n_count, element_count, trial_count) VALUES (" + 
 			log_id + ", " + mean_time + ", " + correct_count + ", " + n_count + ", " + 
 			element_count + ", " + trial_count + ");";
 
-		_dbcm=_dbc.CreateCommand();
+		_dbcm = _dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
 		Debug.Log (sql);
@@ -355,9 +353,9 @@ public class SQLiteDatabase : MonoBehaviour {
 	public void select (string table)
 	{
 		sql = "SELECT * FROM " + table;
-		_dbc=new SqliteConnection(_constr);
+		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
-		_dbcm=_dbc.CreateCommand();
+		_dbcm = _dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader ();
 		while (_idr.Read ()) {
@@ -377,9 +375,9 @@ public class SQLiteDatabase : MonoBehaviour {
 	public int[] getPlayerStatistics(int player_id)
 	{
 		sql = "SELECT * FROM player_data_table WHERE player_id = " + player_id;
-		_dbc=new SqliteConnection(_constr);
+		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
-		_dbcm=_dbc.CreateCommand();
+		_dbcm = _dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader ();
 
@@ -404,9 +402,9 @@ public class SQLiteDatabase : MonoBehaviour {
 
 	public void updatePlayerStatistics(int correct, int total, double time, int difficulty, string table, int player_id)
 	{
-		_dbc=new SqliteConnection(_constr);
+		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
-		_dbcm=_dbc.CreateCommand();
+		_dbcm = _dbc.CreateCommand();
 		sql = "SELECT * FROM player_data_table WHERE player_id = " + player_id + ";";
 		_dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader ();
@@ -507,5 +505,399 @@ public class SQLiteDatabase : MonoBehaviour {
 		Debug.Log ("Generated Count:" + generated_count32 + "");
 
 		return generated_count32;
+	}
+
+	public string getMostPlayed()
+	{
+		string mostPlayed = "N/A";
+
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		sql = "SELECT T.test_name FROM tests T, " +
+			  "(SELECT test_id, COUNT(*) FROM player_logs " + 
+			  "GROUP BY test_id ORDER BY COUNT(*) DESC LIMIT 1) as L " +
+			  "WHERE T.test_id = L.test_id;";
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		if(_idr.Read())
+		{
+			mostPlayed = _idr["test_name"];
+		}
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+		_idr.Close ();
+		_idr = null;
+
+		return mostPlayed;
+	}
+
+	public string getLeastPlayed()
+	{
+		string mostPlayed = "N/A";
+
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		sql = "SELECT T.test_name FROM tests T, " +
+			  "(SELECT test_id, COUNT(*) FROM player_logs " + 
+			  "GROUP BY test_id ORDER BY COUNT(*) ASC LIMIT 1) as L " +
+			  "WHERE T.test_id = L.test_id;";
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		if(_idr.Read())
+		{
+			leastPlayed = _idr["test_name"];
+		}
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+		_idr.Close ();
+		_idr = null;
+
+		return leastPlayed;
+	}
+
+	public string getAverageStatus()
+	{
+		string averageStatus = "N/A";
+
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		sql = "SELECT new_status FROM player_logs GROUP BY new_status ORDER BY COUNT(*) LIMIT 1;";
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		if(_idr.Read())
+		{
+			averageStatus = _idr["new_status"];
+		}
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+		_idr.Close ();
+		_idr = null;
+
+		return averageStatus;
+	}
+
+	public GoNoGoData getBestGoNoGo()
+	{
+		GoNoGoData bestGoNoGo = null;
+
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		/*
+			sql = "SELECT G.log_id, G.correct_go_count, G.correct_nogo_count, G.mean_time, G.go_count, G.trial_count "  +
+				  "FROM gonogo_data G;";
+		*/
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		if(_idr.Read())
+		{
+			bestGoNoGo = new GoNoGoData();
+			bestGoNoGo.log_id = _idr["log_id"];
+			bestGoNoGo.correct_go_count = _idr["correct_go_count"];
+			bestGoNoGo.correct_nogo_count = _idr["correct_nogo_count"];
+			bestGoNoGo.mean_time = _idr["mean_time"];
+			bestGoNoGo.go_count = _idr["go_count"];
+			bestGoNoGo.trial_count = _idr["trial_count"];
+		}
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+		_idr.Close ();
+		_idr = null;
+
+		return bestGoNoGo;
+	}
+
+	public NBackData getBestNBack()
+	{
+		NBackData bestNBack = null;
+
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		/*
+			sql = "SELECT N.log_id, N.mean_time, N.correct_count, N.n_count, N.element_count, N.trial_count "  +
+				  "FROM nback_data N;";
+		*/
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		if(_idr.Read())
+		{
+			bestNBack = new NBackData();
+			bestNBack.log_id = _idr["log_id"];
+			bestNBack.mean_time = _idr["mean_time"];
+			bestNBack.correct_count = _idr["correct_count"];
+			bestNBack.n_count = _idr["n_count"];
+			bestNBack.element_count = _idr["element_count"];
+			bestNBack.trial_count = _idr["trial_count"];
+		}
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+		_idr.Close ();
+		_idr = null;
+
+		return bestGoNoGo;
+	}
+
+	public CorsiData getBestCorsi()
+	{
+		CorsiData bestCorsi = null;
+
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		/*
+			sql = "SELECT C.log_id, C.correct_length, C.correct_trials, C.seq_length, C.trial_count "  +
+				  "FROM corsi_data G;";
+		*/
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		if(_idr.Read())
+		{
+			bestCorsi = new CorsiData();
+			bestCorsi.log_id = _idr["log_id"];
+			bestCorsi.correct_length = _idr["correct_length"];
+			bestCorsi.correct_trials = _idr["correct_trials"];
+			bestCorsi.seq_length = _idr["seq_length"];
+			bestCorsi.trial_count = _idr["trial_count"];
+		}
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+		_idr.Close ();
+		_idr = null;
+
+		return bestCorsi;
+	}
+
+	public EriksenData getBestEriksen()
+	{
+		CorsiData bestEriksen = null;
+
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		/*
+			sql = "SELECT E.log_id, E.correct_congruent, E.time_congruent, E.correct_incongruent, E.time_incongruent, E.congruent_count, E.trial_count "  +
+				  "FROM eriksen_data EXISTS;";
+		*/
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		if(_idr.Read())
+		{
+			bestEriksen = new EriksenData();
+			bestEriksen.log_id = _idr["log_id"];
+			bestEriksen.correct_congruent = _idr["correct_congruent"];
+			bestEriksen.time_congruent = _idr["time_congruent"];
+			bestEriksen.correct_incongruent = _idr["correct_incongruent"];
+			bestEriksen.time_incongruent = _idr["time_incongruent"];
+			bestEriksen.congruent_count = _idr["congruent_count"];
+			bestEriksen.trial_count = _idr["trial_count"];
+		}
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+		_idr.Close ();
+		_idr = null;
+
+		return bestEriksen;
+	}
+
+	public List<PlayerLogs> getLogsToUpload()
+	{
+		List<PlayerLogs> uploadList = List<PlayerLogs>();
+
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		sql = "SELECT * FROM player_logs WHERE is_uploaded = 0;";
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		while(_idr.Read())
+		{
+			PlayerLog temp = new PlayerLog();
+			temp.log_id = _idr["log_id"];
+			temp.player_id = _idr["player_id"];
+			temp.test_id = _idr["test_id"];
+			temp.time_start = _idr["time_start"];
+			temp.time_end = _idr["time_end"];
+			temp.prev_status = _idr["prev_status"];
+			temp.new_status = _idr["new_status"];
+			temp.game_progress = _idr["game_progress"];
+			temp.is_uploaded = _idr["is_uploaded"];
+
+			uploadList.add(temp);
+		}
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+		_idr.Close ();
+		_idr = null;
+
+		return uploadList;
+	}
+
+	public void updateUploadedLogs(List<PlayerLogs> uploadList)
+	{
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+
+		foreach (PlayerLog log in uploadList)
+		{
+			sql = "UPDATE player_logs SET is_uploaded = 1 WHERE log_id = " + log.log_id + ";";
+			_dbcm = _dbc.CreateCommand();
+			_dbcm.CommandText = sql;
+			_dbcm.ExecuteNonQuery();
+		}
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+	}
+
+	public GoNoGoData getGoNoGoToUpload(int log_id)
+	{
+		GoNoGoData temp = null;
+
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		sql = "SELECT * FROM gonogo_data WHERE log_id = " + log_id + ";";
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		if(_idr.Read())
+		{
+			temp = new GoNoGoData();
+			temp.log_id = _idr["log_id"];
+			temp.correct_go_count = _idr["correct_go_count"];
+			temp.correct_nogo_count = _idr["correct_nogo_count"];
+			temp.mean_time = _idr["mean_time"];
+			temp.go_count = _idr["go_count"];
+			temp.trial_count = _idr["trial_count"];
+		}
+
+		return temp;
+	}
+
+	public NBackData getNBackToUpload(int log_id)
+	{
+		NBackData temp = null;
+
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		sql = "SELECT * FROM nback_data WHERE log_id = " + log_id + ";";
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		if(_idr.Read())
+		{
+			temp = new NBackData();
+			temp.log_id = _idr["log_id"];
+			temp.mean_time = _idr["mean_time"];
+			temp.correct_count = _idr["correct_count"];
+			temp.n_count = _idr["n_count"];
+			temp.element_count = _idr["element_count"];
+			temp.trial_count = _idr["trial_count"];
+		}
+
+		return temp;
+	}
+
+	public CorsiData getCorsiToUpload(int log_id)
+	{
+		CorsiData temp = null;
+
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		sql = "SELECT * FROM corsi_data WHERE log_id = " + log_id + ";";
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		if(_idr.Read())
+		{
+			temp = new CorsiData();
+			temp.log_id = _idr["log_id"];
+			temp.correct_length = _idr["correct_length"];
+			temp.correct_trials = _idr["correct_trials"];
+			temp.seq_length = _idr["seq_length"];
+			temp.trial_count = _idr["trial_count"];
+		}
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+		_idr.Close ();
+		_idr = null;
+
+		return temp;
+	}
+
+	public EriksenData getEriksenToUpload(int log_id)
+	{
+		EriksenData temp = null;
+
+		_dbc = new SqliteConnection(_constr);
+		_dbc.Open();
+		_dbcm = _dbc.CreateCommand();
+		sql = "SELECT * FROM eriksen_data WHERE log_id = " + log_id + ";";
+		_dbcm.CommandText = sql;
+		_idr = _dbcm.ExecuteReader();
+
+		if(_idr.Read())
+		{
+			temp = new EriksenData();
+			temp.log_id = _idr["log_id"];
+			temp.correct_congruent = _idr["correct_congruent"];
+			temp.time_congruent = _idr["time_congruent"];
+			temp.correct_incongruent = _idr["correct_incongruent"];
+			temp.time_incongruent = _idr["time_incongruent"];
+			temp.congruent_count = _idr["congruent_count"];
+			temp.trial_count = _idr["trial_count"];
+		}
+
+		_dbcm.Dispose ();
+		_dbcm = null;
+		_dbc.Close ();
+		_dbc = null;
+		_idr.Close ();
+		_idr = null;
+
+		return temp;
 	}
 }
