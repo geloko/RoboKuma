@@ -46,7 +46,8 @@ public class MySQLSSH_Connector
         bool isNotUnique;
         string sql = "";
         string local_id = "";
-        MySqlDataReader resultSet;
+        MySqlCommand cmd;
+        MySqlDataReader dataReader;
 
         Player temp_player = SQLiteDatabase.getPlayer(1);
 
@@ -56,8 +57,8 @@ public class MySQLSSH_Connector
             local_id = generator.Next(0, 1000000).ToString("D6");
 
             sql = "SELECT * FROM player WHERE local_id = '" + local_id + "';";
-            MySqlCommand cmd = new MySqlCommand(sql, connection);
-            MySqlDataReader dataReader = cmd.ExecuteReader();
+            cmd = new MySqlCommand(sql, connection);
+            DataReader = cmd.ExecuteReader();
 
             if (dataReader.Read())
             {
@@ -71,11 +72,11 @@ public class MySQLSSH_Connector
 
         sql = "INSERT INTO player (local_id, date_start) VALUES ('" +
                 local_id + "', '" + temp_player.date_start + "');";
-        MySqlCommand cmd = new MySqlCommand(sql, conn);
+        cmd = new MySqlCommand(sql, conn);
         cmd.ExecuteNonQuery();
 
         sql = "SELECT * FROM player WHERE local_id = '" + local_id + "';";
-        MySqlCommand cmd = new MySqlCommand(sql, connection);
+        cmd = new MySqlCommand(sql, connection);
         dataReader = cmd.ExecuteReader();
 
         if (dataReader.Read())
@@ -95,6 +96,8 @@ public class MySQLSSH_Connector
     // Only Perform AFTER Syncing Player Data
     public void uploadPlayerLogs(int player_id)
     {
+        MySqlCommand cmd;
+
         if (this.OpenConnection() == true)
         {
             List<PlayerLogs> uploadList = SQLiteDatabase.getLogsToUpload();
@@ -113,7 +116,7 @@ public class MySQLSSH_Connector
                         log.game_progress + "', " +
                         log.is_uploaded + ");";
 
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd = new MySqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
 
                 switch (log.test_id)
@@ -160,7 +163,7 @@ public class MySQLSSH_Connector
                         break;
                 }
 
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd = new MySqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
             }
 
