@@ -2,11 +2,11 @@
 
 public class EriksenData
 {
-    private int log_id { get; set; }
-    private int correct_congruent { get; set; }
-    private double time_congruent { get; set; }
-    private int correct_incongruent { get; set; }
-    private double time_incongruent { get; set; }
-    private int congruent_count { get; set; }
-    private int trial_count { get; set; }
+    public int log_id { get; set; }
+    public int correct_congruent { get; set; }
+    public double time_congruent { get; set; }
+    public int correct_incongruent { get; set; }
+    public double time_incongruent { get; set; }
+    public int congruent_count { get; set; }
+    public int trial_count { get; set; }
 }

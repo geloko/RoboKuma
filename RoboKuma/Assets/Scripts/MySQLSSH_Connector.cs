@@ -1,4 +1,6 @@
 ﻿using System;
+using UnityEngine;
+using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 
 public class MySQLSSH_Connector
@@ -49,48 +51,52 @@ public class MySQLSSH_Connector
         MySqlCommand cmd;
         MySqlDataReader dataReader;
 
-        Player temp_player = SQLiteDatabase.getPlayer(1);
-
-        do
+        if(OpenConnection() == true)
         {
-            Random generator = new Random();
-            local_id = generator.Next(0, 1000000).ToString("D6");
+            Player temp_player = SQLiteDatabase.getPlayer(1);
+
+            do
+            {
+                Random generator = new Random();
+                local_id = generator.Next(0, 1000000).ToString("D6");
+
+                sql = "SELECT * FROM player WHERE local_id = '" + local_id + "';";
+                cmd = new MySqlCommand(sql, connection);
+                DataReader = cmd.ExecuteReader();
+
+                if (dataReader.Read())
+                {
+                    isNotUnique = true;
+                }
+                else
+                {
+                    isNotUnique = false;
+                }
+            } while (isNotUnique);
+
+            sql = "INSERT INTO player (local_id, date_start) VALUES ('" +
+                    local_id + "', '" + temp_player.date_start + "');";
+            cmd = new MySqlCommand(sql, conn);
+            cmd.ExecuteNonQuery();
 
             sql = "SELECT * FROM player WHERE local_id = '" + local_id + "';";
             cmd = new MySqlCommand(sql, connection);
-            DataReader = cmd.ExecuteReader();
+            dataReader = cmd.ExecuteReader();
 
             if (dataReader.Read())
             {
-                isNotUnique = true;
+                Player new_player = new Player();
+                new_player.player_id = dataReader["player_id"];
+                new_player.local_id = local_id;
+                new_player.date_start = temp_player.date_start;
+
+                SQLiteDatabase.updatePlayer(temp_player.player_id, new_player);
             }
-            else
-            {
-                isNotUnique = false;
-            }
-        } while (isNotUnique);
 
-        sql = "INSERT INTO player (local_id, date_start) VALUES ('" +
-                local_id + "', '" + temp_player.date_start + "');";
-        cmd = new MySqlCommand(sql, conn);
-        cmd.ExecuteNonQuery();
-
-        sql = "SELECT * FROM player WHERE local_id = '" + local_id + "';";
-        cmd = new MySqlCommand(sql, connection);
-        dataReader = cmd.ExecuteReader();
-
-        if (dataReader.Read())
-        {
-            Player new_player = new Player();
-            new_player.player_id = dataReader["player_id"];
-            new_player.local_id = local_id;
-            new_player.date_start = temp_player.date_start;
-
-            SQLiteDatabase.updatePlayer(temp_player.player_id, new_player);
+            dataReader.Close();
+            CloseConnection();
         }
-
-        dataReader.Close();
-        this.CloseConnection();
+       
     }
 
     // Only Perform AFTER Syncing Player Data
@@ -98,11 +104,11 @@ public class MySQLSSH_Connector
     {
         MySqlCommand cmd;
 
-        if (this.OpenConnection() == true)
+        if (OpenConnection() == true)
         {
             List<PlayerLogs> uploadList = SQLiteDatabase.getLogsToUpload();
 
-            foreach (PlayerLog log in uploadList)
+            foreach (PlayerLogs log in uploadList)
             {
                 string sql = "";
 
@@ -122,44 +128,44 @@ public class MySQLSSH_Connector
                 switch (log.test_id)
                 {
                     case 1:
-                        GoNoGoData temp = SQLiteDatabase.getGoNoGoToUpload(log.log_id);
+                        GoNoGoData temp1 = SQLiteDatabase.getGoNoGoToUpload(log.log_id);
                         sql = "INSERT INTO gonogo_data (log_id, correct_go_count, correct_nogo_count, mean_time, go_count, trial_count) VALUES (" +
-                                temp.log_id + ", " +
-                                temp.correct_go_count + ", " +
-                                temp.correct_nogo_count + ", " +
-                                temp.mean_time + ", " +
-                                temp.go_count + ", " +
-                                temp.trial_count + ");";
+                                temp1.log_id + ", " +
+                                temp1.correct_go_count + ", " +
+                                temp1.correct_nogo_count + ", " +
+                                temp1.mean_time + ", " +
+                                temp1.go_count + ", " +
+                                temp1.trial_count + ");";
                         break;
                     case 2:
-                        CorsiData temp = SQLiteDatabase.getCorsiToUpload(log.log_id);
+                        CorsiData temp2 = SQLiteDatabase.getCorsiToUpload(log.log_id);
                         sql = "INSERT INTO corsi_data (log_id, correct_trials, correct_length, seq_length, trial_count) VALUES (" +
-                                temp.log_id + ", " +
-                                temp.correct_trials + ", " +
-                                temp.correct_length + ", " +
-                                temp.seq_length + ", " +
-                                temp.trial_count + ");";
+                                temp2.log_id + ", " +
+                                temp2.correct_trials + ", " +
+                                temp2.correct_length + ", " +
+                                temp2.seq_length + ", " +
+                                temp2.trial_count + ");";
                         break;
                     case 3:
-                        NBackData temp = SQLiteDatabase.getNBackToUpload(log.log_id);
+                        NBackData temp3 = SQLiteDatabase.getNBackToUpload(log.log_id);
                         sql = "INSERT INTO nback_data (log_id, mean_time, correct_count, n_count, element_count, trial_count) VALUES (" +
-                                temp.log_id + ", " +
-                                temp.mean_time + ", " +
-                                temp.correct_count + ", " +
-                                temp.n_count + ", " +
-                                temp.element_count + ", " +
-                                temp.trial_count + ");";
+                                temp3.log_id + ", " +
+                                temp3.mean_time + ", " +
+                                temp3.correct_count + ", " +
+                                temp3.n_count + ", " +
+                                temp3.element_count + ", " +
+                                temp3.trial_count + ");";
                         break;
                     case 4:
-                        EriksenData temp = SQLiteDatabase.getEriksenToUpload(log.log_id);
+                        EriksenData temp4 = SQLiteDatabase.getEriksenToUpload(log.log_id);
                         sql = "INSERT INTO eriksen_data (log_id, correct_congruent, time_congruent, correct_incongruent, time_incongruent, congruent_count, trial_count) VALUES (" +
-                                temp.log_id + ", " +
-                                temp.correct_congruent + ", " +
-                                temp.time_congruent + ", " +
-                                temp.correct_incongruent + ", " +
-                                temp.time_incongruent + ", " +
-                                temp.congruent_count + ", " +
-                                temp.trial_count + ");";
+                                temp4.log_id + ", " +
+                                temp4.correct_congruent + ", " +
+                                temp4.time_congruent + ", " +
+                                temp4.correct_incongruent + ", " +
+                                temp4.time_incongruent + ", " +
+                                temp4.congruent_count + ", " +
+                                temp4.trial_count + ");";
                         break;
                 }
 
@@ -167,7 +173,7 @@ public class MySQLSSH_Connector
                 cmd.ExecuteNonQuery();
             }
 
-            this.CloseConnection();
+            CloseConnection();
         }
     }
 
@@ -176,20 +182,20 @@ public class MySQLSSH_Connector
     {
         List<string> result = new List<string>();
 
-        if (this.OpenConnection() == true)
+        if (OpenConnection() == true)
         {
             MySqlCommand cmd = new MySqlCommand(query, connection);
             MySqlDataReader dataReader = cmd.ExecuteReader();
 
             while (dataReader.Read())
             {
-                list[0].Add(dataReader["id"] + "");
-                list[1].Add(dataReader["name"] + "");
-                list[2].Add(dataReader["age"] + "");
+                result.Add(dataReader["id"] + "");
+                result.Add(dataReader["name"] + "");
+                result.Add(dataReader["age"] + "");
             }
 
             dataReader.Close();
-            this.CloseConnection();
+            CloseConnection();
 
             return result;
         }
@@ -206,7 +212,7 @@ public class MySQLSSH_Connector
         }
     }
 
-    private bool OpenConnection()
+    private static bool OpenConnection()
     {
         try
         {
@@ -218,18 +224,18 @@ public class MySQLSSH_Connector
             switch (ex.Number)
             {
                 case 0:
-                    MessageBox.Show("Cannot connect to server.");
+                    Debug.Log("Cannot connect to server.");
                     break;
 
                 case 1045:
-                    MessageBox.Show("Invalid username/password, please try again.");
+                    Debug.Log("Invalid username/password, please try again.");
                     break;
             }
             return false;
         }
     }
 
-    private bool CloseConnection()
+    private static bool CloseConnection()
     {
         try
         {
@@ -238,7 +244,7 @@ public class MySQLSSH_Connector
         }
         catch (MySqlException ex)
         {
-            MessageBox.Show(ex.Message);
+            Debug.Log(ex.Message);
             return false;
         }
     }

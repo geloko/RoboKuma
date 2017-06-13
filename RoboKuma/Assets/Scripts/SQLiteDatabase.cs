@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Data;
 using Mono.Data.SqliteClient;
+using System.Collections.Generic;
 using System;
 using System.IO;
 
@@ -304,9 +305,9 @@ public class SQLiteDatabase : MonoBehaviour {
 		if(_idr.Read())
 		{
 			temp = new Player();
-			temp.player_id = _idr["player_id"];
-			temp.local_id = _idr["local_id"];
-			temp.date_start = _idr["date_start"];
+			temp.player_id = _idr.GetInt32(_idr.GetOrdinal("player_id"));
+            temp.local_id = _idr["local_id"].ToString();
+			temp.date_start = _idr["date_start"].ToString();
 		}
 
 		_idr.Close ();
@@ -595,7 +596,7 @@ public class SQLiteDatabase : MonoBehaviour {
 
 		if(_idr.Read())
 		{
-			mostPlayed = _idr["test_name"];
+			mostPlayed = _idr["test_name"].ToString();
 		}
 
 		_idr.Close ();
@@ -610,7 +611,7 @@ public class SQLiteDatabase : MonoBehaviour {
 
 	public string getLeastPlayed()
 	{
-		string mostPlayed = "N/A";
+		string leastPlayed = "N/A";
 
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
@@ -624,7 +625,7 @@ public class SQLiteDatabase : MonoBehaviour {
 
 		if(_idr.Read())
 		{
-			leastPlayed = _idr["test_name"];
+			leastPlayed = _idr["test_name"].ToString();
 		}
 
 		_idr.Close ();
@@ -650,7 +651,7 @@ public class SQLiteDatabase : MonoBehaviour {
 
 		if(_idr.Read())
 		{
-			averageStatus = _idr["new_status"];
+			averageStatus = _idr["new_status"].ToString();
 		}
 
 		_idr.Close ();
@@ -680,12 +681,12 @@ public class SQLiteDatabase : MonoBehaviour {
 		if(_idr.Read())
 		{
 			bestGoNoGo = new GoNoGoData();
-			bestGoNoGo.log_id = _idr["log_id"];
-			bestGoNoGo.correct_go_count = _idr["correct_go_count"];
-			bestGoNoGo.correct_nogo_count = _idr["correct_nogo_count"];
-			bestGoNoGo.mean_time = _idr["mean_time"];
-			bestGoNoGo.go_count = _idr["go_count"];
-			bestGoNoGo.trial_count = _idr["trial_count"];
+			bestGoNoGo.log_id = _idr.GetInt32(_idr.GetOrdinal("player_id"));
+			bestGoNoGo.correct_go_count = _idr.GetInt32(_idr.GetOrdinal("correct_go_count")); ;
+			bestGoNoGo.correct_nogo_count = _idr.GetInt32(_idr.GetOrdinal("correct_nogo_count"));
+            bestGoNoGo.mean_time = _idr.GetDouble(_idr.GetOrdinal("mean_time"));
+			bestGoNoGo.go_count = _idr.GetInt32(_idr.GetOrdinal("go_count   ")); ;
+			bestGoNoGo.trial_count = _idr.GetInt32(_idr.GetOrdinal("trial_count")); ;
 		}
 
 		_idr.Close ();
@@ -715,13 +716,13 @@ public class SQLiteDatabase : MonoBehaviour {
 		if(_idr.Read())
 		{
 			bestNBack = new NBackData();
-			bestNBack.log_id = _idr["log_id"];
-			bestNBack.mean_time = _idr["mean_time"];
-			bestNBack.correct_count = _idr["correct_count"];
-			bestNBack.n_count = _idr["n_count"];
-			bestNBack.element_count = _idr["element_count"];
-			bestNBack.trial_count = _idr["trial_count"];
-		}
+			bestNBack.log_id = _idr.GetInt32(_idr.GetOrdinal("log_id"));
+			bestNBack.mean_time = _idr.GetDouble(_idr.GetOrdinal("mean_time"));
+            bestNBack.correct_count = _idr.GetInt32(_idr.GetOrdinal("correct_count"));
+            bestNBack.n_count = _idr.GetInt32(_idr.GetOrdinal("n_count"));
+            bestNBack.element_count = _idr.GetInt32(_idr.GetOrdinal("element_count"));
+            bestNBack.trial_count = _idr.GetInt32(_idr.GetOrdinal("trial_count"));
+        }
 
 		_idr.Close ();
 		_idr = null;
@@ -730,7 +731,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc.Close ();
 		_dbc = null;
 
-		return bestGoNoGo;
+		return bestNBack;
 	}
 
 	public CorsiData getBestCorsi()
@@ -750,12 +751,12 @@ public class SQLiteDatabase : MonoBehaviour {
 		if(_idr.Read())
 		{
 			bestCorsi = new CorsiData();
-			bestCorsi.log_id = _idr["log_id"];
-			bestCorsi.correct_length = _idr["correct_length"];
-			bestCorsi.correct_trials = _idr["correct_trials"];
-			bestCorsi.seq_length = _idr["seq_length"];
-			bestCorsi.trial_count = _idr["trial_count"];
-		}
+			bestCorsi.log_id = _idr.GetInt32(_idr.GetOrdinal("log_id"));
+            bestCorsi.correct_length = _idr.GetInt32(_idr.GetOrdinal("correct_length"));
+            bestCorsi.correct_trials = _idr.GetInt32(_idr.GetOrdinal("correct_trials"));
+            bestCorsi.seq_length = _idr.GetInt32(_idr.GetOrdinal("seq_length"));
+            bestCorsi.trial_count = _idr.GetInt32(_idr.GetOrdinal("trial_count"));
+        }
 
 		_idr.Close ();
 		_idr = null;
@@ -769,7 +770,7 @@ public class SQLiteDatabase : MonoBehaviour {
 
 	public EriksenData getBestEriksen()
 	{
-		CorsiData bestEriksen = null;
+		EriksenData bestEriksen = null;
 
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
@@ -784,14 +785,14 @@ public class SQLiteDatabase : MonoBehaviour {
 		if(_idr.Read())
 		{
 			bestEriksen = new EriksenData();
-			bestEriksen.log_id = _idr["log_id"];
-			bestEriksen.correct_congruent = _idr["correct_congruent"];
-			bestEriksen.time_congruent = _idr["time_congruent"];
-			bestEriksen.correct_incongruent = _idr["correct_incongruent"];
-			bestEriksen.time_incongruent = _idr["time_incongruent"];
-			bestEriksen.congruent_count = _idr["congruent_count"];
-			bestEriksen.trial_count = _idr["trial_count"];
-		}
+			bestEriksen.log_id = _idr.GetInt32(_idr.GetOrdinal("log_id"));
+            bestEriksen.correct_congruent = _idr.GetInt32(_idr.GetOrdinal("correct_congruent"));
+            bestEriksen.time_congruent = _idr.GetDouble(_idr.GetOrdinal("time_congruent"));
+            bestEriksen.correct_incongruent = _idr.GetInt32(_idr.GetOrdinal("correct_incongruent"));
+            bestEriksen.time_incongruent = _idr.GetDouble(_idr.GetOrdinal("time_incongruent"));
+            bestEriksen.congruent_count = _idr.GetInt32(_idr.GetOrdinal("congruent_count"));
+            bestEriksen.trial_count = _idr.GetInt32(_idr.GetOrdinal("trial_count"));
+        }
 
 		_idr.Close ();
 		_idr = null;
@@ -805,7 +806,7 @@ public class SQLiteDatabase : MonoBehaviour {
 
 	public List<PlayerLogs> getLogsToUpload()
 	{
-		List<PlayerLogs> uploadList = List<PlayerLogs>();
+		List<PlayerLogs> uploadList = new List<PlayerLogs>();
 
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
@@ -816,18 +817,18 @@ public class SQLiteDatabase : MonoBehaviour {
 
 		while(_idr.Read())
 		{
-			PlayerLog temp = new PlayerLog();
-			temp.log_id = _idr["log_id"];
-			temp.player_id = _idr["player_id"];
-			temp.test_id = _idr["test_id"];
-			temp.time_start = _idr["time_start"];
-			temp.time_end = _idr["time_end"];
-			temp.prev_status = _idr["prev_status"];
-			temp.new_status = _idr["new_status"];
-			temp.game_progress = _idr["game_progress"];
-			temp.is_uploaded = _idr["is_uploaded"];
+			PlayerLogs temp = new PlayerLogs();
+			temp.log_id = _idr.GetInt32(_idr.GetOrdinal("log_id"));
+            temp.player_id = _idr.GetInt32(_idr.GetOrdinal("player_id"));
+            temp.test_id = _idr.GetInt32(_idr.GetOrdinal("test_id"));
+            temp.time_start = _idr["time_start"].ToString();
+			temp.time_end = _idr["time_end"].ToString();
+			temp.prev_status = _idr["prev_status"].ToString();
+			temp.new_status = _idr["new_status"].ToString();
+			temp.game_progress = _idr["game_progress"].ToString();
+			temp.is_uploaded = _idr.GetInt32(_idr.GetOrdinal("is_uploaded"));
 
-			uploadList.add(temp);
+			uploadList.Add(temp);
 		}
 
 		_idr.Close ();
@@ -845,7 +846,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 
-		foreach (PlayerLog log in uploadList)
+		foreach (PlayerLogs log in uploadList)
 		{
 			sql = "UPDATE player_logs SET is_uploaded = 1 WHERE log_id = " + log.log_id + ";";
 			_dbcm = _dbc.CreateCommand();
@@ -872,14 +873,14 @@ public class SQLiteDatabase : MonoBehaviour {
 
 		if(_idr.Read())
 		{
-			temp = new GoNoGoData();
-			temp.log_id = _idr["log_id"];
-			temp.correct_go_count = _idr["correct_go_count"];
-			temp.correct_nogo_count = _idr["correct_nogo_count"];
-			temp.mean_time = _idr["mean_time"];
-			temp.go_count = _idr["go_count"];
-			temp.trial_count = _idr["trial_count"];
-		}
+            temp = new GoNoGoData();
+            temp.log_id = _idr.GetInt32(_idr.GetOrdinal("player_id"));
+            temp.correct_go_count = _idr.GetInt32(_idr.GetOrdinal("correct_go_count")); ;
+            temp.correct_nogo_count = _idr.GetInt32(_idr.GetOrdinal("correct_nogo_count"));
+            temp.mean_time = _idr.GetDouble(_idr.GetOrdinal("mean_time"));
+            temp.go_count = _idr.GetInt32(_idr.GetOrdinal("go_count   ")); ;
+            temp.trial_count = _idr.GetInt32(_idr.GetOrdinal("trial_count")); ;
+        }
 
 		_idr.Close ();
 		_idr = null;
@@ -904,14 +905,14 @@ public class SQLiteDatabase : MonoBehaviour {
 
 		if(_idr.Read())
 		{
-			temp = new NBackData();
-			temp.log_id = _idr["log_id"];
-			temp.mean_time = _idr["mean_time"];
-			temp.correct_count = _idr["correct_count"];
-			temp.n_count = _idr["n_count"];
-			temp.element_count = _idr["element_count"];
-			temp.trial_count = _idr["trial_count"];
-		}
+            temp = new NBackData();
+            temp.log_id = _idr.GetInt32(_idr.GetOrdinal("log_id"));
+            temp.mean_time = _idr.GetDouble(_idr.GetOrdinal("mean_time"));
+            temp.correct_count = _idr.GetInt32(_idr.GetOrdinal("correct_count"));
+            temp.n_count = _idr.GetInt32(_idr.GetOrdinal("n_count"));
+            temp.element_count = _idr.GetInt32(_idr.GetOrdinal("element_count"));
+            temp.trial_count = _idr.GetInt32(_idr.GetOrdinal("trial_count"));
+        }
 
 		_idr.Close ();
 		_idr = null;
@@ -937,12 +938,12 @@ public class SQLiteDatabase : MonoBehaviour {
 		if(_idr.Read())
 		{
 			temp = new CorsiData();
-			temp.log_id = _idr["log_id"];
-			temp.correct_length = _idr["correct_length"];
-			temp.correct_trials = _idr["correct_trials"];
-			temp.seq_length = _idr["seq_length"];
-			temp.trial_count = _idr["trial_count"];
-		}
+            temp.log_id = _idr.GetInt32(_idr.GetOrdinal("log_id"));
+            temp.correct_length = _idr.GetInt32(_idr.GetOrdinal("correct_length"));
+            temp.correct_trials = _idr.GetInt32(_idr.GetOrdinal("correct_trials"));
+            temp.seq_length = _idr.GetInt32(_idr.GetOrdinal("seq_length"));
+            temp.trial_count = _idr.GetInt32(_idr.GetOrdinal("trial_count"));
+        }
 
 		_idr.Close ();
 		_idr = null;
@@ -968,14 +969,14 @@ public class SQLiteDatabase : MonoBehaviour {
 		if(_idr.Read())
 		{
 			temp = new EriksenData();
-			temp.log_id = _idr["log_id"];
-			temp.correct_congruent = _idr["correct_congruent"];
-			temp.time_congruent = _idr["time_congruent"];
-			temp.correct_incongruent = _idr["correct_incongruent"];
-			temp.time_incongruent = _idr["time_incongruent"];
-			temp.congruent_count = _idr["congruent_count"];
-			temp.trial_count = _idr["trial_count"];
-		}
+            temp.log_id = _idr.GetInt32(_idr.GetOrdinal("log_id"));
+            temp.correct_congruent = _idr.GetInt32(_idr.GetOrdinal("correct_congruent"));
+            temp.time_congruent = _idr.GetDouble(_idr.GetOrdinal("time_congruent"));
+            temp.correct_incongruent = _idr.GetInt32(_idr.GetOrdinal("correct_incongruent"));
+            temp.time_incongruent = _idr.GetDouble(_idr.GetOrdinal("time_incongruent"));
+            temp.congruent_count = _idr.GetInt32(_idr.GetOrdinal("congruent_count"));
+            temp.trial_count = _idr.GetInt32(_idr.GetOrdinal("trial_count"));
+        }
 
 		_idr.Close ();
 		_idr = null;

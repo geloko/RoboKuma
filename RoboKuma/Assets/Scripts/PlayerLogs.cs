@@ -2,13 +2,13 @@
 
 public class PlayerLogs
 {
-	private int log_id { get; set; }
-    private int player_id { get; set; }
-    private int test_id { get; set; }
-    private string time_start { get; set; }
-    private string time_end { get; set; }
-    private string prev_status { get; set; }
-    private string new_status { get; set; }
-    private string game_progress { get; set; }
-    private int is_uploaded { get; set; }
+	public int log_id { get; set; }
+    public int player_id { get; set; }
+    public int test_id { get; set; }
+    public string time_start { get; set; }
+    public string time_end { get; set; }
+    public string prev_status { get; set; }
+    public string new_status { get; set; }
+    public string game_progress { get; set; }
+    public int is_uploaded { get; set; }
 }
