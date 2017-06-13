@@ -7,11 +7,12 @@ using System.IO;
 
 public class SQLiteDatabase : MonoBehaviour {
 
-	private string _constr="URI=file://" + Application.persistentDataPath + "/SQLite.db";
-	private IDbConnection _dbc;
-	private IDbCommand _dbcm;
-	private IDataReader _idr;
-	private string sql;
+	private static string _constr = "URI=file://" + Application.persistentDataPath + "/SQLite.db";
+	private static IDbConnection _dbc;
+	private static IDbCommand _dbcm;
+	private static IDataReader _idr;
+	private static string sql;
+
 	// Use this for initialization
 	public void Start () {
 		_dbc = new SqliteConnection (_constr);
@@ -248,7 +249,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = null;
 	}
 
-	public void updateLogsPlayerID(int old_id, int new_id)
+	public static void updateLogsPlayerID(int old_id, int new_id)
 	{
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
@@ -292,7 +293,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = null;
 	}
 
-	public Player getPlayer(int temp_id)
+	public static Player getPlayer(int temp_id)
 	{
 		Player temp = null;
 		_dbc = new SqliteConnection(_constr);
@@ -320,7 +321,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		return temp;
 	}
 
-	public void updatePlayer(int old_id, Player player)
+	public static void updatePlayer(int old_id, Player player)
 	{
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
@@ -334,7 +335,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc.Close ();
 		_dbc = null;
 
-		this.updateLogsPlayerID(old_id, player.player_id);
+		updateLogsPlayerID(old_id, player.player_id);
 	}
 		
 	public void insertintoCorsi(int player_id, int log_id, int correct_trials, int correct_length, int seq_length, int trial_count)
@@ -804,7 +805,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		return bestEriksen;
 	}
 
-	public List<PlayerLogs> getLogsToUpload()
+	public static List<PlayerLogs> getLogsToUpload()
 	{
 		List<PlayerLogs> uploadList = new List<PlayerLogs>();
 
@@ -860,7 +861,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = null;
 	}
 
-	public GoNoGoData getGoNoGoToUpload(int log_id)
+	public static GoNoGoData getGoNoGoToUpload(int log_id)
 	{
 		GoNoGoData temp = null;
 
@@ -892,7 +893,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		return temp;
 	}
 
-	public NBackData getNBackToUpload(int log_id)
+	public static NBackData getNBackToUpload(int log_id)
 	{
 		NBackData temp = null;
 
@@ -924,7 +925,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		return temp;
 	}
 
-	public CorsiData getCorsiToUpload(int log_id)
+	public static CorsiData getCorsiToUpload(int log_id)
 	{
 		CorsiData temp = null;
 
@@ -955,7 +956,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		return temp;
 	}
 
-	public EriksenData getEriksenToUpload(int log_id)
+	public static EriksenData getEriksenToUpload(int log_id)
 	{
 		EriksenData temp = null;
 

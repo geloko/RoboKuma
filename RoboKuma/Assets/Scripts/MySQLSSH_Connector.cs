@@ -6,10 +6,10 @@ using MySql.Data.MySqlClient;
 public class MySQLSSH_Connector
 {
     static MySqlConnection conn;
-    private static int localPort;
+    private static string localPort;
     private static string remoteHost;
     private static string host;
-    private static int remotePort;
+    private static string remotePort;
     private static string user;
     private static string password;
     private static string dbuserName;
@@ -43,7 +43,7 @@ public class MySQLSSH_Connector
 
     // Perform FIRST Once Online
     // Only perform ONCE
-    private int syncPlayerData()
+    private void syncPlayerData()
     {
         bool isNotUnique;
         string sql = "";
@@ -57,12 +57,12 @@ public class MySQLSSH_Connector
 
             do
             {
-                Random generator = new Random();
+                System.Random generator = new System.Random();
                 local_id = generator.Next(0, 1000000).ToString("D6");
 
                 sql = "SELECT * FROM player WHERE local_id = '" + local_id + "';";
-                cmd = new MySqlCommand(sql, connection);
-                DataReader = cmd.ExecuteReader();
+                cmd = new MySqlCommand(sql, conn);
+                dataReader = cmd.ExecuteReader();
 
                 if (dataReader.Read())
                 {
@@ -80,13 +80,13 @@ public class MySQLSSH_Connector
             cmd.ExecuteNonQuery();
 
             sql = "SELECT * FROM player WHERE local_id = '" + local_id + "';";
-            cmd = new MySqlCommand(sql, connection);
+            cmd = new MySqlCommand(sql, conn);
             dataReader = cmd.ExecuteReader();
 
             if (dataReader.Read())
             {
                 Player new_player = new Player();
-                new_player.player_id = dataReader["player_id"];
+                new_player.player_id = dataReader.GetInt32(dataReader.GetOrdinal("player_id"));
                 new_player.local_id = local_id;
                 new_player.date_start = temp_player.date_start;
 
@@ -174,41 +174,6 @@ public class MySQLSSH_Connector
             }
 
             CloseConnection();
-        }
-    }
-
-    // Execute Query Reference
-    public static List<string> executeQuery(string query)
-    {
-        List<string> result = new List<string>();
-
-        if (OpenConnection() == true)
-        {
-            MySqlCommand cmd = new MySqlCommand(query, connection);
-            MySqlDataReader dataReader = cmd.ExecuteReader();
-
-            while (dataReader.Read())
-            {
-                result.Add(dataReader["id"] + "");
-                result.Add(dataReader["name"] + "");
-                result.Add(dataReader["age"] + "");
-            }
-
-            dataReader.Close();
-            CloseConnection();
-
-            return result;
-        }
-    }
-
-    // Execute Statement Reference
-    public static void executeStatement(string statement)
-    {
-        if (this.OpenConnection() == true)
-        {
-            MySqlCommand cmd = new MySqlCommand(statement, conn);
-            cmd.ExecuteNonQuery();
-            this.CloseConnection();
         }
     }
 
