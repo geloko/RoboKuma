@@ -581,6 +581,29 @@ public class SQLiteDatabase : MonoBehaviour {
 		return generated_count32;
 	}
 
+	public int countToday(String gameName)
+	{
+		if (gameName == "gonogo") {
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 1 AND time_end LIKE '%" + System.DateTime.Now.Date.ToString("MM/dd/yyyy") + "%' AND game_progress = \"FINISHED\"";
+		} else if(gameName == "corsi") {
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 2 AND time_end LIKE '%" + System.DateTime.Now.Date.ToString("MM/dd/yyyy") + "%' AND game_progress = \"FINISHED\"";
+		} else if(gameName == "nback"){
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 3 AND time_end LIKE '%" + System.DateTime.Now.Date.ToString("MM/dd/yyyy") + "%' AND game_progress = \"FINISHED\"";
+		} else if(gameName == "eriksen"){
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 4 AND time_end LIKE '%" + System.DateTime.Now.Date.ToString("MM/dd/yyyy") + "%' AND game_progress = \"FINISHED\"";
+		}
+
+		_dbcm.CommandText = sql;
+		Int64 generated_count64 = -999;
+		int generated_count32;
+		generated_count64 = (Int64) _dbcm.ExecuteScalar ();
+		Debug.Log ("SQL Count Today Statement:" + sql + "");
+		generated_count32 = Convert.ToInt32 (generated_count64);
+		Debug.Log ("Generated Count:" + generated_count32 + "");
+
+		return generated_count32;
+	}
+
 	public string getMostPlayed()
 	{
 		string mostPlayed = "N/A";

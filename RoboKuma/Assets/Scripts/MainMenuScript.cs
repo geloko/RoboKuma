@@ -34,6 +34,9 @@ public class MainMenuScript : MonoBehaviour {
     public Text achievementsGoNoGoText, achievementsEriksenText, achievementsCorsiText, achievementsNbackText;
     public Image achieveGI, achieveEI, achieveC, achieveN;
 
+	public Slider dailyObjectivesGoNoGo, dailyObjectivesEriksen, dailyObjectivesCorsi, dailyObjectivesNback;
+	public Text dailyObjectivesGoNoGoText, dailyObjectivesEriksenText, dailyObjectivesCorsiText, dailyObjectivesNbackText;
+
     public Image leg, body, head, accessory;
 
     public Button back;
@@ -147,7 +150,7 @@ public class MainMenuScript : MonoBehaviour {
 
         this.updateAchievements();
         this.updateAssets();
-
+		this.updateDailyObjectives ();
 
     }
 	
@@ -195,6 +198,41 @@ public class MainMenuScript : MonoBehaviour {
 
 
     }
+
+	public void updateDailyObjectives()
+	{
+		int gonogoCount = sn.countToday ("gonogo");
+		int eriksenCount = sn.countToday("eriksen");
+		int nbackCount = sn.countToday("nback");
+		int corsiCount = sn.countToday("corsi");
+
+		if (gonogoCount > 1)
+		{
+			gonogoCount = 1;
+		}
+		else if (eriksenCount > 1)
+		{
+			eriksenCount = 1;
+		}
+		else if (nbackCount > 1)
+		{
+			nbackCount = 1;
+		}
+		else if (corsiCount > 1)
+		{
+			corsiCount = 1;
+		}
+
+		dailyObjectivesGoNoGo.value = gonogoCount;
+//		dailyObjectivesCorsi.value = corsiCount;
+		dailyObjectivesNback.value = nbackCount;
+		dailyObjectivesEriksen.value = eriksenCount;
+
+//		dailyObjectivesCorsiText.text = corsiCount + "/1";
+		dailyObjectivesGoNoGoText.text = gonogoCount + "/1";
+		dailyObjectivesEriksenText.text = eriksenCount + "/1";
+		dailyObjectivesNbackText.text = nbackCount + "/1";
+	}
 
     public void updateAssets()
     {
