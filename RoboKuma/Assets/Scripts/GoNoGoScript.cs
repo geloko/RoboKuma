@@ -12,6 +12,7 @@ public class GoNoGoScript : MonoBehaviour {
     public Text endTxt;
     public Text expTxt;
     public Text coinsTxt;
+    public Text itemTxt;
 
     public GameObject End;
     
@@ -77,6 +78,7 @@ public class GoNoGoScript : MonoBehaviour {
 
         iterations++;
         timeTxt.text = "";
+        itemTxt.text = "Item " + iterations + " of 10";
         if(iterations <= 10)
         {
             button.image.overrideSprite = null;

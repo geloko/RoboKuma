@@ -22,7 +22,7 @@ public class EriksenFlankerScript : MonoBehaviour {
     public Text coinsTxt, expTxt;
 	public int x, y;
 	public int iteration;
-	public Text feedbackText;
+	public Text feedbackText, itemTxt;
 	public int[] nMiddleRow, nXPattern, nInnerBoxPattern, nOuterBoxPattern;
 	public int congruentCount = 0, incongruentCount = 0, correctCongruent = 0, correctIncongruent = 0;
     public bool inGame;
@@ -83,6 +83,8 @@ public class EriksenFlankerScript : MonoBehaviour {
         iteration++;
         x = Random.Range(0, 100);
 
+        itemTxt.text = "Item " + iteration + " of 10";
+
         if (x < 50)
         {
             images[0].sprite = sprites[0];
@@ -137,8 +139,10 @@ public class EriksenFlankerScript : MonoBehaviour {
         {
             iteration++;
 			x = Random.Range (0, 100);
+            
+            itemTxt.text = "Item " + iteration + " of 10";
 
-			if (x < 50)
+            if (x < 50)
             {
 				images [0].sprite = sprites [0];
 			}
@@ -281,7 +285,7 @@ public class EriksenFlankerScript : MonoBehaviour {
 				if (x < 50) {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[iteration - 1] = timeElapsed;
-                    feedbackText.text = "CORRECT " + "TIME: " + timeElapsed  + "ms";
+                    feedbackText.text = "Great!\n" + timeElapsed  + "ms";
 					score++;
                     scoreTxt.text = "" + score;
 					if (isCongruent) {
@@ -309,7 +313,7 @@ public class EriksenFlankerScript : MonoBehaviour {
                 {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[iteration - 1] = timeElapsed;
-                    feedbackText.text = "CORRECT " + "TIME: " + timeElapsed + "ms";
+                    feedbackText.text = "Great!\n" + timeElapsed + "ms";
 					score++;
                     scoreTxt.text = "" + score;
 					if (isCongruent) {
@@ -368,7 +372,7 @@ public class EriksenFlankerScript : MonoBehaviour {
                     {
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[iteration - 1] = timeElapsed;
-                        feedbackText.text = "CORRECT " + "TIME: " + timeElapsed + "ms";
+                        feedbackText.text = "Great!\n" + timeElapsed + "ms";
 						score++;
 						if (isCongruent) {
 							correctCongruent++;
@@ -395,7 +399,7 @@ public class EriksenFlankerScript : MonoBehaviour {
                     {
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[iteration - 1] = timeElapsed;
-                        feedbackText.text = "CORRECT " + "TIME: " + timeElapsed + "ms";
+                        feedbackText.text = "Great!\n" + timeElapsed + "ms";
 						score++;
 					}
                     else

@@ -236,7 +236,7 @@ public class MainMenuScript : MonoBehaviour {
 
     public void updateAssets()
     {
-        if (PlayerPrefs.GetInt("Accessory") == 11)
+        if (PlayerPrefs.GetInt("accessory") == 11)
             accessory.overrideSprite = accessory_1;
         else
             accessory.overrideSprite = null;
@@ -424,27 +424,41 @@ public class MainMenuScript : MonoBehaviour {
 	public void minigamePress()
 	{
 		PetScreen.gameObject.SetActive(false);
-		MinigameScreen.gameObject.SetActive (false);
         AchievementScreen.gameObject.SetActive(false);
         AttributeScreen.gameObject.SetActive(false);
         CustomizationScreen.gameObject.SetActive(false);
-        MinigameScreen.gameObject.SetActive(true);
+        MinigameScreen.gameObject.SetActive(!MinigameScreen.gameObject.activeSelf);
         ResultsPanel.gameObject.SetActive(false);
         SettingsScreen.gameObject.SetActive(false);
-        back.gameObject.SetActive(true);
+
+        if (MinigameScreen.gameObject.activeSelf)
+            back.gameObject.SetActive(true);
+        else
+        {
+            back.gameObject.SetActive(false);
+            PetScreen.gameObject.SetActive(true);
+            updateAttributes();
+        }
     }
 
     public void achievementPress()
     {
         PetScreen.gameObject.SetActive(false);
         MinigameScreen.gameObject.SetActive(false);
-        AchievementScreen.gameObject.SetActive(false);
         AttributeScreen.gameObject.SetActive(false);
         CustomizationScreen.gameObject.SetActive(false);
-        AchievementScreen.gameObject.SetActive(true);
+        AchievementScreen.gameObject.SetActive(!AchievementScreen.gameObject.activeSelf);
         ResultsPanel.gameObject.SetActive(false);
         SettingsScreen.gameObject.SetActive(false);
-        back.gameObject.SetActive(true);
+
+        if (AchievementScreen.gameObject.activeSelf)
+            back.gameObject.SetActive(true);
+        else
+        {
+            back.gameObject.SetActive(false);
+            PetScreen.gameObject.SetActive(true);
+            updateAttributes();
+        }
     }
 
     public void statisticsPress()
@@ -452,12 +466,18 @@ public class MainMenuScript : MonoBehaviour {
         PetScreen.gameObject.SetActive(false);
         MinigameScreen.gameObject.SetActive(false);
         AchievementScreen.gameObject.SetActive(false);
-        AttributeScreen.gameObject.SetActive(false);
         CustomizationScreen.gameObject.SetActive(false);
-        AttributeScreen.gameObject.SetActive(true);
+        AttributeScreen.gameObject.SetActive(!AttributeScreen.gameObject.activeSelf);
         ResultsPanel.gameObject.SetActive(false);
         SettingsScreen.gameObject.SetActive(false);
-        back.gameObject.SetActive(true);
+        if (AttributeScreen.gameObject.activeSelf)
+            back.gameObject.SetActive(true);
+        else
+        {
+            back.gameObject.SetActive(false);
+            PetScreen.gameObject.SetActive(true);
+            updateAttributes();
+        }
     }
 
     public void customizationPress()
@@ -466,11 +486,18 @@ public class MainMenuScript : MonoBehaviour {
         MinigameScreen.gameObject.SetActive(false);
         AchievementScreen.gameObject.SetActive(false);
         AttributeScreen.gameObject.SetActive(false);
-        CustomizationScreen.gameObject.SetActive(false);
-        CustomizationScreen.gameObject.SetActive(true);
+        CustomizationScreen.gameObject.SetActive(!CustomizationScreen.gameObject.activeSelf);
         ResultsPanel.gameObject.SetActive(false);
         SettingsScreen.gameObject.SetActive(false);
-        back.gameObject.SetActive(true);
+
+        if (CustomizationScreen.gameObject.activeSelf)
+            back.gameObject.SetActive(true);
+        else
+        {
+            back.gameObject.SetActive(false);
+            PetScreen.gameObject.SetActive(true);
+            updateAttributes();
+        }
 
     }
 
@@ -482,8 +509,16 @@ public class MainMenuScript : MonoBehaviour {
         AttributeScreen.gameObject.SetActive(false);
         CustomizationScreen.gameObject.SetActive(false);
         ResultsPanel.gameObject.SetActive(false);
-        SettingsScreen.gameObject.SetActive(true);
-        back.gameObject.SetActive(true);
+        SettingsScreen.gameObject.SetActive(!SettingsScreen.gameObject.activeSelf);
+
+        if (SettingsScreen.gameObject.activeSelf)
+            back.gameObject.SetActive(true);
+        else
+        {
+            back.gameObject.SetActive(false);
+            PetScreen.gameObject.SetActive(true);
+            updateAttributes();
+        }
 
     }
 
