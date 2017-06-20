@@ -183,6 +183,13 @@ public class MainMenuScript : MonoBehaviour {
             corsiCount = 20;
         }
 
+		if (gonogoCount == 20 || eriksenCount == 20 || nbackCount == 20 || corsiCount == 20) 
+		{
+			int tBear = PlayerPrefs.GetInt("TBearya", 0) + PlayerPrefs.GetInt("Bearya", 0);
+			tBear += 200;
+			PlayerPrefs.SetInt("TBearya", tBear);
+		}
+
         achievementsGoNoGo.value = gonogoCount;
         achievementsCorsi.value = corsiCount;
         achievementsNback.value = nbackCount;
@@ -221,6 +228,13 @@ public class MainMenuScript : MonoBehaviour {
 		else if (corsiCount > 1)
 		{
 			corsiCount = 1;
+		}
+
+		if (gonogoCount == 1 || eriksenCount == 1 || nbackCount == 1) 
+		{
+			int tBear = PlayerPrefs.GetInt("TBearya", 0) + PlayerPrefs.GetInt("Bearya", 0);
+			tBear += 200;
+			PlayerPrefs.SetInt("TBearya", tBear);
 		}
 
 		dailyObjectivesGoNoGo.value = gonogoCount;
