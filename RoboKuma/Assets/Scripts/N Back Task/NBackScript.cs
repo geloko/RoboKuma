@@ -21,6 +21,7 @@ public class NBackScript : MonoBehaviour {
     public Text endText, helpText, scoreText, display;
     public Text coinsTxt, expTxt;
     public GameObject end;
+    public Text trialsTxt;
 
     public double[] time;
 
@@ -55,9 +56,17 @@ public class NBackScript : MonoBehaviour {
         obj.transform.SetParent(this.transform, false);
 
         ItemScript itemScript = obj.GetComponent<ItemScript>();
-        itemScript.item0 = item0;
-        itemScript.item1 = -1;
-        itemScript.item2 = -1;
+       //itemScript.item0 = item0;
+        //itemScript.item1 = -1;
+        //itemScript.item2 = -1;
+        itemScript.items = new int[3];
+        itemScript.items[0] = item0;
+        
+        for(int i = 1; i < 2; i++)
+        {
+            itemScript.items[i] = -1;
+        }
+
         itemScript.score = 0;
         itemScript.count = 1;
         itemScript.endTxt = endText;
@@ -65,6 +74,7 @@ public class NBackScript : MonoBehaviour {
         itemScript.display = display;
         itemScript.coinsTxt = coinsTxt;
         itemScript.expTxt = expTxt;
+        itemScript.trialsTxt = trialsTxt;
         itemScript.end = end;
         itemScript.time = time;
         itemScript.scoreTxt = scoreText;

@@ -11,6 +11,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     public Text endTxt;
     public Text coinsTxt;
     public Text expTxt;
+    public Text itemTxt;
 
     public GameObject End;
 
@@ -77,6 +78,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         }
         start = true;
         display.text = "TAP IN THE SAME ORDER";
+        itemTxt.text = "Item 1 of 4";
     }
 
     public void ButtonClicked(int btn)
@@ -105,10 +107,14 @@ public class CorsiBlockTappingScript : MonoBehaviour {
             }
 
             clickSequence++;
-
+            
             if(clickSequence >= sequenceLength)
             {
                 StartCoroutine(showResults());
+            }
+            else
+            {
+                itemTxt.text = "Item " + (clickSequence + 1) + " of 4";
             }
         }
     }

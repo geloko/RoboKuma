@@ -67,7 +67,7 @@ public class CustomizationScript : MonoBehaviour
         
     }
 
-    public void buyItem()
+    public void equipItem()
     {
         PlayerPrefs.SetInt("item_" + itemNum, 1);
         
