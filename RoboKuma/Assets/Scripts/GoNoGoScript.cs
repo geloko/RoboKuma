@@ -114,6 +114,8 @@ public class GoNoGoScript : MonoBehaviour {
         {
             this.gameObject.SetActive(false);
 
+            int exp = (int)((score / trialCount) * 10.0 * (iterations / 10.00));
+            int coins = (int)((score / trialCount) * 50.0 * (iterations / 10.00));
             
             End.gameObject.SetActive(true);
             endTxt.text = score + "";
