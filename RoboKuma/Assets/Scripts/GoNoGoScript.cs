@@ -31,6 +31,12 @@ public class GoNoGoScript : MonoBehaviour {
     public int iterations = 0;
 
 	SQLiteDatabase sn;
+
+    public int trialCount = 10;
+
+    public Text counter;
+    public GameObject instructionScreen;
+
     // Use this for initialization
     void Start () {
         scoreTxt = scoreTxt.GetComponent<Text>();
@@ -40,12 +46,12 @@ public class GoNoGoScript : MonoBehaviour {
         End = GameObject.Find("End");
         End.gameObject.SetActive(false);
 
-        time = new double[10];
+        time = new double[trialCount];
 
         stopwatch = new Stopwatch();
 		sn = new SQLiteDatabase();
 
-		string currentTime = System.DateTime.Now + "";
+		string currentTime = System.DateTime.Now.ToString("g");
 		//player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
 		log_id = sn.insertintoPlayerLog (PlayerPrefs.GetInt("player_id"), 1, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
 		PlayerPrefs.SetInt ("log_id", log_id);
@@ -63,9 +69,13 @@ public class GoNoGoScript : MonoBehaviour {
 
     public IEnumerator startDelay()
     {
-        timeTxt.text = "READY";
+        counter.text = "3";
         yield return new WaitForSecondsRealtime(1F);
-        timeTxt.text = "GO!";
+        counter.text = "2";
+        yield return new WaitForSecondsRealtime(1F);
+        counter.text = "1";
+        yield return new WaitForSecondsRealtime(1F);
+        instructionScreen.SetActive(false);
         int rand = Random.Range(1, 2);
         yield return new WaitForSecondsRealtime(rand);
 
@@ -78,8 +88,8 @@ public class GoNoGoScript : MonoBehaviour {
 
         iterations++;
         timeTxt.text = "";
-        itemTxt.text = "Item " + iterations + " of 10";
-        if(iterations <= 10)
+        itemTxt.text = "Item " + iterations + " of " + trialCount;
+        if(iterations <= trialCount)
         {
             button.image.overrideSprite = null;
             clicked = false;
@@ -104,8 +114,6 @@ public class GoNoGoScript : MonoBehaviour {
         {
             this.gameObject.SetActive(false);
 
-            int exp = (int)(score / 10.0 * 100);
-            int coins = (int)(score / 10.0 * 500);
             
             End.gameObject.SetActive(true);
             endTxt.text = score + "";
@@ -118,14 +126,14 @@ public class GoNoGoScript : MonoBehaviour {
                 if(time[i] != -1)
                     ave += time[i];
             }
-            ave /= (10 - noGoCnt);
+            ave /= (trialCount - noGoCnt);
 
             PlayerPrefs.SetInt("Experience", exp);
             PlayerPrefs.SetInt("Bearya", coins);
 
 			sn.insertintoGoNoGo (PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt ("log_id"), goCorrect, noGoCorrect, ave, goCnt, iterations);
 
-			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now + "", PlayerPrefs.GetString ("status"), "FINISHED");
+			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
         }
         
     }

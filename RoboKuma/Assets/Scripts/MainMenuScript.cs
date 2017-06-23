@@ -19,6 +19,7 @@ public class MainMenuScript : MonoBehaviour {
     public GameObject SpeechBubble;
     public GameObject popup;
     public GameObject dailyPanel;
+    public GameObject rewards;
 
     public Slider Memory, Response, Speed, Accuracy, MemoryR, ResponseR, SpeedR, AccuracyR, MemoryS, ResponseS, SpeedS, AccuracyS;
     public Text  MemoryRT, ResponseRT, SpeedRT, AccuracyRT, MemoryT, ResponseT, SpeedT, AccuracyT;
@@ -32,10 +33,13 @@ public class MainMenuScript : MonoBehaviour {
 
     public Slider achievementsGoNoGo, achievementsEriksen, achievementsCorsi, achievementsNback;
     public Text achievementsGoNoGoText, achievementsEriksenText, achievementsCorsiText, achievementsNbackText;
-    public Image achieveGI, achieveEI, achieveC, achieveN;
+    public GameObject[] achievementRewards;
+    public GameObject[] achievementComplete;
 
 	public Slider dailyObjectivesGoNoGo, dailyObjectivesEriksen, dailyObjectivesCorsi, dailyObjectivesNback;
 	public Text dailyObjectivesGoNoGoText, dailyObjectivesEriksenText, dailyObjectivesCorsiText, dailyObjectivesNbackText;
+    public GameObject[] dailyRewards;
+    public GameObject[] dailyComplete;
 
     public Image leg, body, head, accessory;
 
@@ -54,6 +58,9 @@ public class MainMenuScript : MonoBehaviour {
     public Sprite head_1, head_2;
     public Sprite accessory_1;
     public Sprite trophy;
+
+    public String dailyReward = "";
+    public String achievementReward = "";
 
 
     // Use this for initialization
@@ -96,13 +103,40 @@ public class MainMenuScript : MonoBehaviour {
         }
 
         updateAttributes();
+        updateAchievements();
+        updateAssets();
+        updateDailyObjectives();
 
         if (PlayerPrefs.GetInt("Score", -1) != 1)
             ResultsPanel.gameObject.SetActive(false);
         else
         {
-            experience.text = PlayerPrefs.GetInt("Experience", 0) + "";
-            bearya.text = PlayerPrefs.GetInt("Bearya", 0) + "";
+            if(achievementReward.Length != 0)
+            {
+                int exp = PlayerPrefs.GetInt("TExperience", 0) + PlayerPrefs.GetInt("Experience", 0);
+                int bear = PlayerPrefs.GetInt("TBearya", 0) + PlayerPrefs.GetInt("Bearya", 0);
+                exp += 500;
+                bear += 500;
+                PlayerPrefs.SetInt("TBearya", bear);
+                PlayerPrefs.SetInt("TExperience", exp);
+            }
+
+            if(dailyReward.Length != 0)
+            {
+                int exp = PlayerPrefs.GetInt("TExperience", 0) + PlayerPrefs.GetInt("Experience", 0);
+                int bear = PlayerPrefs.GetInt("TBearya", 0) + PlayerPrefs.GetInt("Bearya", 0);
+                exp += 50;
+                bear += 50;
+                PlayerPrefs.SetInt("TBearya", bear);
+                PlayerPrefs.SetInt("TExperience", exp);
+            }
+            
+            resultI.overrideSprite = null;
+            resultLevel.text = "";
+            rewards.SetActive(false);
+            
+            //experience.text = PlayerPrefs.GetInt("Experience", 0) + "";
+            //bearya.text = PlayerPrefs.GetInt("Bearya", 0) + "";
 
             int tExp = PlayerPrefs.GetInt("TExperience", 0) + PlayerPrefs.GetInt("Experience", 0);
             int tBear = PlayerPrefs.GetInt("TBearya", 0) + PlayerPrefs.GetInt("Bearya", 0);
@@ -113,17 +147,39 @@ public class MainMenuScript : MonoBehaviour {
                 leveledup = true;
             }
 
-            if(leveledup)
+            if (achievementReward.Length != 0)
+            {
+                rewards.SetActive(true);
+                experience.text = "500";
+                bearya.text = "500";
+                resultText.text = "\nYou have unlocked\n\n\n\n\n" + achievementReward;
+                resultI.overrideSprite = trophy;
+
+                achievementReward = "";
+
+            }
+            else if (dailyReward.Length != 0)
+            {
+                rewards.SetActive(true);
+                experience.text = "50";
+                bearya.text = "50";
+                resultText.text = "\nYou have unlocked\n\n\n\n\n" + dailyReward;
+                resultI.overrideSprite = trophy;
+
+                dailyReward = "";
+            }
+            else if (leveledup)
             {
                 leveledup = false;
-                resultText.text = "Congratulations!\n\nYou've reached level";
+                resultText.text = "\nYou have reached level\n\n\n\n\nCongratulations!";
                 resultLevel.text = PlayerPrefs.GetInt("Level") + "";
                 resultI.overrideSprite = trophy;
             }
             else
-            {
-                resultText.text = "\n\n\nThanks for the help!\n\n\n\n\nHere are the results";
-            }
+                resultText.text = "\nThanks for the help!\n\n\n\n\nHere are the results";
+
+
+            
 
             tXP.text = "XP NEEDED TO LEVEL UP: " + (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - tExp);
 
@@ -146,12 +202,7 @@ public class MainMenuScript : MonoBehaviour {
 
         tExperience.value = (float) (PlayerPrefs.GetInt("TExperience", 0) - Math.Pow((PlayerPrefs.GetInt("Level", 1)), 3));
         tExperience.maxValue = (float) (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - Math.Pow(PlayerPrefs.GetInt("Level", 1), 3));
-
-
-        this.updateAchievements();
-        this.updateAssets();
-		this.updateDailyObjectives ();
-
+        
     }
 	
 	// Update is called once per frame
@@ -165,30 +216,54 @@ public class MainMenuScript : MonoBehaviour {
         int eriksenCount = sn.count("eriksen");
         int nbackCount = sn.count("nback");
         int corsiCount = sn.count("corsi");
-
-        if (gonogoCount > 20)
+        
+        if(gonogoCount == 20)
         {
-            gonogoCount = 20;
+            achievementReward = "Go/No-Go Veteran";
+            achievementRewards[0].SetActive(false);
+            achievementComplete[0].SetActive(true); 
         }
-        else if (eriksenCount > 20)
+        else
         {
-            eriksenCount = 20;
-        }
-        else if (nbackCount > 20)
-        {
-            nbackCount = 20;
-        }
-        else if (corsiCount > 20)
-        {
-            corsiCount = 20;
+            achievementComplete[0].SetActive(false);
         }
 
-		if (gonogoCount == 20 || eriksenCount == 20 || nbackCount == 20 || corsiCount == 20) 
-		{
-			int tBear = PlayerPrefs.GetInt("TBearya", 0) + PlayerPrefs.GetInt("Bearya", 0);
-			tBear += 200;
-			PlayerPrefs.SetInt("TBearya", tBear);
-		}
+        if (nbackCount == 20)
+        {
+            achievementReward = "N-Back Veteran";
+            achievementRewards[1].SetActive(false);
+            achievementComplete[1].SetActive(true);
+        }
+        else
+        {
+            achievementComplete[1].SetActive(false);
+        }
+
+        if (corsiCount == 20)
+        {
+            achievementReward = "Corsi Block-Tapping Veteran";
+            achievementRewards[2].SetActive(false);
+            achievementComplete[2].SetActive(true);
+        }
+        else
+        {
+            achievementComplete[2].SetActive(false);
+        }
+
+        if (eriksenCount == 20)
+        {
+            achievementReward = "Eriksen Flanker Veteran";
+            achievementRewards[3].SetActive(false);
+            achievementComplete[3].SetActive(true);
+        }
+        else
+        {
+            achievementComplete[3].SetActive(false);
+        }
+
+
+
+
 
         achievementsGoNoGo.value = gonogoCount;
         achievementsCorsi.value = corsiCount;
@@ -230,14 +305,40 @@ public class MainMenuScript : MonoBehaviour {
 			corsiCount = 1;
 		}
 
-		if (gonogoCount == 1 || eriksenCount == 1 || nbackCount == 1) 
-		{
-			int tBear = PlayerPrefs.GetInt("TBearya", 0) + PlayerPrefs.GetInt("Bearya", 0);
-			tBear += 200;
-			PlayerPrefs.SetInt("TBearya", tBear);
-		}
+        if(gonogoCount == 1)
+        {
+            dailyReward = "Play Go/No-Go";
+            dailyRewards[0].SetActive(false);
+            dailyComplete[0].SetActive(true);
+        }
+        else
+        {
+            dailyComplete[0].SetActive(false);
+        }
 
-		dailyObjectivesGoNoGo.value = gonogoCount;
+        if (nbackCount == 1)
+        {
+            dailyReward = "Play N-Back";
+            dailyRewards[1].SetActive(false);
+            dailyComplete[1].SetActive(true);
+        }
+        else
+        {
+            dailyComplete[1].SetActive(false);
+        }
+
+        if (eriksenCount == 1)
+        {
+            dailyReward = "Play Eriksen Flanker";
+            dailyRewards[2].SetActive(false);
+            dailyComplete[2].SetActive(true);
+        }
+        else
+        {
+            dailyComplete[2].SetActive(false);
+        }
+
+        dailyObjectivesGoNoGo.value = gonogoCount;
 //		dailyObjectivesCorsi.value = corsiCount;
 		dailyObjectivesNback.value = nbackCount;
 		dailyObjectivesEriksen.value = eriksenCount;
@@ -302,64 +403,6 @@ public class MainMenuScript : MonoBehaviour {
                 body.overrideSprite = null;
                 break;
         }
-    }
-
-    public void updateAttributes()
-    {
-        int[] stats = sn.getPlayerStatistics(1);
-        Debug.Log("STATS " + stats[0] + " " + stats[1] + " " + stats[2] +  " " + stats[3] + "");
-        Debug.Log("PSTATS " + Manager.Instance.pStats[0] + " " + Manager.Instance.pStats[1] + " " + Manager.Instance.pStats[2] + " " + Manager.Instance.pStats[3] + "");
-        Memory.value = stats[0];
-        MemoryS.value = stats[0];
-        Accuracy.value = stats[1];
-        AccuracyS.value = stats[1];
-        Speed.value = stats[2];
-        SpeedS.value = stats[2];
-        Response.value = stats[3];
-        ResponseS.value = stats[3];
-        MemoryR.value = Manager.Instance.pStats[0];
-        AccuracyR.value = Manager.Instance.pStats[1];
-        SpeedR.value = Manager.Instance.pStats[2];
-        ResponseR.value = Manager.Instance.pStats[3];
-
-        MemoryT.text = stats[0] + "";
-        AccuracyT.text = stats[1] + "";
-        SpeedT.text = stats[2] + "";
-        ResponseT.text = stats[3] + "";
-
-
-        MemoryRT.text = "" + (stats[0] - Manager.Instance.pStats[0]);
-        if (stats[0] - Manager.Instance.pStats[0] >= 0)
-            MemoryRT.text = "+" + MemoryRT.text;
-        AccuracyRT.text = "" + (stats[1] - Manager.Instance.pStats[1]);
-        if (stats[1] - Manager.Instance.pStats[1] >= 0)
-            AccuracyRT.text = "+" + AccuracyRT.text;
-        SpeedRT.text = "" + (stats[2] - Manager.Instance.pStats[2]);
-        if (stats[2] - Manager.Instance.pStats[2] >= 0)
-            SpeedRT.text = "+" + SpeedRT.text;
-        ResponseRT.text = "" + (stats[3] - Manager.Instance.pStats[3]);
-        if (stats[3] - Manager.Instance.pStats[3] >= 0)
-            ResponseRT.text = "+" + ResponseRT.text;
-
-        if((stats[1] * 1.7) < stats[2])
-        {
-            status = "FIDGETY";
-            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", true);
-        }
-        else if(stats[0] < 1)
-        {
-            status = "FORGETFUL";
-            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
-        }
-        else
-        {
-            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
-            status = "STABLE";
-
-        }
-
-        petStatus.text = status;
-
     }
 
     public void tryAsset(int itemNum)
@@ -538,13 +581,36 @@ public class MainMenuScript : MonoBehaviour {
 
     public void resultsPress()
     {
-        StartCoroutine(dosomething());
-    }
+        if (achievementReward.Length != 0)
+        {
+            rewards.SetActive(true);
+            experience.text = "500";
+            bearya.text = "500";
+            resultText.text = "\nYou have unlocked\n\n\n\n\n" + achievementReward;
+            resultI.overrideSprite = trophy;
 
-    public IEnumerator dosomething()
-    {
-        yield return new WaitForSecondsRealtime(0.5F);
-        ResultsPanel.gameObject.SetActive(false);
+            achievementReward = "";
+
+        }
+        else if (dailyReward.Length != 0)
+        {
+            rewards.SetActive(true);
+            experience.text = "50";
+            bearya.text = "50";
+            resultText.text = "\nYou have unlocked\n\n\n\n\n" + dailyReward;
+            resultI.overrideSprite = trophy;
+
+            dailyReward = "";
+        }
+        else if (leveledup)
+        {
+            leveledup = false;
+            resultText.text = "\nYou have reached level\n\n\n\n\nCongratulations!";
+            resultLevel.text = PlayerPrefs.GetInt("Level") + "";
+            resultI.overrideSprite = trophy;
+        }
+        else
+            ResultsPanel.gameObject.SetActive(false);
     }
 
     public void gonogoPress()
@@ -571,6 +637,78 @@ public class MainMenuScript : MonoBehaviour {
         SceneManager.LoadScene(4);
     }
 
+    public void updateAttributes()
+    {
+        int[] stats = sn.getPlayerStatistics(1);
+        Debug.Log("STATS " + stats[0] + " " + stats[1] + " " + stats[2] + " " + stats[3] + "");
+        Debug.Log("PSTATS " + Manager.Instance.pStats[0] + " " + Manager.Instance.pStats[1] + " " + Manager.Instance.pStats[2] + " " + Manager.Instance.pStats[3] + "");
+        Memory.value = stats[0];
+        MemoryS.value = stats[0];
+        Accuracy.value = stats[1];
+        AccuracyS.value = stats[1];
+        Speed.value = stats[2];
+        SpeedS.value = stats[2];
+        Response.value = stats[3];
+        ResponseS.value = stats[3];
+        MemoryR.value = Manager.Instance.pStats[0];
+        AccuracyR.value = Manager.Instance.pStats[1];
+        SpeedR.value = Manager.Instance.pStats[2];
+        ResponseR.value = Manager.Instance.pStats[3];
+
+        MemoryT.text = stats[0] + "";
+        AccuracyT.text = stats[1] + "";
+        SpeedT.text = stats[2] + "";
+        ResponseT.text = stats[3] + "";
+
+
+        MemoryRT.text = "" + (stats[0] - Manager.Instance.pStats[0]);
+        if (stats[0] - Manager.Instance.pStats[0] >= 0)
+            MemoryRT.text = "+" + MemoryRT.text;
+        AccuracyRT.text = "" + (stats[1] - Manager.Instance.pStats[1]);
+        if (stats[1] - Manager.Instance.pStats[1] >= 0)
+            AccuracyRT.text = "+" + AccuracyRT.text;
+        SpeedRT.text = "" + (stats[2] - Manager.Instance.pStats[2]);
+        if (stats[2] - Manager.Instance.pStats[2] >= 0)
+            SpeedRT.text = "+" + SpeedRT.text;
+        ResponseRT.text = "" + (stats[3] - Manager.Instance.pStats[3]);
+        if (stats[3] - Manager.Instance.pStats[3] >= 0)
+            ResponseRT.text = "+" + ResponseRT.text;
+
+        int statAve = 0;
+
+        for (int i = 0; i < stats.Length; i++)
+        {
+            statAve += stats[i];
+        }
+
+        statAve /= stats.Length;
+
+        if ((stats[1] * 1.7) < stats[3])
+        {
+            status = "FIDGETY";
+            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", true);
+        }
+        else if ((statAve * 0.3) > stats[0])
+        {
+            status = "FORGETFUL";
+            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
+        }
+        else if ((statAve * 0.3) > stats[2])
+        {
+            status = "SLOW";
+            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
+        }
+        else
+        {
+            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
+            status = "STABLE";
+
+        }
+
+        petStatus.text = status;
+
+    }
+
     public void jump()
     {
 
@@ -578,10 +716,18 @@ public class MainMenuScript : MonoBehaviour {
         {
             StartCoroutine(forgetfulJump());
         }
+        else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("SLOW"))
+        {
+            RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
+            RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 50;
+            RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 15000);
+        }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping())
         {
             RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
-            RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 15000);
+            RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 250;
+            RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 30000);
+            
         }
 
 
@@ -604,21 +750,28 @@ public class MainMenuScript : MonoBehaviour {
 
         yield return new WaitForSecondsRealtime(0.5F);
 
+        RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 50;
         RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 15000);
 
     }
-
+    
     public void statusPress()
     {
         popup.SetActive(true);
 
-        switch(status)
+        switch (status)
         {
-            case "FORGETFUL": popupText.text = "Robokuma is currently forgetful since he currently has a low memory attribute. Play N-back and Corsi Block-Tapping games to increase his memory stat";
+            case "FORGETFUL":
+                popupText.text = "Robokuma is currently forgetful because his MEMORY attribute is lagging behind. Remember the correct responses when playing N-BACK and CORSI BLOCK-TAPPING games to increase the memory attribute";
                 break;
-            case "FIDGETY": popupText.text = "Robokuma is fidgety because his accuracy attribute is too low when compared to his speed. Play some Go/No-Go, N-Back and Eriksen Flanker games to increase the accuracy attribute.";
+            case "FIDGETY":
+                popupText.text = "Robokuma is fidgety because his ACCURACY attribute is too low when compared to his response attribute. Do the correct response when playing GO/NO-GO, and ERIKSEN FLANKER games to increase the accuracy attribute.";
                 break;
-            case "STABLE": popupText.text = "Robokuma is currently stable, keep up the good work!";
+            case "SLOW":
+                popupText.text = "Robokuma is slow because his SPEED attribute is lagging behind. Respond faster when playing GO/NO-GO, N-BACK and ERIKSEN FLANKER games to increase the speed attribute.";
+                break;
+            case "STABLE":
+                popupText.text = "Robokuma is currently stable, keep up the good work!";
                 break;
         }
 

@@ -22,6 +22,9 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     public int clickSequence;
     public int score = 0;
 
+    public Text counter;
+    public GameObject instructionScreen;
+
 	public int log_id { get; set; }
 	SQLiteDatabase sn;
 	void Start ()
@@ -32,7 +35,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 		End.gameObject.SetActive(false);
 		sn = new SQLiteDatabase();
 
-		string currentTime = System.DateTime.Now + "";
+		string currentTime = System.DateTime.Now.ToString("g");
 		//player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
 		log_id = sn.insertintoPlayerLog (PlayerPrefs.GetInt("player_id"), 2, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
 		PlayerPrefs.SetInt ("log_id", log_id);
@@ -54,16 +57,23 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         }*/
 
         sequence = new int[sequenceLength];
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < sequenceLength; i++)
         {
             sequence[i] = Random.Range(0, buttons.Length);
         }
-
+       
         StartCoroutine(displaySequence());
     }
 
     public IEnumerator displaySequence()
     {
+        counter.text = "3";
+        yield return new WaitForSecondsRealtime(1F);
+        counter.text = "2";
+        yield return new WaitForSecondsRealtime(1F);
+        counter.text = "1";
+        yield return new WaitForSecondsRealtime(1F);
+        instructionScreen.SetActive(false);
 
         yield return new WaitForSecondsRealtime(0.5F);
         int rand;
@@ -78,7 +88,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         }
         start = true;
         display.text = "TAP IN THE SAME ORDER";
-        itemTxt.text = "Item 1 of 4";
+        itemTxt.text = "Item 1 of " + sequenceLength;
     }
 
     public void ButtonClicked(int btn)
@@ -114,7 +124,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
             }
             else
             {
-                itemTxt.text = "Item " + (clickSequence + 1) + " of 4";
+                itemTxt.text = "Item " + (clickSequence + 1) + " of " + sequenceLength;
             }
         }
     }
@@ -138,8 +148,8 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     public IEnumerator showResults()
     {
 
-        int exp = (int)(score / 4.0 * 100);
-        int coins = (int)(score / 4.0 * 500);
+        int exp = (int)(score / sequenceLength * 10.0 * (sequenceLength/4.0));
+        int coins = (int)(score / sequenceLength * 50.0 * (sequenceLength / 4.0));
 
         yield return new WaitForSecondsRealtime(0.5F);
         End.gameObject.SetActive(true);
@@ -156,7 +166,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 
 		sn.insertintoCorsi(PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt("log_id"), correct_trials, score, sequenceLength, 1);
 
-		sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now + "", PlayerPrefs.GetString ("status"), "FINISHED");
+		sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
         sn.getPlayerStatistics(1);
 
         PlayerPrefs.SetInt("Experience", exp);

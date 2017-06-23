@@ -584,13 +584,13 @@ public class SQLiteDatabase : MonoBehaviour {
 	public int countToday(String gameName)
 	{
 		if (gameName == "gonogo") {
-			sql = "SELECT COUNT(*) FROM player_logs where test_id = 1 AND time_end LIKE '%" + System.DateTime.Now.Date.ToString("MM/dd/yyyy") + "%' AND game_progress = \"FINISHED\"";
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 1 AND time_end LIKE '%" + System.DateTime.Now.Date.ToString("d") + "%' AND game_progress = 'FINISHED'";
 		} else if(gameName == "corsi") {
-			sql = "SELECT COUNT(*) FROM player_logs where test_id = 2 AND time_end LIKE '%" + System.DateTime.Now.Date.ToString("MM/dd/yyyy") + "%' AND game_progress = \"FINISHED\"";
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 2 AND time_end LIKE '%" + System.DateTime.Now.Date.ToString("d") + "%' AND game_progress = 'FINISHED'";
 		} else if(gameName == "nback"){
-			sql = "SELECT COUNT(*) FROM player_logs where test_id = 3 AND time_end LIKE '%" + System.DateTime.Now.Date.ToString("MM/dd/yyyy") + "%' AND game_progress = \"FINISHED\"";
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 3 AND time_end LIKE '%" + System.DateTime.Now.Date.ToString("d") + "%' AND game_progress = 'FINISHED'";
 		} else if(gameName == "eriksen"){
-			sql = "SELECT COUNT(*) FROM player_logs where test_id = 4 AND time_end LIKE '%" + System.DateTime.Now.Date.ToString("MM/dd/yyyy") + "%' AND game_progress = \"FINISHED\"";
+			sql = "SELECT COUNT(*) FROM player_logs where test_id = 4 AND time_end LIKE '%" + System.DateTime.Now.Date.ToString("d") + "%' AND game_progress = 'FINISHED'";
 		}
 
 		_dbcm.CommandText = sql;

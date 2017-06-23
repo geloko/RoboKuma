@@ -33,6 +33,9 @@ public class ItemScript : MonoBehaviour {
     //public int item2 = -1;
     public int[] items;
 
+    public int trialCount;
+    public int nValue;
+
     public bool swiped = false;
 
     public int score = 0;
@@ -55,31 +58,20 @@ public class ItemScript : MonoBehaviour {
 
         rb.AddForce(-transform.up * 20000);
 
-        if (items[2] == 0)
-        {
-            cheat.text = "Wrench";
-        }
-        else if(items[2] == 1)
-        {
-            cheat.text = "Water Bottle";
-        }
-
         stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        if (count > 2)
+        if (count > nValue)
         {
-            time[count - 3] = -1;
+            time[count - nValue - 1] = -1;
         }
 
-        if (count == 1)
+        if (count <= nValue)
             helpTxt.text = "Remember the items shown";
-        else if (count == 2)
-            helpTxt.text = "Remember the items shown";
-        else if (count >= 3)
+        else if (count > nValue)
         {
             helpTxt.text = "";
-            trialsTxt.text = "Item " + (count - 2) + " of 10";
+            trialsTxt.text = "Item " + (count - nValue) + " of " + trialCount;
         }
         sn = new SQLiteDatabase();
     }
@@ -96,10 +88,12 @@ public class ItemScript : MonoBehaviour {
 
     public void createObject()
     {
-        if(count <= 11)
+        if(count <= trialCount + 1)
         {
-            items[2] = items[1];
-            items[1] = items[0];
+            for(int i = 1; i <= nValue; i++)
+            {
+                items[i] = items[i - 1];
+            }
             items[0] = Random.Range(0, objects.Length);
             GameObject obj = (GameObject)Instantiate(objects[items[0]], new Vector3(0, 356, 0), Quaternion.identity);
             obj.transform.SetParent(panel.transform, false);
@@ -118,18 +112,12 @@ public class ItemScript : MonoBehaviour {
             itemScript.time = time;
             itemScript.scoreTxt = scoreTxt;
 
+            itemScript.nValue = nValue;
+            itemScript.trialCount = trialCount;
+
             rb = GetComponent<Rigidbody2D>();
 
             rb.AddForce(-transform.up * 20000);
-
-            if (items[2] == 0)
-            {
-                cheat.text = "Wrench";
-            }
-            else if (items[2] == 1)
-            {
-                cheat.text = "Water Bottle";
-            }
 
             StopAllCoroutines();
 
@@ -142,8 +130,8 @@ public class ItemScript : MonoBehaviour {
             }
 
 
-            int exp = (int)(score / 10.0 * 100);
-            int coins = (int)(score / 10.0 * 500);
+            int exp = (int)((score / trialCount) * 15.0 * (trialCount/10.0));
+            int coins = (int)((score / trialCount) * 80.0  * (trialCount/10.0));
 
             end.gameObject.SetActive(true);
             endTxt.text = score + "";
@@ -166,15 +154,15 @@ public class ItemScript : MonoBehaviour {
             PlayerPrefs.SetInt("Experience", exp);
             PlayerPrefs.SetInt("Bearya", coins);
 
-			sn.insertintoNback(PlayerPrefs.GetInt("player_id"), PlayerPrefs.GetInt("log_id"), ave, score, 2, 2, 10);
+			sn.insertintoNback(PlayerPrefs.GetInt("player_id"), PlayerPrefs.GetInt("log_id"), ave, score, nValue, 2, trialCount);
 
-			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now + "", PlayerPrefs.GetString ("status"), "FINISHED");
+			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
         }
     }
 
     void OnTriggerEnter2D()
     {
-        if (items[2] != -1 && gameObject.Equals(objects[items[2]]) && !swiped)
+        if (items[nValue] != -1 && gameObject.Equals(objects[items[nValue]]) && !swiped && count > nValue)
         {
             display.text = "Oops!";
         }
@@ -182,7 +170,7 @@ public class ItemScript : MonoBehaviour {
         {
             swiped = false;
         }
-        else if(count > 2)
+        else if(count > nValue)
         {
             //double timeElapsed = stopwatch.ElapsedMilliseconds;
             //time[count - 3] = timeElapsed;
@@ -232,24 +220,24 @@ public class ItemScript : MonoBehaviour {
             //swipe left
             if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
             {
-                if (items[2] != -1 && gameObject.Equals(objects[items[2]]))
+                if (items[nValue] != -1 && gameObject.Equals(objects[items[nValue]]))
                 {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
-                    time[count - 3] = timeElapsed;
+                    time[count - nValue - 1] = timeElapsed;
 
                     display.text = "GREAT!";
                     score++;
                     scoreTxt.text = "" + score;
                 }
-                else if (items[2] != -1)
+                else if (items[nValue] != -1)
                 {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
-                    time[count - 3] = timeElapsed;
+                    time[count - nValue - 1] = timeElapsed;
                     display.text = "Oops!";
                 }
                 //createObject();
 
-                if(count > 2)
+                if(count > nValue)
                 {
                     rb.AddForce(-transform.right * 500000);
                     swiped = true;
@@ -259,23 +247,23 @@ public class ItemScript : MonoBehaviour {
             //swipe right
             if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
             {
-                if (items[2] != -1 && gameObject.Equals(objects[items[2]]))
+                if (items[nValue] != -1 && gameObject.Equals(objects[items[nValue]]))
                 {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
-                    time[count - 3] = timeElapsed;
+                    time[count - nValue - 1] = timeElapsed;
 
                     display.text = "Great!";
                     score++;
                     scoreTxt.text = "" + score;
                 }
-                else if (items[2] != -1)
+                else if (items[nValue] != -1)
                 {
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
-                    time[count - 3] = timeElapsed;
+                    time[count - nValue - 1] = timeElapsed;
                     display.text = "Oops!";
                 }
                 //createObject();
-                if (count > 2)
+                if (count > nValue)
                 {
                     rb.AddForce(transform.right * 500000);
                     swiped = true;
@@ -316,24 +304,24 @@ public class ItemScript : MonoBehaviour {
                 //swipe left
                 if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
                 {
-                    if (items[2] != -1 && gameObject.Equals(objects[items[2]]))
+                    if (items[nValue] != -1 && gameObject.Equals(objects[items[nValue]]))
                     {
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
-                        time[count - 3] = timeElapsed;
+                        time[count - nValue - 1] = timeElapsed;
 
                         display.text = "Correct";
                         score++;
                         scoreTxt.text = "" + score;
                     }
-                    else if (items[2] != -1)
+                    else if (items[nValue] != -1)
                     {
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
-                        time[count - 3] = timeElapsed;
+                        time[count - nValue - 1] = timeElapsed;
                         display.text = "Wrong";
                     }
                     //createObject();
 
-                    if (count > 2)
+                    if (count > nValue)
                     {
                         rb.AddForce(-transform.right * 500000);
                         swiped = true;
@@ -342,23 +330,23 @@ public class ItemScript : MonoBehaviour {
                 //swipe right
                 if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
                 {
-                    if (items[2] != -1 && gameObject.Equals(objects[items[2]]))
+                    if (items[nValue] != -1 && gameObject.Equals(objects[items[nValue]]))
                     {
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
-                        time[count - 3] = timeElapsed;
+                        time[count - nValue - 1] = timeElapsed;
 
                         display.text = "Correct";
                         score++;
                         scoreTxt.text = "" + score;
                     }
-                    else if (items[2] != -1)
+                    else if (items[nValue] != -1)
                     {
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
-                        time[count - 3] = timeElapsed;
+                        time[count - nValue - 1] = timeElapsed;
                         display.text = "Wrong";
                     }
                     //createObject();
-                    if (count > 2)
+                    if (count > nValue)
                     {
                         rb.AddForce(transform.right * 500000);
                         swiped = true;

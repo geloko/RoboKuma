@@ -17,13 +17,18 @@ public class NBackScript : MonoBehaviour {
 	public int count = 10;
 	*/
 
-    public GameObject[] objects = new GameObject[2];
+    public GameObject[] objects;
     public Text endText, helpText, scoreText, display;
     public Text coinsTxt, expTxt;
     public GameObject end;
     public Text trialsTxt;
 
     public double[] time;
+    public int trialCount = 10;
+    public int nValue = 2;
+
+    public Text counter;
+    public GameObject instructionScreen;
 
 	public int log_id { get; set; }
 
@@ -34,10 +39,10 @@ public class NBackScript : MonoBehaviour {
         //gameSprites = new ArrayList();
         end.gameObject.SetActive(false);
 
-		time = new double[10];
+		time = new double[trialCount];
 		sn = new SQLiteDatabase();
 
-		string currentTime = System.DateTime.Now + "";
+		string currentTime = System.DateTime.Now.ToString("g");
 		//player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
 		log_id = sn.insertintoPlayerLog (PlayerPrefs.GetInt("player_id"), 3, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
 		PlayerPrefs.SetInt ("log_id", log_id);
@@ -48,21 +53,33 @@ public class NBackScript : MonoBehaviour {
 		
 	}
 
-	public void startGame(){
-        //StartCoroutine(displayImage ());
-        
+	public void startGame()
+    {
+        StartCoroutine(startCoroutine());
+    }
+
+    public IEnumerator startCoroutine()
+    {
+        counter.text = "3";
+        yield return new WaitForSecondsRealtime(1F);
+        counter.text = "2";
+        yield return new WaitForSecondsRealtime(1F);
+        counter.text = "1";
+        yield return new WaitForSecondsRealtime(1F);
+        instructionScreen.SetActive(false);
+
         int item0 = Random.Range(0, objects.Length);
         GameObject obj = (GameObject)Instantiate(objects[item0], new Vector3(0, 356, 0), Quaternion.identity);
         obj.transform.SetParent(this.transform, false);
 
         ItemScript itemScript = obj.GetComponent<ItemScript>();
-       //itemScript.item0 = item0;
+        //itemScript.item0 = item0;
         //itemScript.item1 = -1;
         //itemScript.item2 = -1;
-        itemScript.items = new int[3];
+        itemScript.items = new int[nValue + 1];
         itemScript.items[0] = item0;
-        
-        for(int i = 1; i < 2; i++)
+
+        for (int i = 1; i < 2; i++)
         {
             itemScript.items[i] = -1;
         }
@@ -79,6 +96,8 @@ public class NBackScript : MonoBehaviour {
         itemScript.time = time;
         itemScript.scoreTxt = scoreText;
 
+        itemScript.trialCount = trialCount;
+        itemScript.nValue = nValue;
     }
 
 	/*public void startLoop(){
