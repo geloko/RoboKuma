@@ -198,8 +198,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 			mainPanel.gameObject.SetActive(false);
             itemTxt.text = "";
 
-            int exp = (int)((score / trialCount) * 10.0 * (trialCount/10.00));
-            int coins = (int)((score / trialCount) * 50.0 * (trialCount / 10.00));
+            int exp = (int)((score * 1.0 / trialCount) * 10.0 * (trialCount/10.00));
+            int coins = (int)((score * 1.0 / trialCount) * 50.0 * (trialCount / 10.00));
 
             End.gameObject.SetActive(true);
             endTxt.text = score + "";

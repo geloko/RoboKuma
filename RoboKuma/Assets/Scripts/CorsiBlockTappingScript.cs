@@ -148,8 +148,8 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     public IEnumerator showResults()
     {
 
-        int exp = (int)(score / sequenceLength * 10.0 * (sequenceLength/4.0));
-        int coins = (int)(score / sequenceLength * 50.0 * (sequenceLength / 4.0));
+        int exp = (int)(score * 1.0 / sequenceLength * 10.0 * (sequenceLength/4.0));
+        int coins = (int)(score * 1.0 / sequenceLength * 50.0 * (sequenceLength / 4.0));
 
         yield return new WaitForSecondsRealtime(0.5F);
         End.gameObject.SetActive(true);

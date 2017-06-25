@@ -29,6 +29,7 @@ public class MainMenuScript : MonoBehaviour {
     public Text petMessage;
     public Text experience, bearya, resultLevel, resultText;
     public Text tLevel, tBearya, tXP;
+    public Text incompleteDaily;
     public Image resultI;
     public Slider tExperience;
 
@@ -67,6 +68,7 @@ public class MainMenuScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+        NotificationManager.CancelAll();
 		MainScreen = MainScreen.GetComponent<Canvas>();
         MinigameScreen = GameObject.Find ("MinigameScreen");
 		PetScreen = GameObject.Find ("PetScreen");
@@ -215,14 +217,8 @@ public class MainMenuScript : MonoBehaviour {
     {
         if(pauseStatus)
         {
-            sendNotification(3);
+            NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(64800), "RoboKuma", "Robokuma misses you.", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
         }
-    }
-
-    public IEnumerator sendNotification(float time)
-    {
-        yield return new WaitForSecondsRealtime(time);
-        NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(5), "RoboKuma", "Go back to the fucking game!", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
     }
 
     public void updateAchievements()
@@ -232,48 +228,68 @@ public class MainMenuScript : MonoBehaviour {
         int nbackCount = sn.count("nback");
         int corsiCount = sn.count("corsi");
         
-        if(gonogoCount == 20)
+        if(gonogoCount == 20 && PlayerPrefs.GetInt("A1", 0) == 0)
         {
             achievementReward = "Go/No-Go Veteran";
             achievementRewards[0].SetActive(false);
-            achievementComplete[0].SetActive(true); 
+            achievementComplete[0].SetActive(true);
+            PlayerPrefs.SetInt("A1", 1); 
         }
-        else
+        else if (PlayerPrefs.GetInt("A1", 0) == 0)
         {
             achievementComplete[0].SetActive(false);
         }
+        else if (PlayerPrefs.GetInt("A1", 0) == 1)
+        {
+            achievementRewards[0].SetActive(false);
+        }
 
-        if (nbackCount == 20)
+        if (nbackCount == 20 && PlayerPrefs.GetInt("A2", 0) == 0)
         {
             achievementReward = "N-Back Veteran";
             achievementRewards[1].SetActive(false);
             achievementComplete[1].SetActive(true);
+            PlayerPrefs.SetInt("A2", 1);
         }
-        else
+        else if (PlayerPrefs.GetInt("A2", 0) == 0)
         {
             achievementComplete[1].SetActive(false);
         }
+        else if (PlayerPrefs.GetInt("A2", 0) == 1)
+        {
+            achievementRewards[1].SetActive(false);
+        }
 
-        if (corsiCount == 20)
+        if (corsiCount == 20 && PlayerPrefs.GetInt("A3", 0) == 0)
         {
             achievementReward = "Corsi Block-Tapping Veteran";
             achievementRewards[2].SetActive(false);
             achievementComplete[2].SetActive(true);
+            PlayerPrefs.SetInt("A3", 1);
         }
-        else
+        else if (PlayerPrefs.GetInt("A3", 0) == 0)
         {
             achievementComplete[2].SetActive(false);
         }
+        else if (PlayerPrefs.GetInt("A3", 0) == 1)
+        {
+            achievementRewards[2].SetActive(false);
+        }
 
-        if (eriksenCount == 20)
+        if (eriksenCount == 20 && PlayerPrefs.GetInt("A4", 0) == 0)
         {
             achievementReward = "Eriksen Flanker Veteran";
             achievementRewards[3].SetActive(false);
             achievementComplete[3].SetActive(true);
+            PlayerPrefs.SetInt("A4", 1);
         }
-        else
+        else if (PlayerPrefs.GetInt("A4", 0) == 0)
         {
             achievementComplete[3].SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("A4", 0) == 1)
+        {
+            achievementRewards[3].SetActive(false);
         }
 
 
@@ -302,6 +318,7 @@ public class MainMenuScript : MonoBehaviour {
 		int eriksenCount = sn.countToday("eriksen");
 		int nbackCount = sn.countToday("nback");
 		int corsiCount = sn.countToday("corsi");
+        int incompleteCnt = 0;
 
 		if (gonogoCount > 1)
 		{
@@ -320,38 +337,58 @@ public class MainMenuScript : MonoBehaviour {
 			corsiCount = 1;
 		}
 
-        if(gonogoCount == 1)
+        if(gonogoCount == 1 && !PlayerPrefs.GetString("D1").Equals(System.DateTime.Now.Date.ToString()))
         {
             dailyReward = "Play Go/No-Go";
             dailyRewards[0].SetActive(false);
             dailyComplete[0].SetActive(true);
+            PlayerPrefs.SetString("D1", System.DateTime.Now.Date.ToString());
         }
-        else
+        else if (!PlayerPrefs.GetString("D1").Equals(System.DateTime.Now.Date.ToString()))
         {
             dailyComplete[0].SetActive(false);
+            incompleteCnt++;
+        }
+        else if (PlayerPrefs.GetString("D1").Equals(System.DateTime.Now.Date.ToString()))
+        {
+            dailyRewards[0].SetActive(false);
         }
 
-        if (nbackCount == 1)
+        if (nbackCount == 1 && !PlayerPrefs.GetString("D2").Equals(System.DateTime.Now.Date.ToString()))
         {
             dailyReward = "Play N-Back";
             dailyRewards[1].SetActive(false);
             dailyComplete[1].SetActive(true);
+            PlayerPrefs.SetString("D2", System.DateTime.Now.Date.ToString());
         }
-        else
+        else if (!PlayerPrefs.GetString("D2").Equals(System.DateTime.Now.Date.ToString()))
         {
             dailyComplete[1].SetActive(false);
+            incompleteCnt++;
+        }
+        else if (PlayerPrefs.GetString("D2").Equals(System.DateTime.Now.Date.ToString()))
+        {
+            dailyRewards[1].SetActive(false);
         }
 
-        if (eriksenCount == 1)
+        if (eriksenCount == 1 && !PlayerPrefs.GetString("D3").Equals(System.DateTime.Now.Date.ToString()))
         {
             dailyReward = "Play Eriksen Flanker";
             dailyRewards[2].SetActive(false);
             dailyComplete[2].SetActive(true);
+            PlayerPrefs.SetString("D3", System.DateTime.Now.Date.ToString());
         }
-        else
+        else if (!PlayerPrefs.GetString("D3").Equals(System.DateTime.Now.Date.ToString()))
         {
             dailyComplete[2].SetActive(false);
+            incompleteCnt++;
         }
+        else if (PlayerPrefs.GetString("D3").Equals(System.DateTime.Now.Date.ToString()))
+        {
+            dailyRewards[2].SetActive(false);
+        }
+
+        incompleteDaily.text = incompleteCnt + "";
 
         dailyObjectivesGoNoGo.value = gonogoCount;
 //		dailyObjectivesCorsi.value = corsiCount;
@@ -726,6 +763,8 @@ public class MainMenuScript : MonoBehaviour {
 
     public void jump()
     {
+
+        NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(5), "Robokuma", "Robokuma is jumping", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
 
         if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("FORGETFUL"))
         {

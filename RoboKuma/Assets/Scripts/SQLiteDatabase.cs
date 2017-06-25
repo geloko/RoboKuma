@@ -510,9 +510,10 @@ public class SQLiteDatabase : MonoBehaviour {
             }
             pCorrect = correct * 1.0 / total;
 			pWrong = (total - correct) * 1.0 / total;
-            response = (fasterThanAveCnt + correct_nogo) / total;
-			speed = (difficulty / aveTime);
-			accuracy = (pCorrect - pWrong) * difficulty;
+            response = (fasterThanAveCnt + correct_nogo) / total * 1.5;
+            Debug.Log("Average Speed:" + aveTime);
+			speed = (difficulty + 600) / aveTime;
+			accuracy = (pCorrect - pWrong) * difficulty * 2;
 			newResponse = oResponse + Convert.ToInt32 (response);
 			newSpeed = oSpeed + Convert.ToInt32 (speed);
 			newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
@@ -528,9 +529,9 @@ public class SQLiteDatabase : MonoBehaviour {
             }
             pCorrect = correct * 1.0 / total;
 			pWrong = (total - correct) * 1.0 / total;
-			response = (fasterThanAveCnt) / total;
-			speed = (difficulty / aveTime);
-			accuracy = (pCorrect - pWrong) * difficulty;
+			response = (fasterThanAveCnt) / total * 1.5;
+			speed = (difficulty + 500) / aveTime;
+			accuracy = (pCorrect - pWrong) * difficulty * 2;
 			newResponse = oResponse + Convert.ToInt32 (response);
 			newSpeed = oSpeed + Convert.ToInt32 (speed);
 			newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
@@ -539,7 +540,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		case "corsi":
 			pCorrect = correct * 1.0 / total;
             pWrong = (total - correct) * 1.0 / total;
-            memory = (pCorrect - pWrong) * difficulty;
+            memory = (pCorrect - pWrong) * difficulty * 2;
                 //if (pCorrect == 1) {
                 newMemory = oMemory + Convert.ToInt32 (memory);
 			/*} else {
@@ -551,9 +552,9 @@ public class SQLiteDatabase : MonoBehaviour {
 		case "nback":
 			pCorrect = correct * 1.0 / total;
 			pWrong = (total - correct) * 1.0 / total;
-			memory = (pCorrect - pWrong) * difficulty;
-			speed = (difficulty / aveTime);
-			accuracy = (pCorrect - pWrong) * difficulty;
+			memory = (pCorrect - pWrong) * difficulty * 2;
+			speed = (difficulty + 700) / aveTime;
+			accuracy = (pCorrect - pWrong) * difficulty * 2;
 			newMemory = oMemory + Convert.ToInt32 (memory);
 			newSpeed = oSpeed + Convert.ToInt32 (speed);
 			newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);

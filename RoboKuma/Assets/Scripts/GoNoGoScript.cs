@@ -113,9 +113,10 @@ public class GoNoGoScript : MonoBehaviour {
         else
         {
             this.gameObject.SetActive(false);
+            itemTxt.text = "";
 
-            int exp = (int)((score / trialCount) * 10.0 * (iterations / 10.00));
-            int coins = (int)((score / trialCount) * 50.0 * (iterations / 10.00));
+            int exp = (int)((score * 1.0 / trialCount) * 10.0 * (trialCount / 10.0));
+            int coins = (int)((score * 1.0 / trialCount) * 50.0 * (trialCount / 10.0));
             
             End.gameObject.SetActive(true);
             endTxt.text = score + "";
@@ -133,7 +134,7 @@ public class GoNoGoScript : MonoBehaviour {
             PlayerPrefs.SetInt("Experience", exp);
             PlayerPrefs.SetInt("Bearya", coins);
 
-			sn.insertintoGoNoGo (PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt ("log_id"), goCorrect, noGoCorrect, ave, time, goCnt, iterations);
+			sn.insertintoGoNoGo (PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt ("log_id"), goCorrect, noGoCorrect, ave, time, goCnt, trialCount);
 
 			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
         }

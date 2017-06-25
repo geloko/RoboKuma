@@ -130,8 +130,8 @@ public class ItemScript : MonoBehaviour {
             }
 
 
-            int exp = (int)((score / trialCount) * 15.0 * (trialCount/10.0));
-            int coins = (int)((score / trialCount) * 80.0  * (trialCount/10.0));
+            int exp = (int)((score * 1.0 / trialCount) * 15.0 * (trialCount/10.0));
+            int coins = (int)((score * 1.0 / trialCount) * 80.0  * (trialCount/10.0));
 
             end.gameObject.SetActive(true);
             endTxt.text = score + "";
