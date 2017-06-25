@@ -217,6 +217,7 @@ public class MainMenuScript : MonoBehaviour {
     {
         if(pauseStatus)
         {
+            NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(1), "Test Notification", "Should appear when the app closes.", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
             NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(64800), "RoboKuma", "Robokuma misses you.", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
         }
     }
