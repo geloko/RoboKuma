@@ -355,11 +355,11 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc.Close ();
 		_dbc = null;
 			
-        updatePlayerStatistics(correct_length, seq_length, 0.001, trial_count, "corsi", player_id);
+        updatePlayerStatistics(correct_length, 0, seq_length, 0.001, null, trial_count, "corsi", player_id);
         //Debug.Log("Updated");
 	}
 
-	public void insertintoEriksen(int player_id, int log_id, int correct_congruent, double time_congruent, int correct_incongruent, double time_incongruent, int congruent_count, int trial_count)
+	public void insertintoEriksen(int player_id, int log_id, int correct_congruent, double time_congruent, int correct_incongruent, double time_incongruent, double[] time, int congruent_count, int trial_count)
 	{
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
@@ -378,10 +378,10 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc.Close ();
 		_dbc = null;
 
-		updatePlayerStatistics(correct_congruent + correct_incongruent, trial_count, (time_congruent + time_incongruent)/2, 1, "eriksen", player_id);
+		updatePlayerStatistics(correct_congruent + correct_incongruent, 0, trial_count, (time_congruent + time_incongruent)/2, time, 1, "eriksen", player_id);
 	}
 
-	public void insertintoGoNoGo(int player_id, int log_id, int correct_go_count, int correct_nogo_count, double mean_time, int go_count, int trial_count)
+	public void insertintoGoNoGo(int player_id, int log_id, int correct_go_count, int correct_nogo_count, double mean_time, double[] time, int go_count, int trial_count)
 	{
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
@@ -399,7 +399,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc.Close ();
 		_dbc = null;
 
-		updatePlayerStatistics(correct_go_count + correct_nogo_count, trial_count, mean_time, 1, "gonogo", player_id);
+		updatePlayerStatistics(correct_go_count + correct_nogo_count, correct_go_count, trial_count, mean_time, time, 1, "gonogo", player_id);
 	}
 
 	public void insertintoNback(int player_id, int log_id, double mean_time, int correct_count, int n_count, int element_count, int trial_count)
@@ -420,7 +420,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc.Close ();
 		_dbc = null;
 
-		updatePlayerStatistics(correct_count, trial_count, mean_time, n_count, "eriksen", player_id);
+		updatePlayerStatistics(correct_count, 0, trial_count, mean_time, null, n_count, "eriksen", player_id);
 	}
 
 	public void select (string table)
@@ -473,7 +473,7 @@ public class SQLiteDatabase : MonoBehaviour {
 	}
 
 
-	public void updatePlayerStatistics(int correct, int total, double time, int difficulty, string table, int player_id)
+	public void updatePlayerStatistics(int correct, int correct_nogo, int total, double aveTime, double[] timeStamps, int difficulty, string table, int player_id)
 	{
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
@@ -482,8 +482,9 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader ();
 		int oResponse = 0, oSpeed = 0, oAccuracy = 0, oMemory = 0;
+        int fasterThanAveCnt = 0;
 
-        time += 0.001;
+        aveTime += 0.001;
 
 		while (_idr.Read ()) {
 			oMemory = _idr.GetInt32 (2);
@@ -500,10 +501,17 @@ public class SQLiteDatabase : MonoBehaviour {
 		switch (table) 
 		{
 		case "gonogo":
-			pCorrect = correct * 1.0 / total;
+            for (int i = 0; i < timeStamps.Length; i++)
+            {
+                if (timeStamps[i] != -1 && timeStamps[i] <= aveTime)
+                {
+                    fasterThanAveCnt++;
+                }
+            }
+            pCorrect = correct * 1.0 / total;
 			pWrong = (total - correct) * 1.0 / total;
-			response = (pCorrect - pWrong) * difficulty;
-			speed = (difficulty / time);
+            response = (fasterThanAveCnt + correct_nogo) / total;
+			speed = (difficulty / aveTime);
 			accuracy = (pCorrect - pWrong) * difficulty;
 			newResponse = oResponse + Convert.ToInt32 (response);
 			newSpeed = oSpeed + Convert.ToInt32 (speed);
@@ -511,10 +519,17 @@ public class SQLiteDatabase : MonoBehaviour {
 			sql = "UPDATE player_data_table SET response = " + newResponse + " , speed = " + newSpeed + " , accuracy = " + newAccuracy + " WHERE player_id = " + player_id + ";";
 						break;
 		case "eriksen":
-			pCorrect = correct * 1.0 / total;
+            for (int i = 0; i < timeStamps.Length; i++)
+            {
+                if (timeStamps[i] != -1 && timeStamps[i] <= aveTime)
+                {
+                    fasterThanAveCnt++;
+                }
+            }
+            pCorrect = correct * 1.0 / total;
 			pWrong = (total - correct) * 1.0 / total;
-			response = (pCorrect - pWrong) * difficulty;
-			speed = (difficulty / time);
+			response = (fasterThanAveCnt) / total;
+			speed = (difficulty / aveTime);
 			accuracy = (pCorrect - pWrong) * difficulty;
 			newResponse = oResponse + Convert.ToInt32 (response);
 			newSpeed = oSpeed + Convert.ToInt32 (speed);
@@ -537,7 +552,7 @@ public class SQLiteDatabase : MonoBehaviour {
 			pCorrect = correct * 1.0 / total;
 			pWrong = (total - correct) * 1.0 / total;
 			memory = (pCorrect - pWrong) * difficulty;
-			speed = (difficulty / time);
+			speed = (difficulty / aveTime);
 			accuracy = (pCorrect - pWrong) * difficulty;
 			newMemory = oMemory + Convert.ToInt32 (memory);
 			newSpeed = oSpeed + Convert.ToInt32 (speed);

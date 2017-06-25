@@ -11,6 +11,37 @@ PluginImporter:
   platformData:
     data:
       first:
+        '': Any
+      second:
+        enabled: 0
+        settings:
+          Exclude Android: 0
+          Exclude Editor: 0
+          Exclude Linux: 0
+          Exclude Linux64: 0
+          Exclude LinuxUniversal: 0
+          Exclude OSXIntel: 0
+          Exclude OSXIntel64: 0
+          Exclude OSXUniversal: 0
+          Exclude Win: 0
+          Exclude Win64: 1
+    data:
+      first:
+        '': Editor
+      second:
+        enabled: 0
+        settings:
+          CPU: x86
+          OS: AnyOS
+    data:
+      first:
+        Android: Android
+      second:
+        enabled: 1
+        settings:
+          CPU: ARMv7
+    data:
+      first:
         Any: 
       second:
         enabled: 1
@@ -19,7 +50,7 @@ PluginImporter:
       first:
         Editor: Editor
       second:
-        enabled: 0
+        enabled: 1
         settings:
           CPU: x86
           DefaultValueInitialized: true
@@ -48,7 +79,7 @@ PluginImporter:
       first:
         Standalone: Linux64
       second:
-        enabled: 0
+        enabled: 1
         settings:
           CPU: None
     data:
@@ -57,7 +88,7 @@ PluginImporter:
       second:
         enabled: 1
         settings:
-          CPU: x86
+          CPU: AnyCPU
     data:
       first:
         Standalone: OSXIntel
@@ -69,16 +100,16 @@ PluginImporter:
       first:
         Standalone: OSXIntel64
       second:
-        enabled: 0
+        enabled: 1
         settings:
           CPU: None
     data:
       first:
         Standalone: OSXUniversal
       second:
-        enabled: 0
+        enabled: 1
         settings:
-          CPU: x86
+          CPU: AnyCPU
     data:
       first:
         Standalone: Win

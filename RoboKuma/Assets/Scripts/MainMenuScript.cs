@@ -3,10 +3,11 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System;
+using Assets.SimpleAndroidNotifications;
 
 public class MainMenuScript : MonoBehaviour {
-
-	public Canvas MainScreen;
+   
+    public Canvas MainScreen;
     public GameObject PetScreen;
 	public GameObject MinigameScreen;
     public GameObject CustomizationScreen;
@@ -209,6 +210,20 @@ public class MainMenuScript : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if(pauseStatus)
+        {
+            sendNotification(3);
+        }
+    }
+
+    public IEnumerator sendNotification(float time)
+    {
+        yield return new WaitForSecondsRealtime(time);
+        NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(5), "RoboKuma", "Go back to the fucking game!", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
+    }
 
     public void updateAchievements()
     {

@@ -133,7 +133,7 @@ public class GoNoGoScript : MonoBehaviour {
             PlayerPrefs.SetInt("Experience", exp);
             PlayerPrefs.SetInt("Bearya", coins);
 
-			sn.insertintoGoNoGo (PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt ("log_id"), goCorrect, noGoCorrect, ave, goCnt, iterations);
+			sn.insertintoGoNoGo (PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt ("log_id"), goCorrect, noGoCorrect, ave, time, goCnt, iterations);
 
 			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
         }
