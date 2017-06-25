@@ -16,7 +16,9 @@ public class CustomizationScript : MonoBehaviour
     public Text popupTxt;
     public Text confirmTxt;
     public Text TBearya;
-    public Text[] legA, bodyA, headA, accessoryA;
+    public Text[] accessoryA, headA, bodyA, legA;
+    public Image[] accessoryI, headI, bodyI, legI;
+    public Sprite boughtI;
     //public Text leg_1, leg_2, leg_3, body_1, body_2, body_3, body_4;
 
     public GameObject coinIcon;
@@ -41,17 +43,47 @@ public class CustomizationScript : MonoBehaviour
         iBody.color = new Color32(246, 145, 116, 255);
         iLeg.color = new Color32(246, 145, 116, 255);
 
-        for(int i = 0; i < 4; i++)
+        for(int i = 0; i < bodyA.Length; i++)
         {
-            if (PlayerPrefs.GetInt("item_3" + (i + 1)) == 1 && PlayerPrefs.GetInt("body") != 31 + i)
+            if (PlayerPrefs.GetInt("item_3" + (i + 1)) == 1)
+            {
                 bodyA[i].text = "Purchased";
+                bodyI[i].overrideSprite = boughtI;
+            }
         }
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < legA.Length; i++)
         {
-            if (PlayerPrefs.GetInt("item_4" + (i + 1)) == 1 && PlayerPrefs.GetInt("leg") != 41 + i)
+            if (PlayerPrefs.GetInt("item_4" + (i + 1)) == 1)
+            { 
                 legA[i].text = "Purchased";
+                legI[i].overrideSprite = boughtI;
+            }
         }
+
+        for (int i = 0; i < headA.Length; i++)
+        {
+            if (PlayerPrefs.GetInt("item_2" + (i + 1)) == 1)
+            {
+                headA[i].text = "Purchased";
+                headI[i].overrideSprite = boughtI;
+            }
+        }
+
+        for (int i = 0; i < accessoryA.Length; i++)
+        {
+            if (PlayerPrefs.GetInt("item_1" + (i + 1)) == 1)
+            {
+                accessoryA[i].text = "Purchased";
+                accessoryI[i].overrideSprite = boughtI;
+            }
+        }
+
+        if (PlayerPrefs.GetInt("accessory") != 0)
+            bodyA[PlayerPrefs.GetInt("accessory") - 11].text = "Equipped";
+
+        if (PlayerPrefs.GetInt("head") != 0)
+            bodyA[PlayerPrefs.GetInt("head") - 21].text = "Equipped";
 
         if (PlayerPrefs.GetInt("body") != 0)
             bodyA[PlayerPrefs.GetInt("body") - 31].text = "Equipped";
@@ -85,6 +117,7 @@ public class CustomizationScript : MonoBehaviour
             {
                 PlayerPrefs.SetInt("accessory", itemNum);
                 accessoryA[itemNum - 11].text = "Equipped";
+                accessoryI[itemNum - 11].overrideSprite = boughtI;
             }
 
         }
@@ -103,6 +136,7 @@ public class CustomizationScript : MonoBehaviour
             {
                 PlayerPrefs.SetInt("head", itemNum);
                 headA[itemNum - 21].text = "Equipped";
+                headI[itemNum - 21].overrideSprite = boughtI;
             }
         }
 
@@ -120,6 +154,7 @@ public class CustomizationScript : MonoBehaviour
             {
                 PlayerPrefs.SetInt("body", itemNum);
                 bodyA[itemNum - 31].text = "Equipped";
+                bodyI[itemNum - 31].overrideSprite = boughtI;
             }
 
         }
@@ -137,6 +172,7 @@ public class CustomizationScript : MonoBehaviour
             {
                 PlayerPrefs.SetInt("leg", itemNum);
                 legA[itemNum - 41].text = "Equipped";
+                legI[itemNum - 41].overrideSprite = boughtI;
             }
 
             
