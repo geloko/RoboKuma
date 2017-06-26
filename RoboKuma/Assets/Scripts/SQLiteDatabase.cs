@@ -711,10 +711,12 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		_dbcm = _dbc.CreateCommand();
-		/*
-			sql = "SELECT G.log_id, G.correct_go_count, G.correct_nogo_count, G.mean_time, G.go_count, G.trial_count "  +
-				  "FROM gonogo_data G;";
-		*/
+		sql = "SELECT G.log_id, G.correct_go_count, G.correct_nogo_count, G.mean_time, G.go_count, G.trial_count " +
+                "FROM gonogo_data G, player_logs P " +
+                "WHERE P.game_progress = 'FINISHED' " +
+                "AND P.log_id = G.log_id " +
+                "AND(G.correct_go_count + G.correct_nogo_count) != 0 " +
+                "ORDER BY G.trial_count DESC, (G.correct_go_count + G.correct_nogo_count) DESC, G.mean_time ASC LIMIT 1; ";
 		_dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader();
 
@@ -746,10 +748,12 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		_dbcm = _dbc.CreateCommand();
-		/*
-			sql = "SELECT N.log_id, N.mean_time, N.correct_count, N.n_count, N.element_count, N.trial_count "  +
-				  "FROM nback_data N;";
-		*/
+        sql = "SELECT N.log_id, N.mean_time, N.correct_count, N.n_count, N.element_count, N.trial_count " +
+                "FROM nback_data N, player_logs P " +
+                "WHERE P.game_progress = 'FINISHED' " +
+                "AND P.log_id = N.log_id " +
+                "AND N.correct_count != 0 " +
+                "ORDER BY N.n_count DESC, N.correct_count DESC, N.mean_time ASC LIMIT 1; ";
 		_dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader();
 
@@ -781,10 +785,12 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		_dbcm = _dbc.CreateCommand();
-		/*
-			sql = "SELECT C.log_id, C.correct_length, C.correct_trials, C.seq_length, C.trial_count "  +
-				  "FROM corsi_data G;";
-		*/
+        sql = "SELECT C.log_id, C.correct_trials, C.correct_length, C.seq_length, C.trial_count " +
+                "FROM corsi_data C, player_logs P " +
+                "WHERE P.game_progress = 'FINISHED' " +
+                "AND P.log_id = C.log_id " +
+                "AND C.correct_length != 0 " +
+                "ORDER BY C.trial_count DESC, C.correct_trials DESC, C.seq_length DESC, C.correct_length DESC LIMIT 1; ";
 		_dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader();
 
@@ -815,10 +821,12 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		_dbcm = _dbc.CreateCommand();
-		/*
-			sql = "SELECT E.log_id, E.correct_congruent, E.time_congruent, E.correct_incongruent, E.time_incongruent, E.congruent_count, E.trial_count "  +
-				  "FROM eriksen_data EXISTS;";
-		*/
+        sql = "SELECT E.log_id, E.correct_congruent, E.time_congruent, E.correct_incongruent, E.time_incongruent, E.congruent_count, E.trial_count " +
+                "FROM eriksen_data E, player_logs P " +
+                "WHERE P.game_progress = 'FINISHED' " +
+                "AND P.log_id = E.log_id " +
+                "AND(E.correct_congruent + E.correct_incongruent) != 0 " +
+                "ORDER BY E.trial_count DESC, (E.correct_congruent + E.correct_incongruent) DESC, E.time_congruent ASC, E.time_incongruent ASC LIMIT 1; ";
 		_dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader();
 
