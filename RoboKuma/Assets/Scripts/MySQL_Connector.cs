@@ -6,8 +6,8 @@ using MySql.Data.MySqlClient;
 public class MySQL_Connector 
 {
     static MySqlConnection conn;
-    private string localPort;
     private string localHost;
+    private string localPort;
     private string dbUser;
     private string dbPassword;
     private string dbName;
@@ -36,7 +36,7 @@ public class MySQL_Connector
 
     // Perform FIRST Once Online
     // Only perform ONCE
-    private void syncPlayerData()
+    public void syncPlayerData()
     {
         bool isNotUnique;
         string sql = "";
