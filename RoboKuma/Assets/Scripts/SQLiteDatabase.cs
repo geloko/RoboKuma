@@ -741,6 +741,39 @@ public class SQLiteDatabase : MonoBehaviour {
 		return bestGoNoGo;
 	}
 
+    public object[] getAvgGoNoGo()
+    {
+        object[] avgGoNoGo = new object[3];
+
+        _dbc = new SqliteConnection(_constr);
+        _dbc.Open();
+        _dbcm = _dbc.CreateCommand();
+        sql = "SELECT G.trial_count, COUNT(G.log_id), AVG(G.mean_time) " +
+                "FROM gonogo_data G, player_logs P " +
+                "WHERE P.game_progress = 'FINISHED' " +
+                "AND P.log_id = G.log_id " +
+                "GROUP BY G.trial_count " +
+                "ORDER BY COUNT(G.log_id) DESC LIMIT 1;";
+        _dbcm.CommandText = sql;
+        _idr = _dbcm.ExecuteReader();
+
+        if (_idr.Read())
+        {
+            avgGoNoGo[0] = _idr.GetInt32(_idr.GetOrdinal("trial_count"));
+            avgGoNoGo[1] = _idr.GetInt32(_idr.GetOrdinal("COUNT(G.log_id)"));
+            avgGoNoGo[2] = _idr.GetDouble(_idr.GetOrdinal("AVG(G.mean_time)"));
+        }
+
+        _idr.Close();
+        _idr = null;
+        _dbcm.Dispose();
+        _dbcm = null;
+        _dbc.Close();
+        _dbc = null;
+
+        return avgGoNoGo;
+    }
+
 	public NBackData getBestNBack()
 	{
 		NBackData bestNBack = null;
@@ -778,7 +811,40 @@ public class SQLiteDatabase : MonoBehaviour {
 		return bestNBack;
 	}
 
-	public CorsiData getBestCorsi()
+    public object[] getAvgNBack()
+    {
+        object[] avgNBack = new object[3];
+
+        _dbc = new SqliteConnection(_constr);
+        _dbc.Open();
+        _dbcm = _dbc.CreateCommand();
+        sql = "SELECT N.n_count, COUNT(N.log_id), AVG(N.correct_count) " +
+                "FROM nback_data N, player_logs P " +
+                "WHERE P.game_progress = 'FINISHED' " +
+                "AND P.log_id = N.log_id " +
+                "GROUP BY N.n_count " +
+                "ORDER BY COUNT(N.log_id) DESC LIMIT 1;";
+        _dbcm.CommandText = sql;
+        _idr = _dbcm.ExecuteReader();
+
+        if (_idr.Read())
+        {
+            avgNBack[0] = _idr.GetInt32(_idr.GetOrdinal("n_count"));
+            avgNBack[1] = _idr.GetInt32(_idr.GetOrdinal("COUNT(N.log_id)"));
+            avgNBack[2] = _idr.GetInt32(_idr.GetOrdinal("AVG(N.correct_count)"));
+        }
+
+        _idr.Close();
+        _idr = null;
+        _dbcm.Dispose();
+        _dbcm = null;
+        _dbc.Close();
+        _dbc = null;
+
+        return avgNBack;
+    }
+
+    public CorsiData getBestCorsi()
 	{
 		CorsiData bestCorsi = null;
 
@@ -814,7 +880,40 @@ public class SQLiteDatabase : MonoBehaviour {
 		return bestCorsi;
 	}
 
-	public EriksenData getBestEriksen()
+    public object[] getAvgCorsi()
+    {
+        object[] avgCorsi = new object[3];
+
+        _dbc = new SqliteConnection(_constr);
+        _dbc.Open();
+        _dbcm = _dbc.CreateCommand();
+        sql = "SELECT C.seq_length, COUNT(C.log_id), AVG(C.correct_length) " +
+                "FROM corsi_data C, player_logs P " +
+                "WHERE P.game_progress = 'FINISHED' " +
+                "AND P.log_id = C.log_id " +
+                "GROUP BY C.seq_length " +
+                "ORDER BY COUNT(C.log_id) DESC LIMIT 1;";
+        _dbcm.CommandText = sql;
+        _idr = _dbcm.ExecuteReader();
+
+        if (_idr.Read())
+        {
+            avgCorsi[0] = _idr.GetInt32(_idr.GetOrdinal("seq_length"));
+            avgCorsi[1] = _idr.GetInt32(_idr.GetOrdinal("COUNT(C.log_id)"));
+            avgCorsi[2] = _idr.GetInt32(_idr.GetOrdinal("AVG(C.correct_length)"));
+        }
+
+        _idr.Close();
+        _idr = null;
+        _dbcm.Dispose();
+        _dbcm = null;
+        _dbc.Close();
+        _dbc = null;
+
+        return avgCorsi;
+    }
+
+    public EriksenData getBestEriksen()
 	{
 		EriksenData bestEriksen = null;
 
@@ -852,7 +951,41 @@ public class SQLiteDatabase : MonoBehaviour {
 		return bestEriksen;
 	}
 
-	public static List<PlayerLogs> getLogsToUpload()
+    public object[] getAvgEriksen()
+    {
+        object[] avgEriksen = new object[4];
+
+        _dbc = new SqliteConnection(_constr);
+        _dbc.Open();
+        _dbcm = _dbc.CreateCommand();
+        sql = "SELECT E.trial_count, COUNT(E.log_id), AVG(E.time_congruent), AVG(E.time_incongruent) " +
+                "FROM eriksen_data E, player_logs P " +
+                "WHERE P.game_progress = 'FINISHED' " +
+                "AND P.log_id = E.log_id " +
+                "GROUP BY E.trial_count " +
+                "ORDER BY COUNT(E.log_id) DESC LIMIT 1; ";
+        _dbcm.CommandText = sql;
+        _idr = _dbcm.ExecuteReader();
+
+        if (_idr.Read())
+        {
+            avgEriksen[0] = _idr.GetInt32(_idr.GetOrdinal("trial_count"));
+            avgEriksen[1] = _idr.GetInt32(_idr.GetOrdinal("COUNT(E.log_id)"));
+            avgEriksen[2] = _idr.GetDouble(_idr.GetOrdinal("AVG(E.time_congruent)"));
+            avgEriksen[3] = _idr.GetDouble(_idr.GetOrdinal("AVG(E.time_incongruent)"));
+        }
+
+        _idr.Close();
+        _idr = null;
+        _dbcm.Dispose();
+        _dbcm = null;
+        _dbc.Close();
+        _dbc = null;
+
+        return avgEriksen;
+    }
+
+    public static List<PlayerLogs> getLogsToUpload()
 	{
 		List<PlayerLogs> uploadList = new List<PlayerLogs>();
 
