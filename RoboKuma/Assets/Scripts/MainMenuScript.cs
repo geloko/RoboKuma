@@ -55,7 +55,7 @@ public class MainMenuScript : MonoBehaviour {
 
     public SQLiteDatabase sn;
 
-    public Sprite body_1, body_2, body_3, body_4;
+    public Sprite body_1, body_2, body_3, body_4, body_5;
     public Sprite leg_1, leg_2, leg_3;
     public Sprite head_1, head_2;
     public Sprite accessory_1;
@@ -452,6 +452,9 @@ public class MainMenuScript : MonoBehaviour {
             case 34:
                 body.overrideSprite = body_4;
                 break;
+            case 35:
+                body.overrideSprite = body_5;
+                break;
             case 0:
                 body.overrideSprite = null;
                 break;
@@ -502,6 +505,9 @@ public class MainMenuScript : MonoBehaviour {
                 break;
             case 34:
                 body.overrideSprite = body_4;
+                break;
+            case 35:
+                body.overrideSprite = body_5;
                 break;
             case 41:
                 leg.overrideSprite = leg_1;

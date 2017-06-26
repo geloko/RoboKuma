@@ -18,7 +18,11 @@ public class CustomizationScript : MonoBehaviour
     public Text TBearya;
     public Text[] accessoryA, headA, bodyA, legA;
     public Image[] accessoryI, headI, bodyI, legI;
-    public Sprite boughtI;
+    public Button[] accessoryB, headB, bodyB, legB;
+    public Sprite boughtI, lockedI;
+
+    public RawImage[] lockedB, lockedL, lockedA;
+
     //public Text leg_1, leg_2, leg_3, body_1, body_2, body_3, body_4;
 
     public GameObject coinIcon;
@@ -30,7 +34,6 @@ public class CustomizationScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         leg.SetActive(false);
         body.SetActive(false);
         head.SetActive(false);
@@ -43,7 +46,53 @@ public class CustomizationScript : MonoBehaviour
         iBody.color = new Color32(246, 145, 116, 255);
         iLeg.color = new Color32(246, 145, 116, 255);
 
-        for(int i = 0; i < bodyA.Length; i++)
+        if(PlayerPrefs.GetInt("Level", 1) >= 10)
+        {
+            lockedB[0].gameObject.SetActive(false);
+            bodyB[3].interactable = true;
+            bodyI[3].overrideSprite = null;
+            bodyA[3].text = "250";
+            lockedL[0].gameObject.SetActive(false);
+            legI[2].overrideSprite = null;
+            legB[2].interactable = true;
+            legA[2].text = "250";
+            lockedA[0].gameObject.SetActive(false);
+            accessoryI[0].overrideSprite = null;
+            accessoryB[0].interactable = true;
+            accessoryA[0].text = "250";
+        }
+        else
+        {
+            lockedB[0].gameObject.SetActive(true);
+            bodyB[3].interactable = false;
+            bodyI[3].overrideSprite = lockedI;
+            bodyA[3].text = "Unlocked at Level 10";
+            lockedL[0].gameObject.SetActive(true);
+            legI[2].overrideSprite = lockedI;
+            legB[2].interactable = false;
+            legA[2].text = "Unlocked at Level 10";
+            lockedA[0].gameObject.SetActive(true);
+            accessoryI[0].overrideSprite = lockedI;
+            accessoryB[0].interactable = false;
+            accessoryA[0].text = "Unlocked at Level 10";
+        }
+
+        if (PlayerPrefs.GetInt("Level", 1) >= 20)
+        {
+            lockedB[1].gameObject.SetActive(false);
+            bodyB[4].interactable = true;
+            bodyI[4].overrideSprite = null;
+            bodyA[4].text = "250";
+        }
+        else
+        {
+            lockedB[1].gameObject.SetActive(true);
+            bodyB[4].interactable = false;
+            bodyI[4].overrideSprite = lockedI;
+            bodyA[4].text = "Unlocked at Level 20";
+        }
+
+        for (int i = 0; i < bodyA.Length; i++)
         {
             if (PlayerPrefs.GetInt("item_3" + (i + 1)) == 1)
             {
@@ -249,6 +298,9 @@ public class CustomizationScript : MonoBehaviour
                     break;
                 case 34:
                     popupTxt.text = "Buy a Black Shirt for " + price + " bearyas?";
+                    break;
+                case 35:
+                    popupTxt.text = "Buy a Yellow Shirt for " + price + " bearyas?";
                     break;
                 case 41:
                     popupTxt.text = "Buy a Blue Shorts for " + price + " bearyas?";
