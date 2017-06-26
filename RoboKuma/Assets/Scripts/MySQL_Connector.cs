@@ -13,7 +13,7 @@ public class MySQL_Connector
     private string dbName;
 
     //Constructor
-    public MySQL_Connector(string localHost, string dbName, string dbUser, string dbPassword, string localPort = "3306")
+    public MySQL_Connector(string localHost, string dbName, string dbUser, string dbPassword, string localPort )
     {
         this.localHost = localHost;
         this.dbName = dbName;
