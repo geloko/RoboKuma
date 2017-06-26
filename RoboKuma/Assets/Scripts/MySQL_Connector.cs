@@ -3,40 +3,33 @@ using UnityEngine;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 
-public class MySQLSSH_Connector
+public class MySQL_Connector 
 {
     static MySqlConnection conn;
-    private static string localPort;
-    private static string remoteHost;
-    private static string host;
-    private static string remotePort;
-    private static string user;
-    private static string password;
-    private static string dbuserName;
-    private static string dbpassword;
-    private static string dbName;
+    private string localPort;
+    private string localHost;
+    private string dbUser;
+    private string dbPassword;
+    private string dbName;
 
-    // Always Initialize First
-    public MySQLSSH_Connector()
+    //Constructor
+    public MySQL_Connector(string localHost, string dbName, string dbUser, string dbPassword, string localPort = "3306")
     {
+        this.localHost = localHost;
+        this.dbName = dbName;
+        this.dbUser = dbUser;
+        this.dbPassword = dbPassword;
+        this.localPort = localPort;
+
         Initialize();
     }
 
+    //Initialize values
     private void Initialize()
     {
-        localPort = "22";
-        remoteHost = "188.166.217.210";
-        host = "127.0.0.1";
-        remotePort = "3306";
-        user = "admin_kuma";
-        password = "admin1234";
-        dbuserName = "admin_kuma";
-        dbpassword = "admin2134";
-        dbName = "RoboKuma";
-
         string connectionString;
-        connectionString = "SERVER=" + host + ";" + "DATABASE=" +
-        dbName + ";" + "UID=" + dbuserName + ";" + "PASSWORD=" + dbpassword + ";";
+        connectionString = "SERVER=" + localHost + ";" + "DATABASE=" +
+        dbName + ";" + "UID=" + dbUser + ";" + "PASSWORD=" + dbPassword + ";";
 
         conn = new MySqlConnection(connectionString);
     }
@@ -51,7 +44,7 @@ public class MySQLSSH_Connector
         MySqlCommand cmd;
         MySqlDataReader dataReader;
 
-        if(OpenConnection() == true)
+        if (OpenConnection() == true)
         {
             Player temp_player = SQLiteDatabase.getPlayer(1);
 
@@ -96,10 +89,9 @@ public class MySQLSSH_Connector
             dataReader.Close();
             CloseConnection();
         }
-       
+
     }
 
-    // Only Perform AFTER Syncing Player Data
     public void uploadPlayerLogs(int player_id)
     {
         MySqlCommand cmd;
