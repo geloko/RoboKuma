@@ -12,7 +12,6 @@ public class MySQL_Connector
     private string dbPassword;
     private string dbName;
 
-    //Constructor
     public MySQL_Connector(string localHost, string dbName, string dbUser, string dbPassword, string localPort )
     {
         this.localHost = localHost;
@@ -24,7 +23,7 @@ public class MySQL_Connector
         Initialize();
     }
 
-    //Initialize values
+
     private void Initialize()
     {
         string connectionString;
@@ -34,8 +33,6 @@ public class MySQL_Connector
         conn = new MySqlConnection(connectionString);
     }
 
-    // Perform FIRST Once Online
-    // Only perform ONCE
     public void syncPlayerData()
     {
         bool isNotUnique;
