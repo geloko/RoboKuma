@@ -953,12 +953,12 @@ public class SQLiteDatabase : MonoBehaviour {
 
     public object[] getAvgEriksen()
     {
-        object[] avgEriksen = new object[4];
+        object[] avgEriksen = new object[5];
 
         _dbc = new SqliteConnection(_constr);
         _dbc.Open();
         _dbcm = _dbc.CreateCommand();
-        sql = "SELECT E.trial_count, COUNT(E.log_id), AVG(E.time_congruent), AVG(E.time_incongruent) " +
+        sql = "SELECT E.trial_count, COUNT(E.log_id), AVG(E.time_congruent), AVG(E.time_incongruent), AVG(E.correct_congruent + E.correct_incongruent) " +
                 "FROM eriksen_data E, player_logs P " +
                 "WHERE P.game_progress = 'FINISHED' " +
                 "AND P.log_id = E.log_id " +
@@ -973,6 +973,7 @@ public class SQLiteDatabase : MonoBehaviour {
             avgEriksen[1] = _idr.GetInt32(_idr.GetOrdinal("COUNT(E.log_id)"));
             avgEriksen[2] = _idr.GetDouble(_idr.GetOrdinal("AVG(E.time_congruent)"));
             avgEriksen[3] = _idr.GetDouble(_idr.GetOrdinal("AVG(E.time_incongruent)"));
+            avgEriksen[4] = _idr.GetInt32(_idr.GetOrdinal("AVG(E.correct_congruent + E.correct_incongruent)"));
         }
 
         _idr.Close();

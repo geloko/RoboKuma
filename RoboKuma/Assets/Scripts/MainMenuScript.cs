@@ -24,6 +24,9 @@ public class MainMenuScript : MonoBehaviour {
 
     public Slider Memory, Response, Speed, Accuracy, MemoryR, ResponseR, SpeedR, AccuracyR, MemoryS, ResponseS, SpeedS, AccuracyS;
     public Text  MemoryRT, ResponseRT, SpeedRT, AccuracyRT, MemoryT, ResponseT, SpeedT, AccuracyT;
+    public Text[] testsAverage;
+    public Text[] testsBest;
+
     public Text popupText;
     public Text petStatus;
     public Text petMessage;
@@ -587,7 +590,10 @@ public class MainMenuScript : MonoBehaviour {
         ResultsPanel.gameObject.SetActive(false);
         SettingsScreen.gameObject.SetActive(false);
         if (AttributeScreen.gameObject.activeSelf)
+        {
             back.gameObject.SetActive(true);
+            updateStatistics();
+        }
         else
         {
             back.gameObject.SetActive(false);
@@ -766,6 +772,63 @@ public class MainMenuScript : MonoBehaviour {
 
         petStatus.text = status;
 
+    }
+
+    public void updateStatistics()
+    {
+        testsAverage[0].text = "Average Reaction Time: " + sn.getAvgGoNoGo()[2] + " ms";
+        if (sn.getAvgGoNoGo()[2] == null)
+            testsAverage[0].text = "Average Reaction Time: No Data";
+        GoNoGoData g = sn.getBestGoNoGo();
+        if(g == null)
+        {
+            testsBest[0].text = "Correct Go: No Data\nCorrect No-Go: No Data\nScore: No Data\nMean Reaction Time: No Data";
+
+        }
+        else
+        {
+            testsBest[0].text = "Correct Go: " + g.correct_go_count + "\nCorrect No-Go: " + g.correct_nogo_count + "\nScore: " + (g.correct_nogo_count + g.correct_go_count) + "/" + g.trial_count + "\nMean Reaction Time: " + g.mean_time + " ms";
+        }
+
+
+        testsAverage[1].text = "Average Score: " + sn.getAvgNBack()[2];
+        if (sn.getAvgNBack()[2] == null)
+            testsAverage[1].text = "Average Score: No Data";
+        NBackData n = sn.getBestNBack();
+        if(n == null)
+        {
+            testsBest[1].text = "Score: No Data\nN Count: No Data";
+        }
+        else
+            testsBest[1].text = "Score: " + n.correct_count + "/" + n.element_count + "\nN Count: " + n.n_count;
+
+
+        testsAverage[2].text = "Average Correct Sequence Length: " + sn.getAvgCorsi()[2];
+        if(sn.getAvgCorsi()[2] == null)
+            testsAverage[2].text = "Average Correct Sequence Length: No Data";
+        CorsiData c = sn.getBestCorsi();
+        if(c == null)
+            testsBest[2].text = "Score: No Data\nSequence Length: No Data";
+        else
+            testsBest[2].text = "Score: " + c.correct_length + "/" + c.seq_length + "\nSequence Length: " + c.seq_length;
+
+
+        testsAverage[3].text = "Ave. Reaction Time (Congruent): " + sn.getAvgEriksen()[2] + " ms" + "\nAve. Reaction Time (Incongruent): " + " ms" + sn.getAvgEriksen()[3] + "\nAverage Score: " + sn.getAvgEriksen()[4];
+        if(sn.getAvgEriksen()[2] == null)
+            testsAverage[3].text = "Ave. Reaction Time (Congruent): No Data\nAve. Reaction Time (Incongruent): No Data\nAverage Score: No Data";
+
+        EriksenData e = sn.getBestEriksen();
+        if(e == null)
+            testsBest[3].text = "Score: No Data\nAve.Reaction Time (Congruent): No Data\nAve.Reaction Time (Incongruent): No Data\nCorrect Congruent: No Data\nCorrect Inconguent: No Data";
+        else
+        {
+            testsBest[3].text = "Score: " + (e.correct_congruent + e.correct_incongruent) + "/" + e.trial_count
+                    + "\nAve.Reaction Time (Congruent): " + e.time_congruent + " ms" 
+                    + "\nAve.Reaction Time (Incongruent): " + e.time_incongruent + " ms"
+                    + "\nCorrect Congruent: " + e.correct_congruent
+                    + "\nCorrect Inconguent: " + e.correct_incongruent; 
+        }
+            
     }
 
     public void jump()
