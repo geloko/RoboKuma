@@ -9,6 +9,10 @@ public class CustomizationScript : MonoBehaviour
     // 2 - Head
     // 3 - Body
     // 4 - Leg
+    
+    public Vector2 firstPressPos;
+    public Vector2 secondPressPos;
+    public Vector2 currentSwipe;
 
     public GameObject leg, body, head, accessories;
     public GameObject popup, nmpopup;
@@ -29,7 +33,7 @@ public class CustomizationScript : MonoBehaviour
 
     public Image iLeg, iBody, iHead, iAccessories;
 
-    public int itemNum, price;
+    public int itemNum, price, activeCategory;
 
     // Use this for initialization
     void Start()
@@ -40,6 +44,8 @@ public class CustomizationScript : MonoBehaviour
         accessories.SetActive(true);
         popup.SetActive(false);
         nmpopup.SetActive(false);
+
+        activeCategory = 0;
 
         iAccessories.color = new Color32(238, 109, 88, 255);
         iHead.color = new Color32(246, 145, 116, 255);
@@ -145,7 +151,7 @@ public class CustomizationScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        SwipeForComputer();
     }
 
     public void equipItem()
@@ -315,12 +321,78 @@ public class CustomizationScript : MonoBehaviour
         }
     }
 
+    public void SwipeForComputer()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            //save began touch 2d point
+            firstPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            //save ended touch 2d point
+            secondPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+
+            //create vector from the two points
+            currentSwipe = new Vector2(secondPressPos.x - firstPressPos.x, secondPressPos.y - firstPressPos.y);
+
+            //normalize the 2d vector
+            currentSwipe.Normalize();
+
+            //swipe upwards
+            if (currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+            {
+            }
+            //swipe down
+            if (currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+            {
+            }
+            //swipe left
+            if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+            {
+                activeCategory += 1;
+
+                switch (activeCategory)
+                {
+                    case 1:
+                        headPress();
+                        break;
+                    case 2:
+                        bodyPress();
+                        break;
+                    case 3:
+                        legPress();
+                        break;
+                }
+            }
+            //swipe right
+            if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+            {
+                activeCategory -= 1;
+                switch (activeCategory)
+                {
+                    case 0:
+                        accessoriesPress();
+                        break;
+                    case 1:
+                        headPress();
+                        break;
+                    case 2:
+                        bodyPress();
+                        break;
+                }
+            }
+        }
+    }
+
     public void accessoriesPress()
     {
         leg.SetActive(false);
         body.SetActive(false);
         head.SetActive(false);
         accessories.SetActive(true);
+
+        activeCategory = 0;
 
 
         iAccessories.color = new Color32(238, 109, 88, 255);
@@ -336,6 +408,8 @@ public class CustomizationScript : MonoBehaviour
         head.SetActive(true);
         accessories.SetActive(false);
 
+        activeCategory = 1;
+
         iHead.color = new Color32(238, 109, 88, 255);
         iAccessories.color = new Color32(246, 145, 116, 255);
         iBody.color = new Color32(246, 145, 116, 255);
@@ -348,6 +422,8 @@ public class CustomizationScript : MonoBehaviour
         body.SetActive(true);
         head.SetActive(false);
         accessories.SetActive(false);
+
+        activeCategory = 2;
         
         iBody.color = new Color32(238, 109, 88, 255);
         iHead.color = new Color32(246, 145, 116, 255);
@@ -361,6 +437,8 @@ public class CustomizationScript : MonoBehaviour
         body.SetActive(false);
         head.SetActive(false);
         accessories.SetActive(false);
+
+        activeCategory = 3;
 
         iLeg.color = new Color32(238, 109, 88, 255);
         iHead.color = new Color32(246, 145, 116, 255);
