@@ -46,6 +46,35 @@ public class NBackScript : MonoBehaviour {
 		//player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
 		log_id = sn.insertintoPlayerLog (PlayerPrefs.GetInt("player_id"), 3, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
 		PlayerPrefs.SetInt ("log_id", log_id);
+
+        NBackData[] lastNBack = sn.getLastNBack();
+
+        int sum = 0;
+
+        for(int i = 0; i < lastNBack.Length; i++)
+        {
+            if(lastNBack[i] == null)
+            {
+                PlayerPrefs.SetInt("NBack_Difficulty", 0);
+                break;
+            }
+            else if(lastNBack[0].n_count != lastNBack[i].n_count)
+            {
+                break;
+            }
+            else
+            {
+                sum += lastNBack[i].correct_count / lastNBack[i].trial_count;
+            }
+        }
+
+        if(sum == 3)
+        {
+            PlayerPrefs.SetInt("NBack_Difficulty", PlayerPrefs.GetInt("NBack_Difficulty", 0) + 1);
+        }
+
+        nValue = 2 + PlayerPrefs.GetInt("NBack_Difficulty", 0);
+
     }
 
     // Update is called once per frame

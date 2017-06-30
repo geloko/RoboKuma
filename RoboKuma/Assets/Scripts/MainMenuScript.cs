@@ -153,6 +153,7 @@ public class MainMenuScript : MonoBehaviour {
                 leveledup = true;
             }
 
+            
             if (achievementReward.Length != 0)
             {
                 rewards.SetActive(true);
@@ -183,11 +184,7 @@ public class MainMenuScript : MonoBehaviour {
             }
             else
                 resultText.text = "\nThanks for the help!\n\n\n\n\nHere are the results";
-
-
             
-
-            tXP.text = "XP NEEDED TO LEVEL UP: " + (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - tExp);
 
 
             PlayerPrefs.SetInt("TExperience", tExp);
@@ -200,8 +197,10 @@ public class MainMenuScript : MonoBehaviour {
             PlayerPrefs.SetInt("Score", 0);
         }
 
-        tLevel.text = "LVL" + PlayerPrefs.GetInt("Level", 1);
+        tLevel.text = "Lvl. " + PlayerPrefs.GetInt("Level", 1);
         tBearya.text = PlayerPrefs.GetInt("TBearya", 0) + "";
+        tXP.text = "" + (PlayerPrefs.GetInt("TExperience", 0) - Math.Pow((PlayerPrefs.GetInt("Level", 1)), 3)) + "/" + (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - Math.Pow((PlayerPrefs.GetInt("Level", 1)), 3));
+
 
         Debug.Log(PlayerPrefs.GetInt("TExperience", 0));
         Debug.Log(Math.Pow((PlayerPrefs.GetInt("Level", 1)), 3));
@@ -790,10 +789,11 @@ public class MainMenuScript : MonoBehaviour {
             testsBest[0].text = "Correct Go: " + g.correct_go_count + "\nCorrect No-Go: " + g.correct_nogo_count + "\nScore: " + (g.correct_nogo_count + g.correct_go_count) + "/" + g.trial_count + "\nMean Reaction Time: " + g.mean_time + " ms";
         }
 
-
-        testsAverage[1].text = "Average Score: " + sn.getAvgNBack()[2];
         if (sn.getAvgNBack()[2] == null)
-            testsAverage[1].text = "Average Score: No Data";
+            testsAverage[1].text = "Accuracy: No Data";
+        else
+            testsAverage[1].text = "Accuracy: " + (Int32.Parse(sn.getAvgNBack()[2].ToString()) * 100) + "%";
+        
         NBackData n = sn.getBestNBack();
         if(n == null)
         {
@@ -802,10 +802,11 @@ public class MainMenuScript : MonoBehaviour {
         else
             testsBest[1].text = "Score: " + n.correct_count + "/" + n.element_count + "\nN Count: " + n.n_count;
 
-
-        testsAverage[2].text = "Average Correct Sequence Length: " + sn.getAvgCorsi()[2];
-        if(sn.getAvgCorsi()[2] == null)
-            testsAverage[2].text = "Average Correct Sequence Length: No Data";
+        if (sn.getAvgCorsi()[2] == null)
+            testsAverage[2].text = "Accuracy: No Data";
+        else
+            testsAverage[2].text = "Accuracy: " + (Int32.Parse(sn.getAvgCorsi()[2].ToString()) * 100) + "%";
+        
         CorsiData c = sn.getBestCorsi();
         if(c == null)
             testsBest[2].text = "Score: No Data\nSequence Length: No Data";
@@ -833,8 +834,6 @@ public class MainMenuScript : MonoBehaviour {
 
     public void jump()
     {
-
-        NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(5), "Robokuma", "Robokuma is jumping", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
 
         if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("FORGETFUL"))
         {

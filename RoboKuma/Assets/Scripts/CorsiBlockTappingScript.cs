@@ -12,12 +12,13 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     public Text coinsTxt;
     public Text expTxt;
     public Text itemTxt;
+    public Text EndMessage;
 
     public GameObject End;
 
     public int[] sequence;
     //public int[] spriteSequence;
-    public int sequenceLength = 4;
+    public int sequenceLength;
     public bool start = true;
     public int clickSequence;
     public int score = 0;
@@ -39,6 +40,35 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 		//player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
 		log_id = sn.insertintoPlayerLog (PlayerPrefs.GetInt("player_id"), 2, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
 		PlayerPrefs.SetInt ("log_id", log_id);
+
+        CorsiData[] lastCorsiData = sn.getLastCorsi();
+
+        int sum = 0;
+        for(int i = 0; i < lastCorsiData.Length; i++)
+        {
+            if(lastCorsiData[i] == null)
+            {
+                PlayerPrefs.SetInt("Corsi_Difficulty", 0);
+                break;
+            }
+            else if(lastCorsiData[0].seq_length != lastCorsiData[i].seq_length)
+            {
+                break;
+            }
+            else
+            {
+                sum += lastCorsiData[i].correct_length / lastCorsiData[i].seq_length;
+            }
+        }
+
+        if(sum == 3)
+        {
+            PlayerPrefs.SetInt("Corsi_Difficulty", PlayerPrefs.GetInt("Corsi_Difficulty", 0) + 1);
+        }
+
+        sequenceLength = 4 + PlayerPrefs.GetInt("Corsi_Difficulty", 0);
+
+
     }
 	
 	void Update ()
@@ -79,6 +109,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         int rand;
         for (int i = 0; i < sequence.Length; i++)
         {
+            itemTxt.text = "Item " + (i + 1) + " of " + sequenceLength;
             rand = Random.Range(0, sequenceSprites.Length);
             buttons[sequence[i]].image.overrideSprite = sequenceSprites[rand];
             //spriteSequence[i] = rand;
@@ -164,7 +195,10 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 			correct_trials = 0;
 		}
 
-		sn.insertintoCorsi(PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt("log_id"), correct_trials, score, sequenceLength, 1);
+        EndMessage.text = "OUT OF " + sequenceLength + "\n\n\n\n\n\nTAP ANYWHERE TO CONTINUE";
+
+
+        sn.insertintoCorsi(PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt("log_id"), correct_trials, score, sequenceLength, 1);
 
 		sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
         sn.getPlayerStatistics(1);

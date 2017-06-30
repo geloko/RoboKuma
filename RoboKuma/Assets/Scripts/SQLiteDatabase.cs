@@ -811,6 +811,46 @@ public class SQLiteDatabase : MonoBehaviour {
 		return bestNBack;
 	}
 
+    public NBackData[] getLastNBack()
+    {
+        NBackData nbackData;
+        NBackData[] lastNBack = new NBackData[3];
+        int count = 0;
+
+        _dbc = new SqliteConnection(_constr);
+        _dbc.Open();
+        _dbcm = _dbc.CreateCommand();
+        sql = "SELECT N.log_id, N.mean_time, N.correct_count, N.n_count, N.element_count, N.trial_count " +
+                "FROM nback_data N, player_logs P " +
+                "WHERE P.game_progress = 'FINISHED' " +
+                "AND P.log_id = N.log_id " +
+                "ORDER BY N.log_id DESC; ";
+        _dbcm.CommandText = sql;
+        _idr = _dbcm.ExecuteReader();
+
+        while (_idr.Read() && count < 3)
+        {
+            nbackData = new NBackData();
+            nbackData.log_id = _idr.GetInt32(_idr.GetOrdinal("log_id"));
+            nbackData.mean_time = _idr.GetDouble(_idr.GetOrdinal("mean_time"));
+            nbackData.correct_count = _idr.GetInt32(_idr.GetOrdinal("correct_count"));
+            nbackData.n_count = _idr.GetInt32(_idr.GetOrdinal("n_count"));
+            nbackData.element_count = _idr.GetInt32(_idr.GetOrdinal("element_count"));
+            nbackData.trial_count = _idr.GetInt32(_idr.GetOrdinal("trial_count"));
+            lastNBack[count] = nbackData;
+            count++;
+        }
+
+        _idr.Close();
+        _idr = null;
+        _dbcm.Dispose();
+        _dbcm = null;
+        _dbc.Close();
+        _dbc = null;
+
+        return lastNBack;
+    }
+
     public object[] getAvgNBack()
     {
         object[] avgNBack = new object[3];
@@ -818,7 +858,7 @@ public class SQLiteDatabase : MonoBehaviour {
         _dbc = new SqliteConnection(_constr);
         _dbc.Open();
         _dbcm = _dbc.CreateCommand();
-        sql = "SELECT N.n_count, COUNT(N.log_id), AVG(N.correct_count) " +
+        sql = "SELECT N.n_count, COUNT(N.log_id), AVG(N.correct_count / N.trial_count) " +
                 "FROM nback_data N, player_logs P " +
                 "WHERE P.game_progress = 'FINISHED' " +
                 "AND P.log_id = N.log_id " +
@@ -831,7 +871,7 @@ public class SQLiteDatabase : MonoBehaviour {
         {
             avgNBack[0] = _idr.GetInt32(_idr.GetOrdinal("n_count"));
             avgNBack[1] = _idr.GetInt32(_idr.GetOrdinal("COUNT(N.log_id)"));
-            avgNBack[2] = _idr.GetInt32(_idr.GetOrdinal("AVG(N.correct_count)"));
+            avgNBack[2] = _idr.GetInt32(_idr.GetOrdinal("AVG(N.correct_count / N.trial_count)"));
         }
 
         _idr.Close();
@@ -887,7 +927,7 @@ public class SQLiteDatabase : MonoBehaviour {
         _dbc = new SqliteConnection(_constr);
         _dbc.Open();
         _dbcm = _dbc.CreateCommand();
-        sql = "SELECT C.seq_length, COUNT(C.log_id), AVG(C.correct_length) " +
+        sql = "SELECT C.seq_length, COUNT(C.log_id), AVG(C.correct_length / C.seq_length) " +
                 "FROM corsi_data C, player_logs P " +
                 "WHERE P.game_progress = 'FINISHED' " +
                 "AND P.log_id = C.log_id " +
@@ -900,7 +940,7 @@ public class SQLiteDatabase : MonoBehaviour {
         {
             avgCorsi[0] = _idr.GetInt32(_idr.GetOrdinal("seq_length"));
             avgCorsi[1] = _idr.GetInt32(_idr.GetOrdinal("COUNT(C.log_id)"));
-            avgCorsi[2] = _idr.GetInt32(_idr.GetOrdinal("AVG(C.correct_length)"));
+            avgCorsi[2] = _idr.GetInt32(_idr.GetOrdinal("AVG(C.correct_length / C.seq_length)"));
         }
 
         _idr.Close();
@@ -911,6 +951,45 @@ public class SQLiteDatabase : MonoBehaviour {
         _dbc = null;
 
         return avgCorsi;
+    }
+
+    public CorsiData[] getLastCorsi()
+    {
+        CorsiData[] lastCorsi = new CorsiData[3];
+        CorsiData corsiData;
+        int count = 0;
+
+        _dbc = new SqliteConnection(_constr);
+        _dbc.Open();
+        _dbcm = _dbc.CreateCommand();
+        sql = "SELECT C.log_id, C.correct_trials, C.correct_length, C.seq_length, C.trial_count " +
+                "FROM corsi_data C, player_logs P " +
+                "WHERE P.game_progress = 'FINISHED' " +
+                "AND P.log_id = C.log_id " +
+                "ORDER BY C.log_id DESC; ";
+        _dbcm.CommandText = sql;
+        _idr = _dbcm.ExecuteReader();
+
+        while (_idr.Read() && count < 3)
+        {
+            corsiData = new CorsiData();
+            corsiData.log_id = _idr.GetInt32(_idr.GetOrdinal("log_id"));
+            corsiData.correct_length = _idr.GetInt32(_idr.GetOrdinal("correct_length"));
+            corsiData.correct_trials = _idr.GetInt32(_idr.GetOrdinal("correct_trials"));
+            corsiData.seq_length = _idr.GetInt32(_idr.GetOrdinal("seq_length"));
+            corsiData.trial_count = _idr.GetInt32(_idr.GetOrdinal("trial_count"));
+            lastCorsi[count] = corsiData;
+            count++;
+        }
+
+        _idr.Close();
+        _idr = null;
+        _dbcm.Dispose();
+        _dbcm = null;
+        _dbc.Close();
+        _dbc = null;
+
+        return lastCorsi;
     }
 
     public EriksenData getBestEriksen()
