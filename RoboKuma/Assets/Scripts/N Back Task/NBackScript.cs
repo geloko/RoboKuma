@@ -51,7 +51,7 @@ public class NBackScript : MonoBehaviour {
 
         int sum = 0;
 
-        for(int i = 0; i < lastNBack.Length; i++)
+        /*for(int i = 0; i < lastNBack.Length; i++)
         {
             if(lastNBack[i] == null)
             {
@@ -73,7 +73,7 @@ public class NBackScript : MonoBehaviour {
             PlayerPrefs.SetInt("NBack_Difficulty", PlayerPrefs.GetInt("NBack_Difficulty", 0) + 1);
         }
 
-        nValue = 2 + PlayerPrefs.GetInt("NBack_Difficulty", 0);
+        nValue = 2 + PlayerPrefs.GetInt("NBack_Difficulty", 0);*/
 
     }
 

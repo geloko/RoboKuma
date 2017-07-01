@@ -440,7 +440,7 @@ public class EriksenFlankerScript : MonoBehaviour {
             images[i].enabled = false;
         }
 
-        yield return new WaitForSecondsRealtime(1F);
+        yield return new WaitForSecondsRealtime(1.5F);
         feedbackText.text = "";
         images[0].enabled = true;
         startGame();

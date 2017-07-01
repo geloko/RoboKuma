@@ -44,15 +44,18 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         CorsiData[] lastCorsiData = sn.getLastCorsi();
 
         int sum = 0;
+        bool isComplete = true;
         for(int i = 0; i < lastCorsiData.Length; i++)
         {
             if(lastCorsiData[i] == null)
             {
                 PlayerPrefs.SetInt("Corsi_Difficulty", 0);
+                isComplete = false;
                 break;
             }
             else if(lastCorsiData[0].seq_length != lastCorsiData[i].seq_length)
             {
+                isComplete = false;
                 break;
             }
             else
@@ -64,6 +67,10 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         if(sum == 3)
         {
             PlayerPrefs.SetInt("Corsi_Difficulty", PlayerPrefs.GetInt("Corsi_Difficulty", 0) + 1);
+        }
+        else if(PlayerPrefs.GetInt("Corsi_Difficulty", 0) >= 1 && sum <= 1.5 && isComplete)
+        {
+            PlayerPrefs.SetInt("Corsi_Difficulty", PlayerPrefs.GetInt("Corsi_Difficulty", 0) - 1);
         }
 
         sequenceLength = 4 + PlayerPrefs.GetInt("Corsi_Difficulty", 0);

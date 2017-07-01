@@ -374,9 +374,9 @@ public class MainMenuScript : MonoBehaviour {
             dailyRewards[1].SetActive(false);
         }
 
-        if (eriksenCount == 1 && !PlayerPrefs.GetString("D3").Equals(System.DateTime.Now.Date.ToString()))
+        if (corsiCount == 1 && !PlayerPrefs.GetString("D3").Equals(System.DateTime.Now.Date.ToString()))
         {
-            dailyReward = "Play Eriksen Flanker";
+            dailyReward = "Play Corsi Block-Tapping";
             dailyRewards[2].SetActive(false);
             dailyComplete[2].SetActive(true);
             PlayerPrefs.SetString("D3", System.DateTime.Now.Date.ToString());
@@ -391,14 +391,31 @@ public class MainMenuScript : MonoBehaviour {
             dailyRewards[2].SetActive(false);
         }
 
+        if (eriksenCount == 1 && !PlayerPrefs.GetString("D4").Equals(System.DateTime.Now.Date.ToString()))
+        {
+            dailyReward = "Play Eriksen Flanker";
+            dailyRewards[3].SetActive(false);
+            dailyComplete[3].SetActive(true);
+            PlayerPrefs.SetString("D4", System.DateTime.Now.Date.ToString());
+        }
+        else if (!PlayerPrefs.GetString("D4").Equals(System.DateTime.Now.Date.ToString()))
+        {
+            dailyComplete[3].SetActive(false);
+            incompleteCnt++;
+        }
+        else if (PlayerPrefs.GetString("D4").Equals(System.DateTime.Now.Date.ToString()))
+        {
+            dailyRewards[3].SetActive(false);
+        }
+
         incompleteDaily.text = incompleteCnt + "";
 
         dailyObjectivesGoNoGo.value = gonogoCount;
-//		dailyObjectivesCorsi.value = corsiCount;
+		dailyObjectivesCorsi.value = corsiCount;
 		dailyObjectivesNback.value = nbackCount;
 		dailyObjectivesEriksen.value = eriksenCount;
 
-//		dailyObjectivesCorsiText.text = corsiCount + "/1";
+		dailyObjectivesCorsiText.text = corsiCount + "/1";
 		dailyObjectivesGoNoGoText.text = gonogoCount + "/1";
 		dailyObjectivesEriksenText.text = eriksenCount + "/1";
 		dailyObjectivesNbackText.text = nbackCount + "/1";
@@ -752,12 +769,12 @@ public class MainMenuScript : MonoBehaviour {
             status = "FIDGETY";
             RKAnimation.GetComponent<Animator>().SetBool("isFidgety", true);
         }
-        else if ((statAve * 0.3) > stats[0])
+        else if ((statAve * 0.6) > stats[0])
         {
             status = "FORGETFUL";
             RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
         }
-        else if ((statAve * 0.3) > stats[2])
+        else if ((statAve * 0.6) > stats[2])
         {
             status = "SLOW";
             RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
@@ -775,9 +792,11 @@ public class MainMenuScript : MonoBehaviour {
 
     public void updateStatistics()
     {
-        testsAverage[0].text = "Average Reaction Time: " + sn.getAvgGoNoGo()[2] + " ms";
         if (sn.getAvgGoNoGo()[2] == null)
             testsAverage[0].text = "Average Reaction Time: No Data";
+        else
+            testsAverage[0].text = "Average Reaction Time: " + ((Int32)float.Parse(sn.getAvgGoNoGo()[2].ToString())) + " ms";
+        
         GoNoGoData g = sn.getBestGoNoGo();
         if(g == null)
         {
@@ -786,13 +805,13 @@ public class MainMenuScript : MonoBehaviour {
         }
         else
         {
-            testsBest[0].text = "Correct Go: " + g.correct_go_count + "\nCorrect No-Go: " + g.correct_nogo_count + "\nScore: " + (g.correct_nogo_count + g.correct_go_count) + "/" + g.trial_count + "\nMean Reaction Time: " + g.mean_time + " ms";
+            testsBest[0].text = "Correct Go: " + g.correct_go_count + "\nCorrect No-Go: " + g.correct_nogo_count + "\nScore: " + (g.correct_nogo_count + g.correct_go_count) + "/" + g.trial_count + "\nMean Reaction Time: " + ((Int32)g.mean_time) + " ms";
         }
 
         if (sn.getAvgNBack()[2] == null)
             testsAverage[1].text = "Accuracy: No Data";
         else
-            testsAverage[1].text = "Accuracy: " + (Int32.Parse(sn.getAvgNBack()[2].ToString()) * 100) + "%";
+            testsAverage[1].text = "Accuracy: " + ((Int32)float.Parse(sn.getAvgNBack()[2].ToString()) * 100) + "%";
         
         NBackData n = sn.getBestNBack();
         if(n == null)
@@ -805,7 +824,7 @@ public class MainMenuScript : MonoBehaviour {
         if (sn.getAvgCorsi()[2] == null)
             testsAverage[2].text = "Accuracy: No Data";
         else
-            testsAverage[2].text = "Accuracy: " + (Int32.Parse(sn.getAvgCorsi()[2].ToString()) * 100) + "%";
+            testsAverage[2].text = "Accuracy: " + ((Int32)float.Parse(sn.getAvgCorsi()[2].ToString()) * 100) + "%";
         
         CorsiData c = sn.getBestCorsi();
         if(c == null)
@@ -814,7 +833,7 @@ public class MainMenuScript : MonoBehaviour {
             testsBest[2].text = "Score: " + c.correct_length + "/" + c.seq_length + "\nSequence Length: " + c.seq_length;
 
 
-        testsAverage[3].text = "Ave. Reaction Time (Congruent): " + sn.getAvgEriksen()[2] + " ms" + "\nAve. Reaction Time (Incongruent): " + " ms" + sn.getAvgEriksen()[3] + "\nAverage Score: " + sn.getAvgEriksen()[4];
+        testsAverage[3].text = "Ave. Reaction Time (Congruent): " + ((Int32)float.Parse(sn.getAvgEriksen()[2].ToString())) + " ms" + "\nAve. Reaction Time (Incongruent): " + ((Int32) float.Parse(sn.getAvgEriksen()[3].ToString())) + " ms" + "\nAverage Score: " + sn.getAvgEriksen()[4];
         if(sn.getAvgEriksen()[2] == null)
             testsAverage[3].text = "Ave. Reaction Time (Congruent): No Data\nAve. Reaction Time (Incongruent): No Data\nAverage Score: No Data";
 
@@ -824,8 +843,8 @@ public class MainMenuScript : MonoBehaviour {
         else
         {
             testsBest[3].text = "Score: " + (e.correct_congruent + e.correct_incongruent) + "/" + e.trial_count
-                    + "\nAve.Reaction Time (Congruent): " + e.time_congruent + " ms" 
-                    + "\nAve.Reaction Time (Incongruent): " + e.time_incongruent + " ms"
+                    + "\nAve.Reaction Time (Congruent): " + ((Int32) e.time_congruent) + " ms" 
+                    + "\nAve.Reaction Time (Incongruent): " + ((Int32) e.time_incongruent) + " ms"
                     + "\nCorrect Congruent: " + e.correct_congruent
                     + "\nCorrect Inconguent: " + e.correct_incongruent; 
         }
