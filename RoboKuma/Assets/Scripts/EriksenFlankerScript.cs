@@ -34,7 +34,13 @@ public class EriksenFlankerScript : MonoBehaviour {
     public Text counter;
     public GameObject instructionScreen;
 
-	SQLiteDatabase sn;
+    //for SFX
+    public AudioSource audioHandler;
+    public AudioClip soundCorrect;
+    public AudioClip soundIncorrect;
+
+
+    SQLiteDatabase sn;
 	// Use this for initialization
 	/*
 	 * LEGEND:
@@ -293,6 +299,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 			if(currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
 			{
 				if (x < 50) {
+                    audioHandler.clip = soundCorrect;
+                    audioHandler.Play();
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[iteration - 1] = timeElapsed;
                     feedbackText.text = "Great!\n" + timeElapsed  + " ms";
@@ -310,6 +318,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 				}
                 else
                 {
+                    audioHandler.clip = soundIncorrect;
+                    audioHandler.Play();
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[iteration - 1] = timeElapsed;
                     feedbackText.text = "Oops";
@@ -321,8 +331,11 @@ public class EriksenFlankerScript : MonoBehaviour {
 			{
 				if (x >= 50)
                 {
+                    audioHandler.clip = soundCorrect;
+                    audioHandler.Play();
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[iteration - 1] = timeElapsed;
+
                     feedbackText.text = "Great!\n" + timeElapsed + " ms";
 					score++;
                     scoreTxt.text = "" + score;
@@ -337,6 +350,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 					}
                 } else
                 {
+                    audioHandler.clip = soundIncorrect;
+                    audioHandler.Play();
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[iteration - 1] = timeElapsed;
                     feedbackText.text = "Oops";
@@ -380,6 +395,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 				{
 					if (x < 50)
                     {
+                        audioHandler.clip = soundCorrect;
+                        audioHandler.Play();
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[iteration - 1] = timeElapsed;
                         feedbackText.text = "Great!\n" + timeElapsed + " ms";
@@ -396,6 +413,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 					}
                     else
                     {
+                        audioHandler.clip = soundIncorrect;
+                        audioHandler.Play();
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[iteration - 1] = timeElapsed;
                         feedbackText.text = "Oops";
@@ -407,6 +426,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 				{
 					if (x >= 50)
                     {
+                        audioHandler.clip = soundCorrect;
+                        audioHandler.Play();
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[iteration - 1] = timeElapsed;
                         feedbackText.text = "Great!\n" + timeElapsed + " ms";
@@ -414,6 +435,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 					}
                     else
                     {
+                        audioHandler.clip = soundIncorrect;
+                        audioHandler.Play();
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[iteration - 1] = timeElapsed;
                         feedbackText.text = "Oops";
