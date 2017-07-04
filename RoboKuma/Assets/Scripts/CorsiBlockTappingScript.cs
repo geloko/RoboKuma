@@ -26,7 +26,13 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     public Text counter;
     public GameObject instructionScreen;
 
-	public int log_id { get; set; }
+    //for SFX
+    public AudioSource audioHandler;
+    public AudioClip soundCorrect;
+    public AudioClip soundIncorrect;
+    public AudioClip soundSuccess;
+
+    public int log_id { get; set; }
 	SQLiteDatabase sn;
 	void Start ()
     {
@@ -143,6 +149,8 @@ public class CorsiBlockTappingScript : MonoBehaviour {
             //bool correct = false;
             if (btn == sequence[clickSequence])
             {
+                audioHandler.clip = soundCorrect;
+                audioHandler.Play();
                 display.text = "GREAT!";
                 score++;
 
@@ -150,6 +158,8 @@ public class CorsiBlockTappingScript : MonoBehaviour {
             }
             else
             {
+                audioHandler.clip = soundIncorrect;
+                audioHandler.Play();
                 display.text = "INCORRECT!";
 
                 StartCoroutine(showIncorrect(btn));
@@ -190,6 +200,8 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         int exp = (int)(score * 1.0 / sequenceLength * 10.0 * (sequenceLength/4.0));
         int coins = (int)(score * 1.0 / sequenceLength * 50.0 * (sequenceLength / 4.0));
 
+       
+
         yield return new WaitForSecondsRealtime(0.5F);
         End.gameObject.SetActive(true);
         endTxt.text = score + "";
@@ -202,6 +214,9 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 		} else {
 			correct_trials = 0;
 		}
+
+        audioHandler.clip = soundSuccess;
+        audioHandler.Play();
 
         EndMessage.text = "OUT OF " + sequenceLength + "\n\n\n\n\n\nTAP ANYWHERE TO CONTINUE";
 
