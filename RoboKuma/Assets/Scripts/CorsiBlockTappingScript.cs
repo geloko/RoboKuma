@@ -74,6 +74,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         }
 
         sequenceLength = 4 + PlayerPrefs.GetInt("Corsi_Difficulty", 0);
+        itemTxt.text = "Item 0 of " + sequenceLength;
 
 
     }

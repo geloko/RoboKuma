@@ -26,6 +26,9 @@ public class MainMenuScript : MonoBehaviour {
     public Text  MemoryRT, ResponseRT, SpeedRT, AccuracyRT, MemoryT, ResponseT, SpeedT, AccuracyT;
     public Text[] testsAverage;
     public Text[] testsBest;
+    public GameObject generalStatPanel, minigameStatPanel;
+    public Image generalStatBtn, minigameStatBtn, gBtnBottom, mBtnBottom;
+    public Text generalData;
 
     public Text popupText;
     public Text petStatus;
@@ -147,9 +150,9 @@ public class MainMenuScript : MonoBehaviour {
             int tExp = PlayerPrefs.GetInt("TExperience", 0) + PlayerPrefs.GetInt("Experience", 0);
             int tBear = PlayerPrefs.GetInt("TBearya", 0) + PlayerPrefs.GetInt("Bearya", 0);
 
-            while (tExp >= Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3))
+            while (tExp >= Math.Pow((PlayerPrefs.GetInt("Level", 0) + 1), 3))
             {
-                PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level", 1) + 1);
+                PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level", 0) + 1);
                 leveledup = true;
             }
 
@@ -197,16 +200,16 @@ public class MainMenuScript : MonoBehaviour {
             PlayerPrefs.SetInt("Score", 0);
         }
 
-        tLevel.text = "Lvl. " + PlayerPrefs.GetInt("Level", 1);
+        tLevel.text = "Lvl. " + PlayerPrefs.GetInt("Level", 0);
         tBearya.text = PlayerPrefs.GetInt("TBearya", 0) + "";
-        tXP.text = "" + (PlayerPrefs.GetInt("TExperience", 0) - Math.Pow((PlayerPrefs.GetInt("Level", 1)), 3)) + "/" + (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - Math.Pow((PlayerPrefs.GetInt("Level", 1)), 3));
+        tXP.text = "" + (PlayerPrefs.GetInt("TExperience", 0) - Math.Pow((PlayerPrefs.GetInt("Level", 0)), 3)) + "/" + (Math.Pow((PlayerPrefs.GetInt("Level", 0) + 1), 3) - Math.Pow((PlayerPrefs.GetInt("Level", 0)), 3));
 
 
         Debug.Log(PlayerPrefs.GetInt("TExperience", 0));
-        Debug.Log(Math.Pow((PlayerPrefs.GetInt("Level", 1)), 3));
+        Debug.Log(Math.Pow((PlayerPrefs.GetInt("Level", 0)), 3));
 
-        tExperience.value = (float) (PlayerPrefs.GetInt("TExperience", 0) - Math.Pow((PlayerPrefs.GetInt("Level", 1)), 3));
-        tExperience.maxValue = (float) (Math.Pow((PlayerPrefs.GetInt("Level", 1) + 1), 3) - Math.Pow(PlayerPrefs.GetInt("Level", 1), 3));
+        tExperience.value = (float) (PlayerPrefs.GetInt("TExperience", 0) - Math.Pow((PlayerPrefs.GetInt("Level", 0)), 3));
+        tExperience.maxValue = (float) (Math.Pow((PlayerPrefs.GetInt("Level", 0) + 1), 3) - Math.Pow(PlayerPrefs.GetInt("Level", 0), 3));
         
     }
 	
@@ -219,7 +222,7 @@ public class MainMenuScript : MonoBehaviour {
     {
         if(pauseStatus)
         {
-            NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(1), "Test Notification", "Should appear when the app closes.", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
+            //NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(1), "Test Notification", "Should appear when the app closes.", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
             NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(64800), "RoboKuma", "Robokuma misses you.", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
         }
     }
@@ -608,6 +611,7 @@ public class MainMenuScript : MonoBehaviour {
         if (AttributeScreen.gameObject.activeSelf)
         {
             back.gameObject.SetActive(true);
+            generalStatPress();
             updateStatistics();
         }
         else
@@ -822,9 +826,9 @@ public class MainMenuScript : MonoBehaviour {
             testsBest[1].text = "Score: " + n.correct_count + "/" + n.element_count + "\nN Count: " + n.n_count;
 
         if (sn.getAvgCorsi()[2] == null)
-            testsAverage[2].text = "Accuracy: No Data";
+            testsAverage[2].text = "Accuracy: No Data\nCurrent Difficulty: " + (PlayerPrefs.GetInt("Corsi_Difficulty", 0) + 4) + " items";
         else
-            testsAverage[2].text = "Accuracy: " + ((Int32)float.Parse(sn.getAvgCorsi()[2].ToString()) * 100) + "%";
+            testsAverage[2].text = "Accuracy: " + ((Int32)float.Parse(sn.getAvgCorsi()[2].ToString()) * 100) + "%" + "\nCurrent Difficulty: " + (PlayerPrefs.GetInt("Corsi_Difficulty", 0) + 4) + " items";
         
         CorsiData c = sn.getBestCorsi();
         if(c == null)
@@ -848,7 +852,72 @@ public class MainMenuScript : MonoBehaviour {
                     + "\nCorrect Congruent: " + e.correct_congruent
                     + "\nCorrect Inconguent: " + e.correct_incongruent; 
         }
+
+        String genData = "";
+
+        if (sn.getMostPlayed().Length != 0)
+        {
+            genData += "Most Played Mini-game: \n";
+            switch (sn.getMostPlayed())
+            {
+                case "gonogo": genData += "Go/No-Go";
+                    break;
+                case "nback": genData += "N-Back";
+                    break;
+                case "corsiblocktapping": genData += "Corsi Block-Tapping";
+                    break;
+                case "eriksenflanker": genData += "Eriksen Flanker";
+                    break;
+                case "null": genData += "No Data";
+                    break;
+            }
+        }
+        else
+            genData += "Most Played Mini-game: \nNo Data";
+        if (sn.getLeastPlayed().Length != 0)
+        {
+            genData += "\n\nLeast Played Mini-game: \n";
+            switch (sn.getLeastPlayed())
+            {
+                case "gonogo": genData += "Go/No-Go";
+                    break;
+                case "nback": genData += "N-Back";
+                    break;
+                case "corsiblocktapping": genData += "Corsi Block-Tapping";
+                    break;
+                case "eriksenflanker": genData += "Eriksen Flanker";
+                    break;
+                case "null": genData += "No Data";
+                    break;
+            }        
+        }
+        else
+            genData += "\n\nLeast Played Mini-game: \nNo Data";
+
+        generalData.text = genData;
             
+    }
+
+    public void generalStatPress()
+    {
+        generalStatPanel.SetActive(true);
+        minigameStatPanel.SetActive(false);
+
+        generalStatBtn.color = new Color32(155, 89, 182, 255);
+        gBtnBottom.color = new Color32(130, 76, 152, 255);
+        minigameStatBtn.color = new Color32(179, 101, 212, 255);
+        mBtnBottom.color = new Color32(141, 80, 167, 255);
+    }
+
+    public void minigameStatPress()
+    {
+        minigameStatPanel.SetActive(true);
+        generalStatPanel.SetActive(false);
+
+        minigameStatBtn.color = new Color32(155, 89, 182, 255);
+        mBtnBottom.color = new Color32(130, 76, 152, 255);
+        generalStatBtn.color = new Color32(179, 101, 212, 255);
+        gBtnBottom.color = new Color32(141, 80, 167, 255);
     }
 
     public void jump()
@@ -860,9 +929,7 @@ public class MainMenuScript : MonoBehaviour {
         }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("SLOW"))
         {
-            RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
-            RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 50;
-            RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 15000);
+            StartCoroutine(slowJump());
         }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping())
         {
@@ -872,6 +939,18 @@ public class MainMenuScript : MonoBehaviour {
             
         }
 
+
+    }
+
+    public IEnumerator slowJump()
+    {
+
+        RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
+        yield return new WaitForSecondsRealtime(0.5F);
+
+        RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
+        RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 50;
+        RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 15000);
 
     }
 
