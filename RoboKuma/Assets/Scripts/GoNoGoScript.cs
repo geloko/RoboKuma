@@ -36,6 +36,10 @@ public class GoNoGoScript : MonoBehaviour {
 
     public Text counter;
     public GameObject instructionScreen;
+    //for SFX
+    public AudioSource audioHandler;
+    public AudioClip soundCorrect;
+    public AudioClip soundIncorrect;
 
     // Use this for initialization
     void Start () {
@@ -181,6 +185,8 @@ public class GoNoGoScript : MonoBehaviour {
         clicked = true;
         if(isGo)
         {
+            audioHandler.clip = soundCorrect;
+            audioHandler.Play();
             score++;
 			goCorrect++;
             scoreTxt.text = "" + score;
@@ -195,6 +201,9 @@ public class GoNoGoScript : MonoBehaviour {
         }
         else
         {
+
+            audioHandler.clip = soundIncorrect;
+            audioHandler.Play();
             time[iterations - 1] = -1;
 
             timeTxt.text = "OOPS!";
