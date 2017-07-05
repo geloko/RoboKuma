@@ -71,11 +71,12 @@ public class MainMenuScript : MonoBehaviour {
     public String achievementReward = "";
     //for sounds SFX
     public AudioSource audioHandler;
-    public AudioClip soundNormal;
+    public AudioClip soundStable;
+    public AudioClip soundSlow;
     public AudioClip soundFidgety;
     public AudioClip soundForgetful;
     public AudioClip soundLevelup;
-    public AudioClip soundAcheivement;
+    public AudioClip soundAchievement;
 
 
     // Use this for initialization
@@ -167,7 +168,7 @@ public class MainMenuScript : MonoBehaviour {
             if (achievementReward.Length != 0)
             {
                 rewards.SetActive(true);
-                audioHandler.clip = soundAcheivement;
+                audioHandler.clip = soundAchievement;
                 audioHandler.Play();
                 experience.text = "500";
                 bearya.text = "500";
@@ -182,7 +183,7 @@ public class MainMenuScript : MonoBehaviour {
                 rewards.SetActive(true);
                 experience.text = "50";
                 bearya.text = "50";
-                audioHandler.clip = soundAcheivement;
+                audioHandler.clip = soundAchievement;
                 audioHandler.Play();
                 resultText.text = "\nYou have unlocked\n\n\n\n\n" + dailyReward;
                 resultI.overrideSprite = trophy;
@@ -945,6 +946,8 @@ public class MainMenuScript : MonoBehaviour {
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("SLOW"))
         {
             StartCoroutine(slowJump());
+            audioHandler.clip = soundSlow;
+            audioHandler.Play();
         }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("FIDGETY"))
         {
@@ -957,7 +960,7 @@ public class MainMenuScript : MonoBehaviour {
         }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping())
         {
-            audioHandler.clip = soundNormal;
+            audioHandler.clip = soundStable;
             audioHandler.Play();
             RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
             RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 250;

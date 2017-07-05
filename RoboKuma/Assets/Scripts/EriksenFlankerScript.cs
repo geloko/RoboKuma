@@ -40,7 +40,6 @@ public class EriksenFlankerScript : MonoBehaviour {
     public AudioClip soundIncorrect;
     public AudioClip soundSuccess;
 
-
     SQLiteDatabase sn;
 	// Use this for initialization
 	/*

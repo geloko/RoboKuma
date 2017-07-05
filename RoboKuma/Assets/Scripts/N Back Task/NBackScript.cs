@@ -30,7 +30,12 @@ public class NBackScript : MonoBehaviour {
     public Text counter;
     public GameObject instructionScreen;
 
-	public int log_id { get; set; }
+    public AudioSource audioHandler;
+    public AudioClip soundCorrect;
+    public AudioClip soundIncorrect;
+    public AudioClip soundSuccess;
+
+    public int log_id { get; set; }
 
 	SQLiteDatabase sn;
     // Use this for initialization
