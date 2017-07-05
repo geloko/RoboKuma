@@ -363,7 +363,7 @@ public class SQLiteDatabase : MonoBehaviour {
 	{
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
-		Debug.Log ("INSERT INTO ERIKSEN VALUES: " + player_id + ", " + log_id + ", " + correct_congruent + ", " + time_congruent + ", " + correct_incongruent + ", " + time_incongruent + ", " + congruent_count + ", " + trial_count);
+		Debug.Log ("INSERT INTO eriksen_data VALUES: " + player_id + ", " + log_id + ", " + correct_congruent + ", " + time_congruent + ", " + correct_incongruent + ", " + time_incongruent + ", " + congruent_count + ", " + trial_count);
 		sql = "INSERT INTO eriksen_data (log_id, correct_congruent, time_congruent, correct_incongruent, time_incongruent, congruent_count, trial_count) VALUES (" + 
 			log_id + ", " + correct_congruent + ", " + time_congruent + ", " + correct_incongruent + ", " + time_incongruent + ", " + 
 			congruent_count + ", " + trial_count + ");";
