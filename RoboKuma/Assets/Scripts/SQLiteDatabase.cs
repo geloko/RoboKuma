@@ -420,7 +420,6 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc.Close ();
 		_dbc = null;
 
-		updatePlayerStatistics(correct_count, 0, trial_count, mean_time, null, n_count, "eriksen", player_id);
 	}
 
 	public void select (string table)
