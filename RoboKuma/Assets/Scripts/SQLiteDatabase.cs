@@ -723,11 +723,11 @@ public class SQLiteDatabase : MonoBehaviour {
 		if(_idr.Read())
 		{
 			bestGoNoGo = new GoNoGoData();
-			bestGoNoGo.log_id = _idr.GetInt32(_idr.GetOrdinal("player_id"));
+			bestGoNoGo.log_id = _idr.GetInt32(_idr.GetOrdinal("log_id"));
 			bestGoNoGo.correct_go_count = _idr.GetInt32(_idr.GetOrdinal("correct_go_count")); ;
 			bestGoNoGo.correct_nogo_count = _idr.GetInt32(_idr.GetOrdinal("correct_nogo_count"));
             bestGoNoGo.mean_time = _idr.GetDouble(_idr.GetOrdinal("mean_time"));
-			bestGoNoGo.go_count = _idr.GetInt32(_idr.GetOrdinal("go_count   ")); ;
+			bestGoNoGo.go_count = _idr.GetInt32(_idr.GetOrdinal("go_count")); ;
 			bestGoNoGo.trial_count = _idr.GetInt32(_idr.GetOrdinal("trial_count")); ;
 		}
 
