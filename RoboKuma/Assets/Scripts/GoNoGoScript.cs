@@ -40,6 +40,7 @@ public class GoNoGoScript : MonoBehaviour {
     public AudioSource audioHandler;
     public AudioClip soundCorrect;
     public AudioClip soundIncorrect;
+    public AudioClip soundSuccess;
 
     // Use this for initialization
     void Start () {
@@ -119,6 +120,8 @@ public class GoNoGoScript : MonoBehaviour {
             this.gameObject.SetActive(false);
             itemTxt.text = "";
 
+            audioHandler.clip = soundSuccess;
+            audioHandler.Play();
             int exp = (int)((score * 1.0 / trialCount) * 10.0 * (trialCount / 10.0));
             int coins = (int)((score * 1.0 / trialCount) * 50.0 * (trialCount / 10.0));
             

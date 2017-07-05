@@ -46,6 +46,11 @@ public class ItemScript : MonoBehaviour {
 
 	SQLiteDatabase sn;
 
+    //for SFX
+    public AudioSource audioHandler;
+    public AudioClip soundCorrect;
+    public AudioClip soundIncorrect;
+
     void Start()
     {
         panel = this.transform.parent;
@@ -164,10 +169,14 @@ public class ItemScript : MonoBehaviour {
     {
         if (items[nValue] != -1 && gameObject.Equals(objects[items[nValue]]) && !swiped && count > nValue)
         {
+            audioHandler.clip = soundIncorrect;
+            audioHandler.Play();
             display.text = "Oops!";
         }
         else if(swiped)
         {
+            audioHandler.clip = soundCorrect;
+            audioHandler.Play();
             swiped = false;
         }
         else if(count > nValue)
@@ -175,6 +184,8 @@ public class ItemScript : MonoBehaviour {
             //double timeElapsed = stopwatch.ElapsedMilliseconds;
             //time[count - 3] = timeElapsed;
             //UnityEngine.Debug.Log(timeElapsed + "----" + (count - 3));
+            audioHandler.clip = soundCorrect;
+            audioHandler.Play();
 
             display.text = "GREAT!";
             score++;
@@ -222,6 +233,8 @@ public class ItemScript : MonoBehaviour {
             {
                 if (items[nValue] != -1 && gameObject.Equals(objects[items[nValue]]))
                 {
+                    audioHandler.clip = soundCorrect;
+                    audioHandler.Play();
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[count - nValue - 1] = timeElapsed;
 
@@ -231,6 +244,8 @@ public class ItemScript : MonoBehaviour {
                 }
                 else if (items[nValue] != -1)
                 {
+                    audioHandler.clip = soundIncorrect;
+                    audioHandler.Play();
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[count - nValue - 1] = timeElapsed;
                     display.text = "Oops!";
@@ -249,6 +264,8 @@ public class ItemScript : MonoBehaviour {
             {
                 if (items[nValue] != -1 && gameObject.Equals(objects[items[nValue]]))
                 {
+                    audioHandler.clip = soundCorrect;
+                    audioHandler.Play();
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[count - nValue - 1] = timeElapsed;
 
@@ -258,6 +275,8 @@ public class ItemScript : MonoBehaviour {
                 }
                 else if (items[nValue] != -1)
                 {
+                    audioHandler.clip = soundIncorrect;
+                    audioHandler.Play();
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
                     time[count - nValue - 1] = timeElapsed;
                     display.text = "Oops!";
@@ -306,6 +325,8 @@ public class ItemScript : MonoBehaviour {
                 {
                     if (items[nValue] != -1 && gameObject.Equals(objects[items[nValue]]))
                     {
+                        audioHandler.clip = soundCorrect;
+                        audioHandler.Play();
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[count - nValue - 1] = timeElapsed;
 
@@ -315,6 +336,8 @@ public class ItemScript : MonoBehaviour {
                     }
                     else if (items[nValue] != -1)
                     {
+                        audioHandler.clip = soundIncorrect;
+                        audioHandler.Play();
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[count - nValue - 1] = timeElapsed;
                         display.text = "Wrong";
@@ -332,6 +355,8 @@ public class ItemScript : MonoBehaviour {
                 {
                     if (items[nValue] != -1 && gameObject.Equals(objects[items[nValue]]))
                     {
+                        audioHandler.clip = soundCorrect;
+                        audioHandler.Play();
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[count - nValue - 1] = timeElapsed;
 
@@ -341,6 +366,8 @@ public class ItemScript : MonoBehaviour {
                     }
                     else if (items[nValue] != -1)
                     {
+                        audioHandler.clip = soundIncorrect;
+                        audioHandler.Play();    
                         double timeElapsed = stopwatch.ElapsedMilliseconds;
                         time[count - nValue - 1] = timeElapsed;
                         display.text = "Wrong";

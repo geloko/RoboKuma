@@ -69,6 +69,13 @@ public class MainMenuScript : MonoBehaviour {
 
     public String dailyReward = "";
     public String achievementReward = "";
+    //for sounds SFX
+    public AudioSource audioHandler;
+    public AudioClip soundNormal;
+    public AudioClip soundFidgety;
+    public AudioClip soundForgetful;
+    public AudioClip soundLevelup;
+    public AudioClip soundAcheivement;
 
 
     // Use this for initialization
@@ -160,6 +167,8 @@ public class MainMenuScript : MonoBehaviour {
             if (achievementReward.Length != 0)
             {
                 rewards.SetActive(true);
+                audioHandler.clip = soundAcheivement;
+                audioHandler.Play();
                 experience.text = "500";
                 bearya.text = "500";
                 resultText.text = "\nYou have unlocked\n\n\n\n\n" + achievementReward;
@@ -173,6 +182,8 @@ public class MainMenuScript : MonoBehaviour {
                 rewards.SetActive(true);
                 experience.text = "50";
                 bearya.text = "50";
+                audioHandler.clip = soundAcheivement;
+                audioHandler.Play();
                 resultText.text = "\nYou have unlocked\n\n\n\n\n" + dailyReward;
                 resultI.overrideSprite = trophy;
 
@@ -180,6 +191,8 @@ public class MainMenuScript : MonoBehaviour {
             }
             else if (leveledup)
             {
+                audioHandler.clip = soundLevelup;
+                audioHandler.Play();
                 leveledup = false;
                 resultText.text = "\nYou have reached level\n\n\n\n\nCongratulations!";
                 resultLevel.text = PlayerPrefs.GetInt("Level") + "";
@@ -926,17 +939,30 @@ public class MainMenuScript : MonoBehaviour {
         if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("FORGETFUL"))
         {
             StartCoroutine(forgetfulJump());
+            audioHandler.clip = soundForgetful;
+            audioHandler.Play();
         }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("SLOW"))
         {
             StartCoroutine(slowJump());
         }
-        else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping())
+        else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("FIDGETY"))
         {
+            audioHandler.clip = soundFidgety;
+            audioHandler.Play();
             RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
             RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 250;
             RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 30000);
             
+        }
+        else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping())
+        {
+            audioHandler.clip = soundNormal;
+            audioHandler.Play();
+            RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
+            RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 250;
+            RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 30000);
+
         }
 
 

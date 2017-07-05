@@ -38,6 +38,7 @@ public class EriksenFlankerScript : MonoBehaviour {
     public AudioSource audioHandler;
     public AudioClip soundCorrect;
     public AudioClip soundIncorrect;
+    public AudioClip soundSuccess;
 
 
     SQLiteDatabase sn;
@@ -204,6 +205,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 			mainPanel.gameObject.SetActive(false);
             itemTxt.text = "";
 
+            audioHandler.clip = soundSuccess;
+            audioHandler.Play();
             int exp = (int)((score * 1.0 / trialCount) * 10.0 * (trialCount/10.00));
             int coins = (int)((score * 1.0 / trialCount) * 50.0 * (trialCount / 10.00));
 

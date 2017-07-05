@@ -31,6 +31,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     public AudioClip soundCorrect;
     public AudioClip soundIncorrect;
     public AudioClip soundSuccess;
+    
 
     public int log_id { get; set; }
 	SQLiteDatabase sn;
