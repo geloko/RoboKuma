@@ -50,6 +50,7 @@ public class ItemScript : MonoBehaviour {
     public AudioSource audioHandler;
     public AudioClip soundCorrect;
     public AudioClip soundIncorrect;
+    public AudioClip soundSuccess;
 
     void Start()
     {

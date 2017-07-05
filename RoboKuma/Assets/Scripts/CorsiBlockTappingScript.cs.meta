@@ -1,10 +1,26 @@
 fileFormatVersion: 2
 guid: e016b367fe06812429017eb9f4c4029c
-timeCreated: 1484834577
+timeCreated: 1499274417
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - blankSprite: {instanceID: 0}
+  - incorrectSprite: {instanceID: 0}
+  - correctSprite: {instanceID: 0}
+  - display: {instanceID: 0}
+  - endTxt: {instanceID: 0}
+  - coinsTxt: {instanceID: 0}
+  - expTxt: {instanceID: 0}
+  - itemTxt: {instanceID: 0}
+  - EndMessage: {instanceID: 0}
+  - End: {instanceID: 0}
+  - counter: {instanceID: 0}
+  - instructionScreen: {instanceID: 0}
+  - audioHandler: {instanceID: 0}
+  - soundCorrect: {fileID: 8300000, guid: dd0c2c9ba57eaf7459dfb06194737a1c, type: 3}
+  - soundIncorrect: {fileID: 8300000, guid: e7c8d1a35524e0d47b1bad69b4f732ba, type: 3}
+  - soundSuccess: {fileID: 8300000, guid: 2e0f09dc011ae9740b1b89af82374ead, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

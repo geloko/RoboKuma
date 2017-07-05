@@ -715,25 +715,25 @@ public class MainMenuScript : MonoBehaviour {
     public void gonogoPress()
     {
         Manager.Instance.pStats = sn.getPlayerStatistics(1);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Go No-Go");
     }
 
     public void nbackPress()
     {
         Manager.Instance.pStats = sn.getPlayerStatistics(1);
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene("NBack");
     }
 
     public void corsiPress()
     {
         Manager.Instance.pStats = sn.getPlayerStatistics(1);
-        SceneManager.LoadScene(3);
+        SceneManager.LoadScene("Corsi Block Tapping");
     }
 
     public void eriksenPress()
     {
         Manager.Instance.pStats = sn.getPlayerStatistics(1);
-        SceneManager.LoadScene(4);
+        SceneManager.LoadScene("Eriksen Flanker");
     }
 
     public void updateAttributes()
