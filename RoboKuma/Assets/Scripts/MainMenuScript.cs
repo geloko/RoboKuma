@@ -71,13 +71,14 @@ public class MainMenuScript : MonoBehaviour {
     public String achievementReward = "";
     //for sounds SFX
     public AudioSource audioHandler;
+    public AudioSource audioBackground;
     public AudioClip soundStable;
     public AudioClip soundSlow;
     public AudioClip soundFidgety;
     public AudioClip soundForgetful;
     public AudioClip soundLevelup;
     public AudioClip soundAchievement;
-
+    public AudioClip backGround;
 
     // Use this for initialization
     void Start () {
@@ -110,7 +111,10 @@ public class MainMenuScript : MonoBehaviour {
         //PlayerPrefs.DeleteAll();
         Debug.Log(PlayerPrefs.GetInt("DB"));
 
-        
+        audioHandler.clip = backGround;
+        audioHandler.Play();
+        audioHandler.loop = true;
+
 
         if (PlayerPrefs.GetInt("DB", -1) == -1)
         {
@@ -168,8 +172,7 @@ public class MainMenuScript : MonoBehaviour {
             if (achievementReward.Length != 0)
             {
                 rewards.SetActive(true);
-                audioHandler.clip = soundAchievement;
-                audioHandler.Play();
+                audioHandler.PlayOneShot(soundAchievement);
                 experience.text = "500";
                 bearya.text = "500";
                 resultText.text = "\nYou have unlocked\n\n\n\n\n" + achievementReward;
@@ -183,8 +186,7 @@ public class MainMenuScript : MonoBehaviour {
                 rewards.SetActive(true);
                 experience.text = "50";
                 bearya.text = "50";
-                audioHandler.clip = soundAchievement;
-                audioHandler.Play();
+                audioHandler.PlayOneShot(soundAchievement);
                 resultText.text = "\nYou have unlocked\n\n\n\n\n" + dailyReward;
                 resultI.overrideSprite = trophy;
 
@@ -192,8 +194,7 @@ public class MainMenuScript : MonoBehaviour {
             }
             else if (leveledup)
             {
-                audioHandler.clip = soundLevelup;
-                audioHandler.Play();
+                audioHandler.PlayOneShot(soundLevelup);
                 leveledup = false;
                 resultText.text = "\nYou have reached level\n\n\n\n\nCongratulations!";
                 resultLevel.text = PlayerPrefs.GetInt("Level") + "";
@@ -940,19 +941,16 @@ public class MainMenuScript : MonoBehaviour {
         if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("FORGETFUL"))
         {
             StartCoroutine(forgetfulJump());
-            audioHandler.clip = soundForgetful;
-            audioHandler.Play();
+            audioHandler.PlayOneShot(soundForgetful);
         }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("SLOW"))
         {
             StartCoroutine(slowJump());
-            audioHandler.clip = soundSlow;
-            audioHandler.Play();
+            audioHandler.PlayOneShot(soundSlow);
         }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("FIDGETY"))
         {
-            audioHandler.clip = soundFidgety;
-            audioHandler.Play();
+            audioHandler.PlayOneShot(soundFidgety);
             RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
             RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 250;
             RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 30000);
@@ -960,8 +958,7 @@ public class MainMenuScript : MonoBehaviour {
         }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping())
         {
-            audioHandler.clip = soundStable;
-            audioHandler.Play();
+            audioHandler.PlayOneShot(soundStable);
             RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
             RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 250;
             RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 30000);
