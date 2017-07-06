@@ -23,6 +23,7 @@ public class MainMenuScript : MonoBehaviour {
     public GameObject rewards;
 
     public Slider Memory, Response, Speed, Accuracy, MemoryR, ResponseR, SpeedR, AccuracyR, MemoryS, ResponseS, SpeedS, AccuracyS;
+    public Image MemoryRF, ResponseRF, SpeedRF, AccuracyRF, MemorySF, ResponseSF, SpeedSF, AccuracySF;
     public Text  MemoryRT, ResponseRT, SpeedRT, AccuracyRT, MemoryT, ResponseT, SpeedT, AccuracyT;
     public Text[] testsAverage;
     public Text[] testsBest;
@@ -65,7 +66,7 @@ public class MainMenuScript : MonoBehaviour {
     public Sprite leg_1, leg_2, leg_3;
     public Sprite head_1, head_2;
     public Sprite accessory_1;
-    public Sprite trophy;
+    public Sprite trophy, sad_icon;
 
     public String dailyReward = "";
     public String achievementReward = "";
@@ -115,25 +116,31 @@ public class MainMenuScript : MonoBehaviour {
         audioHandler.Play();
         audioHandler.loop = true;
 
+        bool attributesReduced = false;
+        int reduction = 0;
         if (!PlayerPrefs.GetString("Last_Played", "N/A").Equals("N/A"))
         {
             DateTime dt = DateTime.Parse(PlayerPrefs.GetString("Last_Played"));
-            int reduction = System.DateTime.Now.Subtract(dt).Hours / 24 * 1;
+            reduction = System.DateTime.Now.Subtract(dt).Hours / 24 * 1;
 
-            PlayerPrefs.SetString("Last_Played", System.DateTime.Now.ToString("g"));
-
-            int[] attributes = sn.getPlayerStatistics(1);
-            Debug.Log("Reduce by: " + reduction);
-            for (int i = 0; i < attributes.Length; i++)
+            if (reduction > 0)
             {
-                Debug.Log(attributes[i]);
-                attributes[i] -= reduction;
-                Debug.Log(attributes[i]);
+                Manager.Instance.pStats = sn.getPlayerStatistics(1);
+                PlayerPrefs.SetString("Last_Played", System.DateTime.Now.ToString("g"));
+                attributesReduced = true;
+
+                int[] attributes = sn.getPlayerStatistics(1);
+                Debug.Log("Reduce by: " + reduction);
+                for (int i = 0; i < attributes.Length; i++)
+                {
+                    Debug.Log(attributes[i]);
+                    attributes[i] -= reduction;
+                    Debug.Log(attributes[i]);
+                }
+                
+                sn.updateAttributes(attributes);
+
             }
-
-            sn.updateAttributes(attributes);
-
-            //attributes reduced pop up
         }
 
 
@@ -149,11 +156,25 @@ public class MainMenuScript : MonoBehaviour {
         updateAssets();
         updateDailyObjectives();
 
-        if (PlayerPrefs.GetInt("Score", -1) != 1)
+        if (PlayerPrefs.GetInt("Score", -1) != 1 && !attributesReduced)
             ResultsPanel.gameObject.SetActive(false);
+        else if(attributesReduced)
+        {
+            resultI.overrideSprite = null;
+            resultLevel.text = "";
+            rewards.SetActive(false);
+            
+            resultText.text = "\nRobokuma's skills have degraded\n\n\n\n\ndue to your absence";
+            resultI.overrideSprite = sad_icon;
+
+        }
         else
         {
-            if(achievementReward.Length != 0)
+            resultI.overrideSprite = null;
+            resultLevel.text = "";
+            rewards.SetActive(false);
+
+            if (achievementReward.Length != 0)
             {
                 int exp = PlayerPrefs.GetInt("TExperience", 0) + PlayerPrefs.GetInt("Experience", 0);
                 int bear = PlayerPrefs.GetInt("TBearya", 0) + PlayerPrefs.GetInt("Bearya", 0);
@@ -172,10 +193,6 @@ public class MainMenuScript : MonoBehaviour {
                 PlayerPrefs.SetInt("TBearya", bear);
                 PlayerPrefs.SetInt("TExperience", exp);
             }
-            
-            resultI.overrideSprite = null;
-            resultLevel.text = "";
-            rewards.SetActive(false);
             
             //experience.text = PlayerPrefs.GetInt("Experience", 0) + "";
             //bearya.text = PlayerPrefs.GetInt("Bearya", 0) + "";
@@ -763,18 +780,69 @@ public class MainMenuScript : MonoBehaviour {
         int[] stats = sn.getPlayerStatistics(1);
         Debug.Log("STATS " + stats[0] + " " + stats[1] + " " + stats[2] + " " + stats[3] + "");
         Debug.Log("PSTATS " + Manager.Instance.pStats[0] + " " + Manager.Instance.pStats[1] + " " + Manager.Instance.pStats[2] + " " + Manager.Instance.pStats[3] + "");
+
+
         Memory.value = stats[0];
-        MemoryS.value = stats[0];
         Accuracy.value = stats[1];
-        AccuracyS.value = stats[1];
         Speed.value = stats[2];
-        SpeedS.value = stats[2];
         Response.value = stats[3];
-        ResponseS.value = stats[3];
-        MemoryR.value = Manager.Instance.pStats[0];
-        AccuracyR.value = Manager.Instance.pStats[1];
-        SpeedR.value = Manager.Instance.pStats[2];
-        ResponseR.value = Manager.Instance.pStats[3];
+        if (stats[0] >= Manager.Instance.pStats[0])
+        {
+            MemoryS.value = stats[0];
+            MemoryR.value = Manager.Instance.pStats[0];
+
+        }
+        else
+        {
+            MemoryR.value = stats[0];
+            MemoryS.value = Manager.Instance.pStats[0];
+            MemorySF.color = new Color32(253, 95, 95, 255);
+            MemoryRF.color = new Color32(255, 255, 255, 255);
+        }
+
+        if (stats[1] >= Manager.Instance.pStats[1])
+        {
+            AccuracyS.value = stats[1];
+            AccuracyR.value = Manager.Instance.pStats[2];
+
+        }
+        else
+        {
+            AccuracyR.value = stats[1];
+            AccuracyS.value = Manager.Instance.pStats[2];
+            AccuracySF.color = new Color32(253, 95, 95, 255);
+            AccuracyRF.color = new Color32(255, 255, 255, 255);
+
+        }
+
+        if (stats[2] >= Manager.Instance.pStats[2])
+        {
+            SpeedS.value = stats[2];
+            SpeedR.value = Manager.Instance.pStats[2];
+
+        }
+        else
+        {
+            SpeedR.value = stats[2];
+            SpeedS.value = Manager.Instance.pStats[2];
+            SpeedSF.color = new Color32(253, 95, 95, 255);
+            SpeedRF.color = new Color32(255, 255, 255, 255);
+
+        }
+
+        if (stats[3] >= Manager.Instance.pStats[3])
+        {
+            ResponseS.value = stats[3];
+            ResponseR.value = Manager.Instance.pStats[3];
+
+        }
+        else
+        {
+            ResponseR.value = stats[3];
+            ResponseS.value = Manager.Instance.pStats[3];
+            ResponseSF.color = new Color32(253, 95, 95, 255);
+            ResponseRF.color = new Color32(255, 255, 255, 255);
+        }
 
         MemoryT.text = stats[0] + "";
         AccuracyT.text = stats[1] + "";
@@ -785,15 +853,19 @@ public class MainMenuScript : MonoBehaviour {
         MemoryRT.text = "" + (stats[0] - Manager.Instance.pStats[0]);
         if (stats[0] - Manager.Instance.pStats[0] >= 0)
             MemoryRT.text = "+" + MemoryRT.text;
+        
         AccuracyRT.text = "" + (stats[1] - Manager.Instance.pStats[1]);
         if (stats[1] - Manager.Instance.pStats[1] >= 0)
             AccuracyRT.text = "+" + AccuracyRT.text;
+        
         SpeedRT.text = "" + (stats[2] - Manager.Instance.pStats[2]);
         if (stats[2] - Manager.Instance.pStats[2] >= 0)
             SpeedRT.text = "+" + SpeedRT.text;
+        
         ResponseRT.text = "" + (stats[3] - Manager.Instance.pStats[3]);
         if (stats[3] - Manager.Instance.pStats[3] >= 0)
             ResponseRT.text = "+" + ResponseRT.text;
+       
 
         int statAve = 0;
 
