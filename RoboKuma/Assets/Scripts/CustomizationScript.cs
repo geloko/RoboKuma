@@ -32,6 +32,7 @@ public class CustomizationScript : MonoBehaviour
     public GameObject coinIcon;
 
     public Image iLeg, iBody, iHead, iAccessories;
+    public RawImage iLegB, iBodyB, iHeadB, iAccessoriesB;
 
     public int itemNum, price, activeCategory;
 
@@ -52,7 +53,12 @@ public class CustomizationScript : MonoBehaviour
         iBody.color = new Color32(246, 145, 116, 255);
         iLeg.color = new Color32(246, 145, 116, 255);
 
-        if(PlayerPrefs.GetInt("Level", 1) >= 10)
+        iAccessoriesB.color = new Color32(186, 82, 66, 255);
+        iHeadB.color = new Color32(184, 112, 92, 255);
+        iBodyB.color = new Color32(184, 112, 92, 255);
+        iLegB.color = new Color32(184, 112, 92, 255);
+
+        if (PlayerPrefs.GetInt("Level", 1) >= 10)
         {
             lockedB[0].gameObject.SetActive(false);
             bodyB[3].interactable = true;
@@ -399,6 +405,11 @@ public class CustomizationScript : MonoBehaviour
         iHead.color = new Color32(246, 145, 116, 255);
         iBody.color = new Color32(246, 145, 116, 255);
         iLeg.color = new Color32(246, 145, 116, 255);
+
+        iAccessoriesB.color = new Color32(186, 82, 66, 255);
+        iHeadB.color = new Color32(184, 112, 92, 255);
+        iBodyB.color = new Color32(184, 112, 92, 255);
+        iLegB.color = new Color32(184, 112, 92, 255);
     }
 
     public void headPress()
@@ -414,6 +425,11 @@ public class CustomizationScript : MonoBehaviour
         iAccessories.color = new Color32(246, 145, 116, 255);
         iBody.color = new Color32(246, 145, 116, 255);
         iLeg.color = new Color32(246, 145, 116, 255);
+
+        iHeadB.color = new Color32(186, 82, 66, 255);
+        iAccessoriesB.color = new Color32(184, 112, 92, 255);
+        iBodyB.color = new Color32(184, 112, 92, 255);
+        iLegB.color = new Color32(184, 112, 92, 255);
     }
 
     public void bodyPress()
@@ -429,6 +445,11 @@ public class CustomizationScript : MonoBehaviour
         iHead.color = new Color32(246, 145, 116, 255);
         iAccessories.color = new Color32(246, 145, 116, 255);
         iLeg.color = new Color32(246, 145, 116, 255);
+
+        iBodyB.color = new Color32(186, 82, 66, 255);
+        iAccessoriesB.color = new Color32(184, 112, 92, 255);
+        iHeadB.color = new Color32(184, 112, 92, 255);
+        iLegB.color = new Color32(184, 112, 92, 255);
     }
 
     public void legPress()
@@ -444,6 +465,11 @@ public class CustomizationScript : MonoBehaviour
         iHead.color = new Color32(246, 145, 116, 255);
         iBody.color = new Color32(246, 145, 116, 255);
         iAccessories.color = new Color32(246, 145, 116, 255);
+
+        iLegB.color = new Color32(186, 82, 66, 255);
+        iAccessoriesB.color = new Color32(184, 112, 92, 255);
+        iHeadB.color = new Color32(184, 112, 92, 255);
+        iBodyB.color = new Color32(184, 112, 92, 255);
     }
 
 }

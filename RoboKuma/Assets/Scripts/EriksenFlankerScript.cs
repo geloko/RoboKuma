@@ -11,7 +11,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 	public Vector2 firstPressPos;
 	public Vector2 secondPressPos;
 	public Vector2 currentSwipe;
-	public GameObject End, mainPanel;
+	public GameObject mainPanel;
+    public GameObject End;
 
 	public int score;
     public double[] time, timeCongruent, timeIncongruent;
@@ -40,6 +41,7 @@ public class EriksenFlankerScript : MonoBehaviour {
     public AudioClip soundIncorrect;
     public AudioClip soundSuccess;
 
+
     SQLiteDatabase sn;
 	// Use this for initialization
 	/*
@@ -60,12 +62,12 @@ public class EriksenFlankerScript : MonoBehaviour {
         time = new double[trialCount];
 		timeCongruent = new double[trialCount];
 		timeIncongruent = new double[trialCount];
-		//feedbackText = feedbackText.GetComponent<Text> ();
-		//endTxt = endTxt.GetComponent<Text> ();
-		//End = GameObject.Find("End");
-		//mainPanel = GameObject.Find ("MainPanel");
-		End.gameObject.SetActive(false);
-		stopwatch = new Stopwatch();
+        //feedbackText = feedbackText.GetComponent<Text> ();
+        //endTxt = endTxt.GetComponent<Text> ();
+        //End = GameObject.Find("End");
+        End.SetActive(false);
+        //mainPanel = GameObject.Find ("MainPanel");
+        stopwatch = new Stopwatch();
 
         inGame = true;
 
@@ -74,7 +76,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 		//player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
 		log_id = sn.insertintoPlayerLog (PlayerPrefs.GetInt("player_id"), 4, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
 		PlayerPrefs.SetInt ("log_id", log_id);
-	}
+
+    }
 
     // Update is called once per frame
     void Update () {
@@ -241,8 +244,9 @@ public class EriksenFlankerScript : MonoBehaviour {
 
             PlayerPrefs.SetInt("Experience", exp);
             PlayerPrefs.SetInt("Bearya", coins);
+            PlayerPrefs.SetString("Last_Played", System.DateTime.Now.ToString("g"));
 
-			sn.insertintoEriksen (PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt("log_id"),correctCongruent, timeCongruentAve, correctIncongruent, timeIncongruentAve, time, congruentCount, trialCount);
+            sn.insertintoEriksen (PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt("log_id"),correctCongruent, timeCongruentAve, correctIncongruent, timeIncongruentAve, time, congruentCount, trialCount);
 
 			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
             endTxt.text = score + "";

@@ -115,6 +115,27 @@ public class MainMenuScript : MonoBehaviour {
         audioHandler.Play();
         audioHandler.loop = true;
 
+        if (!PlayerPrefs.GetString("Last_Played", "N/A").Equals("N/A"))
+        {
+            DateTime dt = DateTime.Parse(PlayerPrefs.GetString("Last_Played"));
+            int reduction = System.DateTime.Now.Subtract(dt).Hours / 24 * 1;
+
+            PlayerPrefs.SetString("Last_Played", System.DateTime.Now.ToString("g"));
+
+            int[] attributes = sn.getPlayerStatistics(1);
+            Debug.Log("Reduce by: " + reduction);
+            for (int i = 0; i < attributes.Length; i++)
+            {
+                Debug.Log(attributes[i]);
+                attributes[i] -= reduction;
+                Debug.Log(attributes[i]);
+            }
+
+            sn.updateAttributes(attributes);
+
+            //attributes reduced pop up
+        }
+
 
         if (PlayerPrefs.GetInt("DB", -1) == -1)
         {
@@ -852,9 +873,10 @@ public class MainMenuScript : MonoBehaviour {
             testsBest[2].text = "Score: " + c.correct_length + "/" + c.seq_length + "\nSequence Length: " + c.seq_length;
 
 
-        testsAverage[3].text = "Ave. Reaction Time (Congruent): " + ((Int32)float.Parse(sn.getAvgEriksen()[2].ToString())) + " ms" + "\nAve. Reaction Time (Incongruent): " + ((Int32) float.Parse(sn.getAvgEriksen()[3].ToString())) + " ms" + "\nAverage Score: " + sn.getAvgEriksen()[4];
-        if(sn.getAvgEriksen()[2] == null)
-            testsAverage[3].text = "Ave. Reaction Time (Congruent): No Data\nAve. Reaction Time (Incongruent): No Data\nAverage Score: No Data";
+        if (sn.getAvgEriksen()[2] == null)
+            testsAverage[3].text = "Ave. Reaction Time (Congruent): No Data" + "\nAve. Reaction Time (Incongruent): No Data" + "\nAverage Score: No Data";
+        else
+            testsAverage[3].text = "Ave. Reaction Time (Congruent): " + ((Int32)float.Parse(sn.getAvgEriksen()[2].ToString())) + " ms" + "\nAve. Reaction Time (Incongruent): " + ((Int32)float.Parse(sn.getAvgEriksen()[3].ToString())) + " ms" + "\nAverage Score: " + sn.getAvgEriksen()[4];
 
         EriksenData e = sn.getBestEriksen();
         if(e == null)
@@ -883,7 +905,9 @@ public class MainMenuScript : MonoBehaviour {
                     break;
                 case "eriksenflanker": genData += "Eriksen Flanker";
                     break;
-                case "null": genData += "No Data";
+                case "null":
+                case "N/A":
+                    genData += "No Data";
                     break;
             }
         }
@@ -902,7 +926,9 @@ public class MainMenuScript : MonoBehaviour {
                     break;
                 case "eriksenflanker": genData += "Eriksen Flanker";
                     break;
-                case "null": genData += "No Data";
+                case "null":
+                case "N/A":
+                    genData += "No Data";
                     break;
             }        
         }
@@ -918,10 +944,10 @@ public class MainMenuScript : MonoBehaviour {
         generalStatPanel.SetActive(true);
         minigameStatPanel.SetActive(false);
 
-        generalStatBtn.color = new Color32(155, 89, 182, 255);
-        gBtnBottom.color = new Color32(130, 76, 152, 255);
-        minigameStatBtn.color = new Color32(179, 101, 212, 255);
-        mBtnBottom.color = new Color32(141, 80, 167, 255);
+        minigameStatBtn.color = new Color32(155, 89, 182, 255);
+        mBtnBottom.color = new Color32(130, 76, 152, 255);
+        generalStatBtn.color = new Color32(179, 101, 212, 255);
+        gBtnBottom.color = new Color32(141, 80, 167, 255);
     }
 
     public void minigameStatPress()
@@ -929,10 +955,10 @@ public class MainMenuScript : MonoBehaviour {
         minigameStatPanel.SetActive(true);
         generalStatPanel.SetActive(false);
 
-        minigameStatBtn.color = new Color32(155, 89, 182, 255);
-        mBtnBottom.color = new Color32(130, 76, 152, 255);
-        generalStatBtn.color = new Color32(179, 101, 212, 255);
-        gBtnBottom.color = new Color32(141, 80, 167, 255);
+        generalStatBtn.color = new Color32(155, 89, 182, 255);
+        gBtnBottom.color = new Color32(130, 76, 152, 255);
+        minigameStatBtn.color = new Color32(179, 101, 212, 255);
+        mBtnBottom.color = new Color32(141, 80, 167, 255);
     }
 
     public void jump()

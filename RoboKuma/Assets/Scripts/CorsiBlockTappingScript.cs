@@ -31,6 +31,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     public AudioClip soundCorrect;
     public AudioClip soundIncorrect;
     public AudioClip soundSuccess;
+    
 
     public int log_id { get; set; }
 	SQLiteDatabase sn;
@@ -70,7 +71,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
             }
         }
 
-        if(sum == 3)
+        if(sum == 3 && lastCorsiData[0].seq_length >= 4 + PlayerPrefs.GetInt("Corsi_Difficulty", 0))
         {
             PlayerPrefs.SetInt("Corsi_Difficulty", PlayerPrefs.GetInt("Corsi_Difficulty", 0) + 1);
         }
@@ -222,8 +223,9 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 
 
         sn.insertintoCorsi(PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt("log_id"), correct_trials, score, sequenceLength, 1);
+        PlayerPrefs.SetString("Last_Played", System.DateTime.Now.ToString("g"));
 
-		sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
+        sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
         sn.getPlayerStatistics(1);
 
         PlayerPrefs.SetInt("Experience", exp);

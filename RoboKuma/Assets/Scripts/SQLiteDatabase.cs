@@ -620,7 +620,25 @@ public class SQLiteDatabase : MonoBehaviour {
 		return generated_count32;
 	}
 
-	public string getMostPlayed()
+    public void updateAttributes(int[] attributes)
+    {
+        _dbc = new SqliteConnection(_constr);
+        _dbc.Open();
+        _dbcm = _dbc.CreateCommand();
+
+        sql = "UPDATE player_data_table SET memory = " + attributes[0] + ", response = " + attributes[3] + " , speed = " + attributes[2] + " , accuracy = " + attributes[1] + " WHERE player_id = " + 1 + ";";
+
+        //_idr.Close();
+        //_idr = null;
+        _dbcm.CommandText = sql;
+        _dbcm.ExecuteNonQuery();
+        _dbcm.Dispose();
+        _dbcm = null;
+        _dbc.Close();
+        _dbc = null;
+    }
+
+    public string getMostPlayed()
 	{
 		string mostPlayed = "N/A";
 
@@ -628,10 +646,12 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc.Open();
 		_dbcm = _dbc.CreateCommand();
 		sql = "SELECT T.test_name FROM tests T, " +
-			  "(SELECT test_id, COUNT(*) FROM player_logs " + 
-			  "GROUP BY test_id ORDER BY COUNT(*) DESC LIMIT 1) as L " +
-			  "WHERE T.test_id = L.test_id;";
-		_dbcm.CommandText = sql;
+              "(SELECT test_id, COUNT(*), game_progress FROM player_logs " +
+              "GROUP BY test_id ORDER BY COUNT(*) DESC LIMIT 1) as L " + 
+              "WHERE T.test_id = L.test_id " +
+              "AND L.game_progress = 'FINISHED'; ";
+        _dbcm.CommandText = sql;
+        _dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader();
 
 		if(_idr.Read())
@@ -657,10 +677,12 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc.Open();
 		_dbcm = _dbc.CreateCommand();
 		sql = "SELECT T.test_name FROM tests T, " +
-			  "(SELECT test_id, COUNT(*) FROM player_logs " + 
-			  "GROUP BY test_id ORDER BY COUNT(*) ASC LIMIT 1) as L " +
-			  "WHERE T.test_id = L.test_id;";
-		_dbcm.CommandText = sql;
+              "(SELECT test_id, COUNT(*), game_progress FROM player_logs " +
+              "GROUP BY test_id ORDER BY COUNT(*) ASC LIMIT 1) as L " +
+              "WHERE T.test_id = L.test_id " +
+              "AND L.game_progress = 'FINISHED'; ";
+        _dbcm.CommandText = sql;
+        _dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader();
 
 		if(_idr.Read())
