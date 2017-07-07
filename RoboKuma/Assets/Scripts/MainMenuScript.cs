@@ -37,6 +37,7 @@ public class MainMenuScript : MonoBehaviour {
     public Text experience, bearya, resultLevel, resultText;
     public Text tLevel, tBearya, tXP;
     public Text incompleteDaily;
+    public Text speechBubbleText;
     public Image resultI;
     public Slider tExperience;
 
@@ -53,12 +54,16 @@ public class MainMenuScript : MonoBehaviour {
     public Image leg, body, head, accessory;
 
     public Button back;
+    public Image pointer1, pointer2;
+    public Button cBtn, sBtn, mBtn, aBtn, iBtn;
 
     public int log_id { get; set; }
 
     public String status;
 
     public Boolean leveledup = false;
+
+    public ArrayList messages;
 
     public SQLiteDatabase sn;
 
@@ -103,6 +108,8 @@ public class MainMenuScript : MonoBehaviour {
         back.gameObject.SetActive(false);
 
         SpeechBubble.SetActive(false);
+        pointer1.gameObject.SetActive(false);
+        pointer2.gameObject.SetActive(false);
         popup.SetActive(false);
         dailyPanel.SetActive(false);
 
@@ -122,6 +129,7 @@ public class MainMenuScript : MonoBehaviour {
         {
             DateTime dt = DateTime.Parse(PlayerPrefs.GetString("Last_Played"));
             reduction = System.DateTime.Now.Subtract(dt).Hours / 24 * 1;
+            Debug.Log("Hours: " + System.DateTime.Now.Subtract(dt).Hours + " " + dt.ToString());
 
             if (reduction > 0)
             {
@@ -143,12 +151,39 @@ public class MainMenuScript : MonoBehaviour {
             }
         }
 
+        messages = new ArrayList();
 
         if (PlayerPrefs.GetInt("DB", -1) == -1)
         {
             sn.Start();
             PlayerPrefs.SetInt("DB", 1);
             Debug.Log("DB");
+
+            SpeechBubble.SetActive(true);
+
+            messages.Add("Hi, I am Robokuma, nice to meet you.");
+            messages.Add("I believe you're here to help me improve my skills.");
+            messages.Add("You can do so by playing the mini-games here.");
+            messages.Add("Also remember to play everyday to get the daily rewards");
+            messages.Add("and prevent the degradation of my skills.");
+            messages.Add("You can see my attributes here.");
+            messages.Add("You can now start by playing a mini-game.");
+            messages.Add("Good Luck!");
+            speechBubbleText.text = messages[0].ToString();
+            messages.RemoveAt(0);
+            SpeechBubble.GetComponent<Animator>().SetBool("hasNextSpeech", true);
+
+            cBtn.interactable = false;
+            sBtn.interactable = false;
+            mBtn.interactable = false;
+            aBtn.interactable = false;
+            iBtn.interactable = false;
+
+        }
+        else
+        {
+            SpeechBubble.SetActive(true);
+            speechBubbleText.text = "Welcome Back!";
         }
 
         updateAttributes();
@@ -277,6 +312,50 @@ public class MainMenuScript : MonoBehaviour {
         {
             //NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(1), "Test Notification", "Should appear when the app closes.", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
             NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(64800), "RoboKuma", "Robokuma misses you.", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
+        }
+    }
+
+    public void speechBubblePress()
+    {
+        if(messages.Count > 0)
+        {
+            speechBubbleText.text = messages[0].ToString();
+            pointer1.gameObject.SetActive(false);
+            pointer1.GetComponent<Animator>().SetBool("pointer", false);
+            pointer2.gameObject.SetActive(false);
+            pointer2.GetComponent<Animator>().SetBool("pointer", false);
+
+
+            switch (messages[0].ToString())
+            {
+                case "You can now start by playing a mini-game.":
+                case "You can do so by playing the mini-games here.":
+                    mBtn.interactable = true;
+                    pointer1.gameObject.SetActive(true);
+                    pointer1.GetComponent<Animator>().SetBool("pointer", true);
+                    break;
+                case "You can see my attributes here.":
+                    mBtn.interactable = false;
+                    sBtn.interactable = true;
+                    pointer2.gameObject.SetActive(true);
+                    pointer2.GetComponent<Animator>().SetBool("pointer", true);
+                    break;
+                case "Good Luck!":
+                    cBtn.interactable = true;
+                    sBtn.interactable = true;
+                    mBtn.interactable = true;
+                    aBtn.interactable = true;
+                    iBtn.interactable = true;
+                    break;              
+            }
+            messages.RemoveAt(0);
+            if(messages.Count == 0)
+                SpeechBubble.GetComponent<Animator>().SetBool("hasNextSpeech", false);
+
+        }
+        else
+        {
+            SpeechBubble.SetActive(false);
         }
     }
 
@@ -724,6 +803,7 @@ public class MainMenuScript : MonoBehaviour {
             rewards.SetActive(true);
             experience.text = "500";
             bearya.text = "500";
+            audioHandler.PlayOneShot(soundAchievement);
             resultText.text = "\nYou have unlocked\n\n\n\n\n" + achievementReward;
             resultI.overrideSprite = trophy;
 
@@ -735,6 +815,7 @@ public class MainMenuScript : MonoBehaviour {
             rewards.SetActive(true);
             experience.text = "50";
             bearya.text = "50";
+            audioHandler.PlayOneShot(soundAchievement);
             resultText.text = "\nYou have unlocked\n\n\n\n\n" + dailyReward;
             resultI.overrideSprite = trophy;
 
@@ -743,6 +824,7 @@ public class MainMenuScript : MonoBehaviour {
         else if (leveledup)
         {
             leveledup = false;
+            audioHandler.PlayOneShot(soundAchievement);
             resultText.text = "\nYou have reached level\n\n\n\n\nCongratulations!";
             resultLevel.text = PlayerPrefs.GetInt("Level") + "";
             resultI.overrideSprite = trophy;
@@ -876,10 +958,11 @@ public class MainMenuScript : MonoBehaviour {
 
         statAve /= stats.Length;
 
-        if ((stats[1] * 1.7) < stats[3])
+        if ((stats[1] * 1.7) < stats[3] && stats[1] >= 0)
         {
             status = "FIDGETY";
             RKAnimation.GetComponent<Animator>().SetBool("isFidgety", true);
+            SpeechBubble.SetActive(true);
         }
         else if ((statAve * 0.6) > stats[0])
         {
@@ -1108,15 +1191,23 @@ public class MainMenuScript : MonoBehaviour {
         {
             case "FORGETFUL":
                 popupText.text = "Robokuma is currently forgetful because his MEMORY attribute is lagging behind. Remember the correct responses when playing N-BACK and CORSI BLOCK-TAPPING games to increase the memory attribute";
+                SpeechBubble.SetActive(true);
+                speechBubbleText.text = "I am forgetful.";
                 break;
             case "FIDGETY":
                 popupText.text = "Robokuma is fidgety because his ACCURACY attribute is too low when compared to his response attribute. Do the correct response when playing GO/NO-GO, and ERIKSEN FLANKER games to increase the accuracy attribute.";
+                SpeechBubble.SetActive(true);
+                speechBubbleText.text = "I am fidgety.";
                 break;
             case "SLOW":
                 popupText.text = "Robokuma is slow because his SPEED attribute is lagging behind. Respond faster when playing GO/NO-GO, N-BACK and ERIKSEN FLANKER games to increase the speed attribute.";
+                SpeechBubble.SetActive(true);
+                speechBubbleText.text = "I am slow.";
                 break;
             case "STABLE":
                 popupText.text = "Robokuma is currently stable, keep up the good work!";
+                SpeechBubble.SetActive(true);
+                speechBubbleText.text = "I am fine.";
                 break;
         }
 
@@ -1126,6 +1217,7 @@ public class MainMenuScript : MonoBehaviour {
     {
         popup.SetActive(false);
         popupText.text = "";
+        SpeechBubble.SetActive(false);
     }
 
     public void dailyObjPress()
