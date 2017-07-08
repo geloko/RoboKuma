@@ -184,6 +184,8 @@ public class MainMenuScript : MonoBehaviour {
         {
             SpeechBubble.SetActive(true);
             speechBubbleText.text = "Welcome Back!";
+
+            StartCoroutine(closeSpeechBubble());
         }
 
         updateAttributes();
@@ -357,6 +359,12 @@ public class MainMenuScript : MonoBehaviour {
         {
             SpeechBubble.SetActive(false);
         }
+    }
+
+    public IEnumerator closeSpeechBubble()
+    {
+        yield return new WaitForSecondsRealtime(1.2F);
+        SpeechBubble.SetActive(false);
     }
 
     public void updateAchievements()
@@ -1223,6 +1231,20 @@ public class MainMenuScript : MonoBehaviour {
     public void dailyObjPress()
     {
         dailyPanel.SetActive(!dailyPanel.activeSelf);
+    }
+
+    public void bookPress()
+    {
+        SpeechBubble.SetActive(true);
+        speechBubbleText.text = "So many books, so little time.";
+        StartCoroutine(closeSpeechBubble());
+    }
+
+    public void coinPress()
+    {
+        SpeechBubble.SetActive(true);
+        speechBubbleText.text = "I am in need of financial uplifting.";
+        StartCoroutine(closeSpeechBubble());
     }
 
 }
