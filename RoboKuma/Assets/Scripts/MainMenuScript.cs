@@ -54,14 +54,16 @@ public class MainMenuScript : MonoBehaviour {
     public Image leg, body, head, accessory;
 
     public Button back;
-    public Image pointer1, pointer2;
-    public Button cBtn, sBtn, mBtn, aBtn, iBtn;
+    public Image pointer1;
+    public Button cBtn, sBtn, mBtn, aBtn, iBtn,statusBtn;
+    public GameObject dBtn;
 
     public int log_id { get; set; }
 
     public String status;
 
     public Boolean leveledup = false;
+    public bool inTutorial = false;
 
     public ArrayList messages;
 
@@ -109,7 +111,6 @@ public class MainMenuScript : MonoBehaviour {
 
         SpeechBubble.SetActive(false);
         pointer1.gameObject.SetActive(false);
-        pointer2.gameObject.SetActive(false);
         popup.SetActive(false);
         dailyPanel.SetActive(false);
 
@@ -124,6 +125,7 @@ public class MainMenuScript : MonoBehaviour {
         audioHandler.loop = true;
 
         bool attributesReduced = false;
+        inTutorial = false;
         int reduction = 0;
         if (!PlayerPrefs.GetString("Last_Played", "N/A").Equals("N/A"))
         {
@@ -161,12 +163,18 @@ public class MainMenuScript : MonoBehaviour {
 
             SpeechBubble.SetActive(true);
 
+            inTutorial = true;
+
             messages.Add("Hi, I am Robokuma, nice to meet you.");
             messages.Add("I believe you're here to help me improve my skills.");
             messages.Add("You can do so by playing the mini-games here.");
+            messages.Add("You can see my attributes and your performance here.");
+            messages.Add("You can see my current status here.");
+            messages.Add("You can also customize my looks here");
+            messages.Add("and view achievements you can unlock here.");
             messages.Add("Also remember to play everyday to get the daily rewards");
             messages.Add("and prevent the degradation of my skills.");
-            messages.Add("You can see my attributes here.");
+            messages.Add("For more information, you can refer here.");
             messages.Add("You can now start by playing a mini-game.");
             messages.Add("Good Luck!");
             speechBubbleText.text = messages[0].ToString();
@@ -178,6 +186,8 @@ public class MainMenuScript : MonoBehaviour {
             mBtn.interactable = false;
             aBtn.interactable = false;
             iBtn.interactable = false;
+            statusBtn.interactable = false;
+            dBtn.SetActive(false);
 
         }
         else
@@ -324,23 +334,42 @@ public class MainMenuScript : MonoBehaviour {
             speechBubbleText.text = messages[0].ToString();
             pointer1.gameObject.SetActive(false);
             pointer1.GetComponent<Animator>().SetBool("pointer", false);
-            pointer2.gameObject.SetActive(false);
-            pointer2.GetComponent<Animator>().SetBool("pointer", false);
 
 
             switch (messages[0].ToString())
             {
                 case "You can now start by playing a mini-game.":
                 case "You can do so by playing the mini-games here.":
+                    iBtn.interactable = false;
                     mBtn.interactable = true;
-                    pointer1.gameObject.SetActive(true);
-                    pointer1.GetComponent<Animator>().SetBool("pointer", true);
+                    //pointer1.gameObject.SetActive(true);
+                    //pointer1.GetComponent<Animator>().SetBool("pointer", true);
                     break;
-                case "You can see my attributes here.":
+                case "You can see my attributes and your performance here.":
                     mBtn.interactable = false;
                     sBtn.interactable = true;
-                    pointer2.gameObject.SetActive(true);
-                    pointer2.GetComponent<Animator>().SetBool("pointer", true);
+                    //pointer2.gameObject.SetActive(true);
+                    //pointer2.GetComponent<Animator>().SetBool("pointer", true);
+                    break;
+                case "You can also customize my looks here":
+                    cBtn.interactable = true;
+                    break;
+                case "and view achievements you can unlock here.":
+                    cBtn.interactable = false;
+                    aBtn.interactable = true;
+                    break;
+                case "Also remember to play everyday to get the daily rewards":
+                    aBtn.interactable = false;
+                    dBtn.SetActive(true);
+                    break;
+                case "You can see my current status here.":
+                    sBtn.interactable = false;
+                    pointer1.gameObject.SetActive(true);
+                    pointer1.GetComponent<Animator>().SetBool("pointer", true);
+                    statusBtn.interactable = true;
+                    break;
+                case "For more information, you can refer here.":
+                    iBtn.interactable = true;
                     break;
                 case "Good Luck!":
                     cBtn.interactable = true;
@@ -348,6 +377,8 @@ public class MainMenuScript : MonoBehaviour {
                     mBtn.interactable = true;
                     aBtn.interactable = true;
                     iBtn.interactable = true;
+                    dBtn.SetActive(true);
+                    inTutorial = false;
                     break;              
             }
             messages.RemoveAt(0);
@@ -701,107 +732,121 @@ public class MainMenuScript : MonoBehaviour {
 
 	public void minigamePress()
 	{
-		PetScreen.gameObject.SetActive(false);
-        AchievementScreen.gameObject.SetActive(false);
-        AttributeScreen.gameObject.SetActive(false);
-        CustomizationScreen.gameObject.SetActive(false);
-        MinigameScreen.gameObject.SetActive(!MinigameScreen.gameObject.activeSelf);
-        ResultsPanel.gameObject.SetActive(false);
-        SettingsScreen.gameObject.SetActive(false);
-
-        if (MinigameScreen.gameObject.activeSelf)
-            back.gameObject.SetActive(true);
-        else
+        if(!inTutorial)
         {
-            back.gameObject.SetActive(false);
-            PetScreen.gameObject.SetActive(true);
-            updateAttributes();
+            PetScreen.gameObject.SetActive(false);
+            AchievementScreen.gameObject.SetActive(false);
+            AttributeScreen.gameObject.SetActive(false);
+            CustomizationScreen.gameObject.SetActive(false);
+            MinigameScreen.gameObject.SetActive(!MinigameScreen.gameObject.activeSelf);
+            ResultsPanel.gameObject.SetActive(false);
+            SettingsScreen.gameObject.SetActive(false);
+
+            if (MinigameScreen.gameObject.activeSelf)
+                back.gameObject.SetActive(true);
+            else
+            {
+                back.gameObject.SetActive(false);
+                PetScreen.gameObject.SetActive(true);
+                updateAttributes();
+            }
         }
+		
     }
 
     public void achievementPress()
     {
-        PetScreen.gameObject.SetActive(false);
-        MinigameScreen.gameObject.SetActive(false);
-        AttributeScreen.gameObject.SetActive(false);
-        CustomizationScreen.gameObject.SetActive(false);
-        AchievementScreen.gameObject.SetActive(!AchievementScreen.gameObject.activeSelf);
-        ResultsPanel.gameObject.SetActive(false);
-        SettingsScreen.gameObject.SetActive(false);
-
-        if (AchievementScreen.gameObject.activeSelf)
-            back.gameObject.SetActive(true);
-        else
+        if (!inTutorial)
         {
-            back.gameObject.SetActive(false);
-            PetScreen.gameObject.SetActive(true);
-            updateAttributes();
+            PetScreen.gameObject.SetActive(false);
+            MinigameScreen.gameObject.SetActive(false);
+            AttributeScreen.gameObject.SetActive(false);
+            CustomizationScreen.gameObject.SetActive(false);
+            AchievementScreen.gameObject.SetActive(!AchievementScreen.gameObject.activeSelf);
+            ResultsPanel.gameObject.SetActive(false);
+            SettingsScreen.gameObject.SetActive(false);
+
+            if (AchievementScreen.gameObject.activeSelf)
+                back.gameObject.SetActive(true);
+            else
+            {
+                back.gameObject.SetActive(false);
+                PetScreen.gameObject.SetActive(true);
+                updateAttributes();
+            }
         }
     }
 
     public void statisticsPress()
     {
-        PetScreen.gameObject.SetActive(false);
-        MinigameScreen.gameObject.SetActive(false);
-        AchievementScreen.gameObject.SetActive(false);
-        CustomizationScreen.gameObject.SetActive(false);
-        AttributeScreen.gameObject.SetActive(!AttributeScreen.gameObject.activeSelf);
-        ResultsPanel.gameObject.SetActive(false);
-        SettingsScreen.gameObject.SetActive(false);
-        if (AttributeScreen.gameObject.activeSelf)
+        if (!inTutorial)
         {
-            back.gameObject.SetActive(true);
-            generalStatPress();
-            updateStatistics();
-        }
-        else
-        {
-            back.gameObject.SetActive(false);
-            PetScreen.gameObject.SetActive(true);
-            updateAttributes();
+            PetScreen.gameObject.SetActive(false);
+            MinigameScreen.gameObject.SetActive(false);
+            AchievementScreen.gameObject.SetActive(false);
+            CustomizationScreen.gameObject.SetActive(false);
+            AttributeScreen.gameObject.SetActive(!AttributeScreen.gameObject.activeSelf);
+            ResultsPanel.gameObject.SetActive(false);
+            SettingsScreen.gameObject.SetActive(false);
+            if (AttributeScreen.gameObject.activeSelf)
+            {
+                back.gameObject.SetActive(true);
+                generalStatPress();
+                updateStatistics();
+            }
+            else
+            {
+                back.gameObject.SetActive(false);
+                PetScreen.gameObject.SetActive(true);
+                updateAttributes();
+            }
         }
     }
 
     public void customizationPress()
     {
-        PetScreen.gameObject.SetActive(false);
-        MinigameScreen.gameObject.SetActive(false);
-        AchievementScreen.gameObject.SetActive(false);
-        AttributeScreen.gameObject.SetActive(false);
-        CustomizationScreen.gameObject.SetActive(!CustomizationScreen.gameObject.activeSelf);
-        ResultsPanel.gameObject.SetActive(false);
-        SettingsScreen.gameObject.SetActive(false);
-
-        if (CustomizationScreen.gameObject.activeSelf)
-            back.gameObject.SetActive(true);
-        else
+        if (!inTutorial)
         {
-            back.gameObject.SetActive(false);
-            PetScreen.gameObject.SetActive(true);
-            updateAttributes();
-        }
+            PetScreen.gameObject.SetActive(false);
+            MinigameScreen.gameObject.SetActive(false);
+            AchievementScreen.gameObject.SetActive(false);
+            AttributeScreen.gameObject.SetActive(false);
+            CustomizationScreen.gameObject.SetActive(!CustomizationScreen.gameObject.activeSelf);
+            ResultsPanel.gameObject.SetActive(false);
+            SettingsScreen.gameObject.SetActive(false);
 
+            if (CustomizationScreen.gameObject.activeSelf)
+                back.gameObject.SetActive(true);
+            else
+            {
+                back.gameObject.SetActive(false);
+                PetScreen.gameObject.SetActive(true);
+                updateAttributes();
+            }
+        }
     }
 
     public void settingsPress()
     {
-        PetScreen.gameObject.SetActive(false);
-        MinigameScreen.gameObject.SetActive(false);
-        AchievementScreen.gameObject.SetActive(false);
-        AttributeScreen.gameObject.SetActive(false);
-        CustomizationScreen.gameObject.SetActive(false);
-        ResultsPanel.gameObject.SetActive(false);
-        SettingsScreen.gameObject.SetActive(!SettingsScreen.gameObject.activeSelf);
-
-        if (SettingsScreen.gameObject.activeSelf)
-            back.gameObject.SetActive(true);
-        else
+        if (!inTutorial)
         {
-            back.gameObject.SetActive(false);
-            PetScreen.gameObject.SetActive(true);
-            updateAttributes();
-        }
+            PetScreen.gameObject.SetActive(false);
+            MinigameScreen.gameObject.SetActive(false);
+            AchievementScreen.gameObject.SetActive(false);
+            AttributeScreen.gameObject.SetActive(false);
+            CustomizationScreen.gameObject.SetActive(false);
+            ResultsPanel.gameObject.SetActive(false);
+            SettingsScreen.gameObject.SetActive(!SettingsScreen.gameObject.activeSelf);
 
+            if (SettingsScreen.gameObject.activeSelf)
+                back.gameObject.SetActive(true);
+            else
+            {
+                back.gameObject.SetActive(false);
+                PetScreen.gameObject.SetActive(true);
+                updateAttributes();
+            }
+        }
     }
 
     public void resultsPress()
@@ -1194,28 +1239,33 @@ public class MainMenuScript : MonoBehaviour {
     public void statusPress()
     {
         popup.SetActive(true);
+        dailyPanel.SetActive(false);
 
         switch (status)
         {
             case "FORGETFUL":
                 popupText.text = "Robokuma is currently forgetful because his MEMORY attribute is lagging behind. Remember the correct responses when playing N-BACK and CORSI BLOCK-TAPPING games to increase the memory attribute";
                 SpeechBubble.SetActive(true);
-                speechBubbleText.text = "I am forgetful.";
+                if(!inTutorial)
+                    speechBubbleText.text = "I am forgetful.";
                 break;
             case "FIDGETY":
                 popupText.text = "Robokuma is fidgety because his ACCURACY attribute is too low when compared to his response attribute. Do the correct response when playing GO/NO-GO, and ERIKSEN FLANKER games to increase the accuracy attribute.";
                 SpeechBubble.SetActive(true);
-                speechBubbleText.text = "I am fidgety.";
+                if (!inTutorial)
+                    speechBubbleText.text = "I am fidgety.";
                 break;
             case "SLOW":
                 popupText.text = "Robokuma is slow because his SPEED attribute is lagging behind. Respond faster when playing GO/NO-GO, N-BACK and ERIKSEN FLANKER games to increase the speed attribute.";
                 SpeechBubble.SetActive(true);
-                speechBubbleText.text = "I am slow.";
+                if (!inTutorial)
+                    speechBubbleText.text = "I am slow.";
                 break;
             case "STABLE":
                 popupText.text = "Robokuma is currently stable, keep up the good work!";
                 SpeechBubble.SetActive(true);
-                speechBubbleText.text = "I am fine.";
+                if (!inTutorial)
+                    speechBubbleText.text = "I am fine.";
                 break;
         }
 
@@ -1225,7 +1275,8 @@ public class MainMenuScript : MonoBehaviour {
     {
         popup.SetActive(false);
         popupText.text = "";
-        SpeechBubble.SetActive(false);
+        if(!inTutorial)
+            SpeechBubble.SetActive(false);
     }
 
     public void dailyObjPress()
@@ -1235,16 +1286,22 @@ public class MainMenuScript : MonoBehaviour {
 
     public void bookPress()
     {
-        SpeechBubble.SetActive(true);
-        speechBubbleText.text = "So many books, so little time.";
-        StartCoroutine(closeSpeechBubble());
+        if (!inTutorial)
+        {
+            SpeechBubble.SetActive(true);
+            speechBubbleText.text = "So many books, so little time.";
+            StartCoroutine(closeSpeechBubble());
+        }
     }
 
     public void coinPress()
     {
-        SpeechBubble.SetActive(true);
-        speechBubbleText.text = "I am in need of financial uplifting.";
-        StartCoroutine(closeSpeechBubble());
+        if (!inTutorial)
+        {
+            SpeechBubble.SetActive(true);
+            speechBubbleText.text = "I am in need of financial uplifting.";
+            StartCoroutine(closeSpeechBubble());
+        }
     }
 
 }

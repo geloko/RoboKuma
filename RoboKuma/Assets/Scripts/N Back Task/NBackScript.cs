@@ -113,7 +113,7 @@ public class NBackScript : MonoBehaviour {
         itemScript.items = new int[nValue + 1];
         itemScript.items[0] = item0;
 
-        for (int i = 1; i < 2; i++)
+        for (int i = 1; i <= nValue; i++)
         {
             itemScript.items[i] = -1;
         }
@@ -129,60 +129,9 @@ public class NBackScript : MonoBehaviour {
         itemScript.end = end;
         itemScript.time = time;
         itemScript.scoreTxt = scoreText;
+        itemScript.audioHandler = audioHandler;
 
         itemScript.trialCount = trialCount;
         itemScript.nValue = nValue;
     }
-
-	/*public void startLoop(){
-
-
-		if(count != 10){
-			if (count != 0) {
-				if (mainImage.sprite == (Object)gameSprites [gameSprites.Count - 3]) {
-					if (isYes) {
-						feedbackText.text = "CORRECT!";
-					} else {
-						feedbackText.text = "WRONG!";
-					}
-				} else {
-					if (isYes) {
-						feedbackText.text = "WRONG!";
-					} else {
-						feedbackText.text = "CORRECT!";
-					}
-				}
-			} else {
-				
-			}
-		}
-		count--;
-		int x = Random.Range (0, 3);
-		mainImage.sprite = sprites [x];
-		gameSprites.Add(mainImage.sprite);
-		twoImageAgo.sprite = gameSprites [gameSprites.Count - 3] as Sprite;
-	}
-
-	public IEnumerator displayImage(){
-		for (int i = 0; i < 2; i++) {
-			int x = Random.Range (0, 3);
-			mainImage.sprite = sprites [x];
-			gameSprites.Add (mainImage.sprite);
-			if(i == 0)
-				twoImageAgo.sprite = sprites [x];
-			yield return new WaitForSecondsRealtime (1);
-		}
-
-		startLoop ();
-	}
-
-	public void IsYesButton()
-	{
-		isYes = true;
-	}
-
-	public void IsNoButton()
-	{
-		isYes = false;
-	}*/
 }

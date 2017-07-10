@@ -69,7 +69,7 @@ public class EriksenFlankerScript : MonoBehaviour {
         //mainPanel = GameObject.Find ("MainPanel");
         stopwatch = new Stopwatch();
 
-        inGame = true;
+        inGame = false;
 
 		sn = new SQLiteDatabase();
 		string currentTime = System.DateTime.Now.ToString("g");
@@ -95,6 +95,7 @@ public class EriksenFlankerScript : MonoBehaviour {
         counter.text = "1";
         yield return new WaitForSecondsRealtime(1F);
         instructionScreen.SetActive(false);
+        inGame = true;
         //yield return new WaitForSecondsRealtime(0.1F);
         feedbackText.text = "";
 
@@ -303,8 +304,8 @@ public class EriksenFlankerScript : MonoBehaviour {
 			}
 			//swipe left
 			if(currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
-			{
-				if (x < 50) {
+            {
+                if (x < 50) {
                     audioHandler.clip = soundCorrect;
                     audioHandler.Play();
                     double timeElapsed = stopwatch.ElapsedMilliseconds;
@@ -468,10 +469,12 @@ public class EriksenFlankerScript : MonoBehaviour {
         {
             images[i].enabled = false;
         }
+        inGame = false;
 
         yield return new WaitForSecondsRealtime(1.5F);
         feedbackText.text = "";
         images[0].enabled = true;
+        inGame = true;
         startGame();
     }
 

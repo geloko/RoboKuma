@@ -80,6 +80,20 @@ public class ItemScript : MonoBehaviour {
             trialsTxt.text = "Item " + (count - nValue) + " of " + trialCount;
         }
         sn = new SQLiteDatabase();
+
+        /*switch (items[nValue])
+        {
+            case 0:
+                cheat.text = "Wrench";
+                break;
+            case 1:
+                cheat.text = "pliers";
+                break;
+            case 2:
+                cheat.text = "pencil";
+                break;
+        }*/
+
     }
 
 
@@ -96,14 +110,16 @@ public class ItemScript : MonoBehaviour {
     {
         if(count <= trialCount + 1)
         {
-            for(int i = 1; i <= nValue; i++)
+            for(int i = nValue; i >= 1; i--)
             {
                 items[i] = items[i - 1];
             }
+            //items[2] = items[1];
+            //items[1] = items[0];
             items[0] = Random.Range(0, objects.Length);
             GameObject obj = (GameObject)Instantiate(objects[items[0]], new Vector3(0, 356, 0), Quaternion.identity);
             obj.transform.SetParent(panel.transform, false);
-
+            
             ItemScript itemScript = obj.GetComponent<ItemScript>();
             itemScript.items = items;
             itemScript.score = score;
@@ -117,6 +133,7 @@ public class ItemScript : MonoBehaviour {
             itemScript.end = end;
             itemScript.time = time;
             itemScript.scoreTxt = scoreTxt;
+            itemScript.audioHandler = audioHandler;
 
             itemScript.nValue = nValue;
             itemScript.trialCount = trialCount;
@@ -126,7 +143,7 @@ public class ItemScript : MonoBehaviour {
             rb.AddForce(-transform.up * 20000);
 
             StopAllCoroutines();
-
+            
         }
         else
         {
@@ -157,6 +174,10 @@ public class ItemScript : MonoBehaviour {
             }
             ave /= cnt;
 
+            audioHandler.clip = soundSuccess;
+            audioHandler.Play();
+            trialsTxt.text = "";
+
             PlayerPrefs.SetInt("Experience", exp);
             PlayerPrefs.SetInt("Bearya", coins);
             PlayerPrefs.SetString("Last_Played", System.DateTime.Now.ToString("g"));
@@ -177,8 +198,6 @@ public class ItemScript : MonoBehaviour {
         }
         else if(swiped)
         {
-            audioHandler.clip = soundCorrect;
-            audioHandler.Play();
             swiped = false;
         }
         else if(count > nValue)
@@ -233,6 +252,7 @@ public class ItemScript : MonoBehaviour {
             //swipe left
             if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
             {
+                
                 if (items[nValue] != -1 && gameObject.Equals(objects[items[nValue]]))
                 {
                     audioHandler.clip = soundCorrect;
