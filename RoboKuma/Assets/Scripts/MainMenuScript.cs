@@ -1027,18 +1027,18 @@ public class MainMenuScript : MonoBehaviour {
 
         statAve /= stats.Length;
 
-        if ((stats[1] * 1.7) < stats[3] && stats[1] >= 0)
+        if (((stats[1] * 1.7) < stats[3] && stats[1] >= 0) || stats[3] < 0)
         {
             status = "FIDGETY";
             RKAnimation.GetComponent<Animator>().SetBool("isFidgety", true);
             SpeechBubble.SetActive(true);
         }
-        else if ((statAve * 0.6) > stats[0])
+        else if (((statAve * 0.6) > stats[0] && statAve >= 0) || stats[0] < 0)
         {
             status = "FORGETFUL";
             RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
         }
-        else if ((statAve * 0.6) > stats[2])
+        else if (((statAve * 0.6) > stats[2] && statAve >= 0) || stats[2] < 0)
         {
             status = "SLOW";
             RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
