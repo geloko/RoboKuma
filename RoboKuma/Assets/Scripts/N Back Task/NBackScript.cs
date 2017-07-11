@@ -87,7 +87,13 @@ public class NBackScript : MonoBehaviour {
 		
 	}
 
-	public void startGame()
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+            ReturnMainScript.returnToMainWithNotif();
+    }
+
+    public void startGame()
     {
         StartCoroutine(startCoroutine());
     }

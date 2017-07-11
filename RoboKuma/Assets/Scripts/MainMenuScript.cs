@@ -66,6 +66,9 @@ public class MainMenuScript : MonoBehaviour {
     public bool inTutorial = false;
 
     public ArrayList messages;
+    public String[] bookComments;
+    public String[] bearyaComments;
+    public IEnumerator speechCoroutine;
 
     public SQLiteDatabase sn;
 
@@ -116,6 +119,15 @@ public class MainMenuScript : MonoBehaviour {
 
         sn = new SQLiteDatabase();
         status = "STABLE";
+
+        bookComments = new String[2];
+        bearyaComments = new String[2];
+
+        bookComments[0] = "So many books, so little time.";
+        bookComments[1] = "Do bears even need books?";
+
+        bearyaComments[0] = "I am in need of financial uplifting.";
+        bearyaComments[1] = "Why is it called Bearya?";
 
         //PlayerPrefs.DeleteAll();
         Debug.Log(PlayerPrefs.GetInt("DB"));
@@ -194,8 +206,8 @@ public class MainMenuScript : MonoBehaviour {
         {
             SpeechBubble.SetActive(true);
             speechBubbleText.text = "Welcome Back!";
-
-            StartCoroutine(closeSpeechBubble());
+            speechCoroutine = closeSpeechBubble();
+            StartCoroutine(speechCoroutine);
         }
 
         updateAttributes();
@@ -323,7 +335,7 @@ public class MainMenuScript : MonoBehaviour {
         if(pauseStatus)
         {
             //NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(1), "Test Notification", "Should appear when the app closes.", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
-            NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(64800), "RoboKuma", "Robokuma misses you.", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
+            NotificationManager.SendWithAppIcon(TimeSpan.FromSeconds(86400), "RoboKuma", "Robokuma misses you.", new Color(1, 0.3f, 0.15f), NotificationIcon.Message);
         }
     }
 
@@ -712,6 +724,10 @@ public class MainMenuScript : MonoBehaviour {
                 leg.overrideSprite = leg_3;
                 break;
         }
+
+        dailyPanel.SetActive(false);
+        popup.SetActive(false);
+        SpeechBubble.SetActive(false);
     }
 
 	public void mainPress()
@@ -1282,6 +1298,9 @@ public class MainMenuScript : MonoBehaviour {
     public void dailyObjPress()
     {
         dailyPanel.SetActive(!dailyPanel.activeSelf);
+
+        if (dailyPanel.activeSelf)
+            popup.SetActive(false);
     }
 
     public void bookPress()
@@ -1289,8 +1308,12 @@ public class MainMenuScript : MonoBehaviour {
         if (!inTutorial)
         {
             SpeechBubble.SetActive(true);
-            speechBubbleText.text = "So many books, so little time.";
-            StartCoroutine(closeSpeechBubble());
+            speechBubbleText.text = bookComments[new System.Random().Next(bookComments.Length)];
+            if(speechCoroutine != null)
+                StopCoroutine(speechCoroutine);
+            speechCoroutine = closeSpeechBubble();
+            StartCoroutine(speechCoroutine);
+
         }
     }
 
@@ -1299,8 +1322,11 @@ public class MainMenuScript : MonoBehaviour {
         if (!inTutorial)
         {
             SpeechBubble.SetActive(true);
-            speechBubbleText.text = "I am in need of financial uplifting.";
-            StartCoroutine(closeSpeechBubble());
+            speechBubbleText.text = bearyaComments[new System.Random().Next(bearyaComments.Length)];
+            if (speechCoroutine != null)
+                StopCoroutine(speechCoroutine);
+            speechCoroutine = closeSpeechBubble();
+            StartCoroutine(speechCoroutine);
         }
     }
 

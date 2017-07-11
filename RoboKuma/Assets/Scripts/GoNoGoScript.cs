@@ -67,6 +67,12 @@ public class GoNoGoScript : MonoBehaviour {
 	
 	}
 
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+            ReturnMainScript.returnToMainWithNotif();
+    }
+
     public void startGame()
     {
         StartCoroutine(startDelay());

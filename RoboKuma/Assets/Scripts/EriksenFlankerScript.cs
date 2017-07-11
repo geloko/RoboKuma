@@ -86,6 +86,12 @@ public class EriksenFlankerScript : MonoBehaviour {
 		//SwipeForMobile ();
 	}
 
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+            ReturnMainScript.returnToMainWithNotif();
+    }
+
     public IEnumerator startDelay()
     {
         counter.text = "3";

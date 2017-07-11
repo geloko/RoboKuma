@@ -106,6 +106,12 @@ public class ItemScript : MonoBehaviour {
 
     }
 
+    void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+            ReturnMainScript.returnToMainWithNotif();
+    }
+
     public void createObject()
     {
         if(count <= trialCount + 1)
