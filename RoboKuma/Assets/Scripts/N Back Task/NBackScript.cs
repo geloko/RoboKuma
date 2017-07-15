@@ -47,10 +47,7 @@ public class NBackScript : MonoBehaviour {
 		time = new double[trialCount];
 		sn = new SQLiteDatabase();
 
-		string currentTime = System.DateTime.Now.ToString("g");
 		//player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
-		log_id = sn.insertintoPlayerLog (PlayerPrefs.GetInt("player_id"), 3, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
-		PlayerPrefs.SetInt ("log_id", log_id);
 
         NBackData[] lastNBack = sn.getLastNBack();
 
@@ -107,6 +104,11 @@ public class NBackScript : MonoBehaviour {
         counter.text = "1";
         yield return new WaitForSecondsRealtime(1F);
         instructionScreen.SetActive(false);
+
+
+        string currentTime = System.DateTime.Now.ToString("g");
+        log_id = sn.insertintoPlayerLog(PlayerPrefs.GetInt("player_id"), 3, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
+        PlayerPrefs.SetInt("log_id", log_id);
 
         int item0 = Random.Range(0, objects.Length);
         GameObject obj = (GameObject)Instantiate(objects[item0], new Vector3(0, 356, 0), Quaternion.identity);

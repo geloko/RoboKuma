@@ -188,7 +188,7 @@ public class ItemScript : MonoBehaviour {
             PlayerPrefs.SetInt("Bearya", coins);
             PlayerPrefs.SetString("Last_Played", System.DateTime.Now.ToString("g"));
 
-            sn.insertintoNback(PlayerPrefs.GetInt("player_id"), PlayerPrefs.GetInt("log_id"), ave, score, nValue, 2, trialCount);
+            sn.insertintoNback(PlayerPrefs.GetInt("player_id"), PlayerPrefs.GetInt("log_id"), ave, score, nValue, objects.Length, trialCount);
 
 			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
         }

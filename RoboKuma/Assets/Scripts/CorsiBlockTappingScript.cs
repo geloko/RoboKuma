@@ -42,12 +42,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
 
 		End.gameObject.SetActive(false);
 		sn = new SQLiteDatabase();
-
-		string currentTime = System.DateTime.Now.ToString("g");
-		//player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
-		log_id = sn.insertintoPlayerLog (PlayerPrefs.GetInt("player_id"), 2, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
-		PlayerPrefs.SetInt ("log_id", log_id);
-
+        
         CorsiData[] lastCorsiData = sn.getLastCorsi();
 
         int sum = 0;
@@ -125,6 +120,11 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         counter.text = "1";
         yield return new WaitForSecondsRealtime(1F);
         instructionScreen.SetActive(false);
+
+        string currentTime = System.DateTime.Now.ToString("g");
+        //player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
+        log_id = sn.insertintoPlayerLog(PlayerPrefs.GetInt("player_id"), 2, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
+        PlayerPrefs.SetInt("log_id", log_id);
 
         yield return new WaitForSecondsRealtime(0.5F);
         int rand;

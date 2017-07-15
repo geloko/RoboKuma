@@ -51,7 +51,7 @@ public class MainMenuScript : MonoBehaviour {
     public GameObject[] dailyRewards;
     public GameObject[] dailyComplete;
 
-    public Image leg, body, head, accessory;
+    public Image leg, body, head, accessory, eyes;
 
     public Button back;
     public Image pointer1;
@@ -76,7 +76,8 @@ public class MainMenuScript : MonoBehaviour {
     public Sprite leg_1, leg_2, leg_3;
     public Sprite head_1, head_2;
     public Sprite accessory_1;
-    public Sprite trophy, sad_icon;
+    public Sprite trophy, sad_icon, eyes_2;
+
 
     public String dailyReward = "";
     public String achievementReward = "";
@@ -87,6 +88,7 @@ public class MainMenuScript : MonoBehaviour {
     public AudioClip soundSlow;
     public AudioClip soundFidgety;
     public AudioClip soundForgetful;
+    public AudioClip soundListless;
     public AudioClip soundLevelup;
     public AudioClip soundAchievement;
     public AudioClip backGround;
@@ -121,13 +123,15 @@ public class MainMenuScript : MonoBehaviour {
         status = "STABLE";
 
         bookComments = new String[2];
-        bearyaComments = new String[2];
+        bearyaComments = new String[4];
 
         bookComments[0] = "So many books, so little time.";
         bookComments[1] = "Do bears even need books?";
 
         bearyaComments[0] = "I am in need of financial uplifting.";
         bearyaComments[1] = "Why is it called Bearya?";
+        bearyaComments[2] = "Money often costs too much.";
+        bearyaComments[3] = "The best thing money can buy is financial freedom.";
 
         //PlayerPrefs.DeleteAll();
         Debug.Log(PlayerPrefs.GetInt("DB"));
@@ -1027,7 +1031,9 @@ public class MainMenuScript : MonoBehaviour {
 
         statAve /= stats.Length;
 
-        if (((stats[1] * 1.7) < stats[3] && stats[1] >= 0) || stats[3] < 0)
+        eyes.overrideSprite = null;
+
+        if ((stats[1] * 1.7) < stats[3] && stats[1] >= 0)
         {
             status = "FIDGETY";
             RKAnimation.GetComponent<Animator>().SetBool("isFidgety", true);
@@ -1038,9 +1044,20 @@ public class MainMenuScript : MonoBehaviour {
             status = "FORGETFUL";
             RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
         }
+        else if (((statAve * 0.6) > stats[1] && statAve >= 0) || stats[1] < 0)
+        {
+            status = "CLUMSY";
+            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
+        }
         else if (((statAve * 0.6) > stats[2] && statAve >= 0) || stats[2] < 0)
         {
             status = "SLOW";
+            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
+        }
+        else if (((statAve * 0.6) > stats[3] && statAve >= 0) || stats[3] < 0)
+        {
+            status = "LISTLESS";
+            eyes.overrideSprite = eyes_2;
             RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
         }
         else
@@ -1198,6 +1215,11 @@ public class MainMenuScript : MonoBehaviour {
             StartCoroutine(slowJump());
             audioHandler.PlayOneShot(soundSlow);
         }
+        else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("LISTLESS"))
+        {
+            StartCoroutine(slowJump());
+            audioHandler.PlayOneShot(soundListless);
+        }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("FIDGETY"))
         {
             audioHandler.PlayOneShot(soundFidgety);
@@ -1276,6 +1298,16 @@ public class MainMenuScript : MonoBehaviour {
                 SpeechBubble.SetActive(true);
                 if (!inTutorial)
                     speechBubbleText.text = "I am slow.";
+                break;
+            case "CLUMSY":
+                popupText.text = "Robokuma is clumsy because his ACCURACY attribute is lagging behind.  Do the correct response when playing GO/NO-GO, and ERIKSEN FLANKER games to increase the accuracy attribute.";
+                SpeechBubble.SetActive(true);
+                if (!inTutorial)
+                    speechBubbleText.text = "I am clumsy.";
+                break;
+            case "LISTLESS":
+                popupText.text = "Robokuma is listless because his RESPONSE attribute is lagging behind. Respond faster when playing GO/NO-GO and ERIKSEN FLANKER games to increase the response attribute.";
+                SpeechBubble.SetActive(true);
                 break;
             case "STABLE":
                 popupText.text = "Robokuma is currently stable, keep up the good work!";

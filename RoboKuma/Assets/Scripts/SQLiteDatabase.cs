@@ -500,71 +500,132 @@ public class SQLiteDatabase : MonoBehaviour {
 		int newResponse, newSpeed, newAccuracy, newMemory;
 		switch (table) 
 		{
-		case "gonogo":
-            for (int i = 0; i < timeStamps.Length; i++)
-            {
-                if (timeStamps[i] != -1 && timeStamps[i] <= aveTime)
+		    case "gonogo":
+                double gngSD = 0;
+
+                for(int i = 0; i < timeStamps.Length; i++)
                 {
-                    fasterThanAveCnt++;
+                    gngSD += Math.Pow(timeStamps[i] - aveTime, 2);
                 }
-            }
-            pCorrect = correct * 1.0 / total;
-			pWrong = (total - correct) * 1.0 / total;
-            response = (fasterThanAveCnt + correct_nogo) / total * 1.5;
-            Debug.Log("Average Speed:" + aveTime);
-			speed = (difficulty + 600) / aveTime;
-			accuracy = (pCorrect - pWrong) * difficulty * 2;
-			newResponse = oResponse + Convert.ToInt32 (response);
-			newSpeed = oSpeed + Convert.ToInt32 (speed);
-			newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
-			sql = "UPDATE player_data_table SET response = " + newResponse + " , speed = " + newSpeed + " , accuracy = " + newAccuracy + " WHERE player_id = " + player_id + ";";
-						break;
-		case "eriksen":
-            for (int i = 0; i < timeStamps.Length; i++)
-            {
-                if (timeStamps[i] != -1 && timeStamps[i] <= aveTime)
+
+                gngSD = Math.Sqrt(gngSD / timeStamps.Length);
+
+                /*if (getAvgGoNoGo()[2] == null)
                 {
-                    fasterThanAveCnt++;
+                    gngAveTime = aveTime;
                 }
-            }
-            pCorrect = correct * 1.0 / total;
-			pWrong = (total - correct) * 1.0 / total;
-			response = (fasterThanAveCnt) / total * 1.5;
-			speed = (difficulty + 500) / aveTime;
-			accuracy = (pCorrect - pWrong) * difficulty * 2;
-			newResponse = oResponse + Convert.ToInt32 (response);
-			newSpeed = oSpeed + Convert.ToInt32 (speed);
-			newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
-			sql = "UPDATE player_data_table SET response = " + newResponse + " , speed = " + newSpeed + " , accuracy = " + newAccuracy + " WHERE player_id = " + player_id + ";";
-						break;
-		case "corsi":
-			pCorrect = correct * 1.0 / total;
-            pWrong = (total - correct) * 1.0 / total;
-            memory = (pCorrect - pWrong) * difficulty * 2;
-                //if (pCorrect == 1) {
-                newMemory = oMemory + Convert.ToInt32 (memory);
-			/*} else {
-				newMemory = oMemory - Convert.ToInt32 (memory);
-			}*/
-			sql = "UPDATE player_data_table SET memory = " + newMemory + " WHERE player_id = " + player_id + ";";
+                else
+                {
+                    gngAveTime = ((double)getAvgGoNoGo()[2] + aveTime) / 2;
+                }
+
+                double gngAveTimeSq = gngAveTime * gngAveTime;
+                gngAveTimeSq *= count("gonogo");
+
+                double gngSD = Math.Sqrt(((Double)getAvgGoNoGo()[3] - gngAveTimeSq) / (count("gonogo") + 1));
+
+                _dbc = new SqliteConnection(_constr);
+                _dbc.Open();
+                _dbcm = _dbc.CreateCommand();*/
+
+
+
+                for (int i = 0; i < timeStamps.Length; i++)
+                {
+                    if (timeStamps[i] != -1 && (timeStamps[i] <= aveTime + gngSD))
+                    {
+                        fasterThanAveCnt++;
+                    }
+                }
+                Debug.Log("FTAC:: " + fasterThanAveCnt);
+                pCorrect = correct * 1.0 / total;
+			    pWrong = (total - correct) * 1.0 / total;
+                response = (fasterThanAveCnt + correct_nogo * 1.0) / total * 1.5;
+                Debug.Log("Average Speed:" + aveTime);
+			    speed = (difficulty + 600) / aveTime;
+			    accuracy = (pCorrect - pWrong) * difficulty * 2;
+			    newResponse = oResponse + Convert.ToInt32 (response);
+			    newSpeed = oSpeed + Convert.ToInt32 (speed);
+			    newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
+			    sql = "UPDATE player_data_table SET response = " + newResponse + " , speed = " + newSpeed + " , accuracy = " + newAccuracy + " WHERE player_id = " + player_id + ";";
+					    break;
+		    case "eriksen":
+                double eriksenSD = 0;
+
+                for (int i = 0; i < timeStamps.Length; i++)
+                {
+                    eriksenSD += Math.Pow(timeStamps[i] - aveTime, 2);
+                }
+
+                eriksenSD = Math.Sqrt(eriksenSD / timeStamps.Length);
+                /*double eriksenAveTime;
+                if (getAvgEriksen()[4] == null)
+                {
+                        eriksenAveTime = aveTime;
+                }
+                else
+                {
+
+                    eriksenAveTime = ((Int32)getAvgEriksen()[4] + aveTime) / 2 ;
+                }
+
+                double eriksenAveTimeSq = eriksenAveTime * eriksenAveTime;
+                eriksenAveTimeSq *= count("eriksen");
+
+                double eriksenSD = Math.Sqrt(((Double)getAvgEriksen()[5] - eriksenAveTimeSq) / (count("eriksen") + 1));
+
+                _dbc = new SqliteConnection(_constr);
+                _dbc.Open();
+                _dbcm = _dbc.CreateCommand();*/
+
+                for (int i = 0; i < timeStamps.Length; i++)
+                {
+                    Debug.Log("Time: " + timeStamps[i] + " Average: " + (aveTime + eriksenSD));
+                    if (timeStamps[i] != -1 && timeStamps[i] <= (aveTime + eriksenSD))
+                    {
+                        fasterThanAveCnt++;
+                    }
+                }
+                Debug.Log("FTAC:: " + fasterThanAveCnt);
+                pCorrect = correct * 1.0 / total;
+			    pWrong = (total - correct) * 1.0 / total;
+			    response = (fasterThanAveCnt * 1.0) / total * 1.5;
+			    speed = (difficulty + 500) / aveTime;
+			    accuracy = (pCorrect - pWrong) * difficulty * 2;
+			    newResponse = oResponse + Convert.ToInt32 (response);
+			    newSpeed = oSpeed + Convert.ToInt32 (speed);
+			    newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
+			    sql = "UPDATE player_data_table SET response = " + newResponse + " , speed = " + newSpeed + " , accuracy = " + newAccuracy + " WHERE player_id = " + player_id + ";";
+						    break;
+		    case "corsi":
+			    pCorrect = correct * 1.0 / total;
+                pWrong = (total - correct) * 1.0 / total;
+                memory = (pCorrect - pWrong) * difficulty * 2;
+                    //if (pCorrect == 1) {
+                    newMemory = oMemory + Convert.ToInt32 (memory);
+			    /*} else {
+				    newMemory = oMemory - Convert.ToInt32 (memory);
+			    }*/
+			    sql = "UPDATE player_data_table SET memory = " + newMemory + " WHERE player_id = " + player_id + ";";
                 Debug.Log(sql);
                 break;
-		case "nback":
-			pCorrect = correct * 1.0 / total;
-			pWrong = (total - correct) * 1.0 / total;
-			memory = (pCorrect - pWrong) * difficulty * 2;
-			speed = (difficulty + 700) / aveTime;
-			accuracy = (pCorrect - pWrong) * difficulty * 2;
-			newMemory = oMemory + Convert.ToInt32 (memory);
-			newSpeed = oSpeed + Convert.ToInt32 (speed);
-			newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
-			sql = "UPDATE player_data_table SET memory = " + newMemory + " , speed = " + newSpeed + " , accuracy = " + newAccuracy + " WHERE player_id = " + player_id + ";";
-						break;
-		default:
-			break;
-		}
+		    case "nback":
+			    pCorrect = correct * 1.0 / total;
+			    pWrong = (total - correct) * 1.0 / total;
+			    memory = (pCorrect - pWrong) * difficulty * 2;
+			    speed = (difficulty + 700) / aveTime;
+			    accuracy = (pCorrect - pWrong) * difficulty * 2;
+			    newMemory = oMemory + Convert.ToInt32 (memory);
+			    newSpeed = oSpeed + Convert.ToInt32 (speed);
+			    newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
+			    sql = "UPDATE player_data_table SET memory = " + newMemory + " , speed = " + newSpeed + " , accuracy = " + newAccuracy + " WHERE player_id = " + player_id + ";";
+			    break;
+		    default:
+    			break;
 
-		_idr.Close ();
+        }
+        if(_idr != null)
+		    _idr.Close ();
 		_idr = null;
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
@@ -585,7 +646,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		} else if(gameName == "eriksen"){
 			sql = "SELECT COUNT(*) FROM player_logs where test_id = 4 AND game_progress = \"FINISHED\"";
 		}
-
+        
 		_dbcm.CommandText = sql;
 		Int64 generated_count64 = -999;
 		int generated_count32;
@@ -770,7 +831,7 @@ public class SQLiteDatabase : MonoBehaviour {
         _dbc = new SqliteConnection(_constr);
         _dbc.Open();
         _dbcm = _dbc.CreateCommand();
-        sql = "SELECT G.trial_count, COUNT(G.log_id), AVG(G.mean_time) " +
+        sql = "SELECT G.trial_count, COUNT(G.log_id), AVG(G.mean_time), AVG((G.mean_time * G.mean_time)) " +
                 "FROM gonogo_data G, player_logs P " +
                 "WHERE P.game_progress = 'FINISHED' " +
                 "AND P.log_id = G.log_id " +
@@ -784,6 +845,7 @@ public class SQLiteDatabase : MonoBehaviour {
             avgGoNoGo[0] = _idr.GetInt32(_idr.GetOrdinal("trial_count"));
             avgGoNoGo[1] = _idr.GetInt32(_idr.GetOrdinal("COUNT(G.log_id)"));
             avgGoNoGo[2] = _idr.GetDouble(_idr.GetOrdinal("AVG(G.mean_time)"));
+            avgGoNoGo[2] = _idr.GetDouble(_idr.GetOrdinal("AVG((G.mean_time * G.mean_time))"));
         }
 
         _idr.Close();
@@ -1059,7 +1121,7 @@ public class SQLiteDatabase : MonoBehaviour {
         _dbc = new SqliteConnection(_constr);
         _dbc.Open();
         _dbcm = _dbc.CreateCommand();
-        sql = "SELECT E.trial_count, COUNT(E.log_id), AVG(E.time_congruent), AVG(E.time_incongruent), AVG(E.correct_congruent + E.correct_incongruent) " +
+        sql = "SELECT E.trial_count, COUNT(E.log_id), AVG(E.time_congruent), AVG(E.time_incongruent), AVG(E.correct_congruent + E.correct_incongruent), AVG((E.correct_congruent + E.correct_incongruent) * (E.correct_congruent + E.correct_incongruent)) " +
                 "FROM eriksen_data E, player_logs P " +
                 "WHERE P.game_progress = 'FINISHED' " +
                 "AND P.log_id = E.log_id " +
@@ -1075,6 +1137,7 @@ public class SQLiteDatabase : MonoBehaviour {
             avgEriksen[2] = _idr.GetDouble(_idr.GetOrdinal("AVG(E.time_congruent)"));
             avgEriksen[3] = _idr.GetDouble(_idr.GetOrdinal("AVG(E.time_incongruent)"));
             avgEriksen[4] = _idr.GetInt32(_idr.GetOrdinal("AVG(E.correct_congruent + E.correct_incongruent)"));
+            avgEriksen[4] = _idr.GetInt32(_idr.GetOrdinal("AVG((E.correct_congruent + E.correct_incongruent) * (E.correct_congruent + E.correct_incongruent))"));
         }
 
         _idr.Close();
