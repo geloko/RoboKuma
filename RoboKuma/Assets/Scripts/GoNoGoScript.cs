@@ -41,6 +41,7 @@ public class GoNoGoScript : MonoBehaviour {
     public AudioClip soundCorrect;
     public AudioClip soundIncorrect;
     public AudioClip soundSuccess;
+    public AudioClip soundTimer;
 
     // Use this for initialization
     void Start () {
@@ -76,11 +77,18 @@ public class GoNoGoScript : MonoBehaviour {
 
     public IEnumerator startDelay()
     {
+
         counter.text = "3";
+        audioHandler.clip = soundTimer;
+        audioHandler.Play();
         yield return new WaitForSecondsRealtime(1F);
         counter.text = "2";
+        audioHandler.clip = soundTimer;
+        audioHandler.Play();
         yield return new WaitForSecondsRealtime(1F);
         counter.text = "1";
+        audioHandler.clip = soundTimer;
+        audioHandler.Play();
         yield return new WaitForSecondsRealtime(1F);
         instructionScreen.SetActive(false);
         int rand = Random.Range(1, 2);
@@ -161,8 +169,8 @@ public class GoNoGoScript : MonoBehaviour {
         button.image.overrideSprite = null;
         button.gameObject.SetActive(false);
 
-        if (i == 0)
-            yield return new WaitForSecondsRealtime(0.5F);
+        if (i < 1)
+            yield return new WaitForSecondsRealtime(1F);
         else
             yield return new WaitForSecondsRealtime(i);
         button.gameObject.SetActive(true);

@@ -34,6 +34,7 @@ public class NBackScript : MonoBehaviour {
     public AudioClip soundCorrect;
     public AudioClip soundIncorrect;
     public AudioClip soundSuccess;
+    public AudioClip soundTimer;
 
     public int log_id { get; set; }
 
@@ -97,11 +98,17 @@ public class NBackScript : MonoBehaviour {
 
     public IEnumerator startCoroutine()
     {
+        audioHandler.clip = soundTimer;
+        audioHandler.Play();
         counter.text = "3";
         yield return new WaitForSecondsRealtime(1F);
         counter.text = "2";
+        audioHandler.clip = soundTimer;
+        audioHandler.Play();
         yield return new WaitForSecondsRealtime(1F);
         counter.text = "1";
+        audioHandler.clip = soundTimer;
+        audioHandler.Play();
         yield return new WaitForSecondsRealtime(1F);
         instructionScreen.SetActive(false);
 

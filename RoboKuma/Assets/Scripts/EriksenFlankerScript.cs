@@ -40,6 +40,7 @@ public class EriksenFlankerScript : MonoBehaviour {
     public AudioClip soundCorrect;
     public AudioClip soundIncorrect;
     public AudioClip soundSuccess;
+    public AudioClip soundTimer;
 
 
     SQLiteDatabase sn;
@@ -90,11 +91,17 @@ public class EriksenFlankerScript : MonoBehaviour {
 
     public IEnumerator startDelay()
     {
+        audioHandler.clip = soundTimer;
+        audioHandler.Play();
         counter.text = "3";
         yield return new WaitForSecondsRealtime(1F);
         counter.text = "2";
+        audioHandler.clip = soundTimer;
+        audioHandler.Play();
         yield return new WaitForSecondsRealtime(1F);
         counter.text = "1";
+        audioHandler.clip = soundTimer;
+        audioHandler.Play();
         yield return new WaitForSecondsRealtime(1F);
         instructionScreen.SetActive(false);
         inGame = true;
