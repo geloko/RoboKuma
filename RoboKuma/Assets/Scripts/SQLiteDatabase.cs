@@ -146,10 +146,16 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery ();
 
-		//Inserting default data
-		sql = "INSERT INTO player_data_table (player_name, memory, accuracy, speed, response) VALUES ('PlayerName', 0 ,0 ,0, 0);";
+        //Inserting default data
+        string date_start = System.DateTime.Now.ToString("g");
+        sql = "INSERT INTO player (player_id, local_id, date_start) VALUES (1, '000000', '" + date_start + "');";
+        _dbcm.CommandText = sql;
+        _dbcm.ExecuteNonQuery();
+
+        sql = "INSERT INTO player_data_table (player_name, memory, accuracy, speed, response) VALUES ('PlayerName', 0 ,0 ,0, 0);";
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery ();
+
 		//Get current player_id
 		sql = "SELECT last_insert_rowid();";
 		_dbcm.CommandText = sql;
@@ -242,24 +248,6 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbcm.ExecuteNonQuery();
 
 		Debug.Log ("UPDATE player_logs SQL Command: " + sql);
-
-		_dbcm.Dispose ();
-		_dbcm = null;
-		_dbc.Close ();
-		_dbc = null;
-	}
-
-	public void insertintoPlayer(int player_id, int local_id, string date_start)
-	{
-		_dbc = new SqliteConnection(_constr);
-		_dbc.Open();
-		sql = "INSERT INTO player (player_id, local_id, date_start) VALUES (" + 
-			player_id + ", '" + local_id + "', '" + date_start + "');";
-		_dbcm = _dbc.CreateCommand();
-		_dbcm.CommandText = sql;
-		_dbcm.ExecuteNonQuery();
-
-		Debug.Log ("INSERT INTO player SQL Command: " + sql);
 
 		_dbcm.Dispose ();
 		_dbcm = null;

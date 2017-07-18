@@ -121,6 +121,7 @@ public class MainMenuScript : MonoBehaviour {
         dailyPanel.SetActive(false);
 
         sn = new SQLiteDatabase();
+        ssh_connect = new SSH_Connector();
 
         status = "STABLE";
 
@@ -176,7 +177,7 @@ public class MainMenuScript : MonoBehaviour {
         if (PlayerPrefs.GetInt("DB", -1) == -1)
         {
             sn.Start();
-            //ssh_connect.callSyncPlayerData();
+            ssh_connect.Start();
             PlayerPrefs.SetInt("DB", 1);
             Debug.Log("DB");
 
@@ -236,7 +237,7 @@ public class MainMenuScript : MonoBehaviour {
         }
         else
         {
-            //ssh_connect.callUploadPlayerLogs();
+            ssh_connect.callUploadPlayerLogs();
             resultI.overrideSprite = null;
             resultLevel.text = "";
             rewards.SetActive(false);
@@ -901,7 +902,7 @@ public class MainMenuScript : MonoBehaviour {
         else if (leveledup)
         {
             leveledup = false;
-            audioHandler.PlayOneShot(soundAchievement);
+            audioHandler.PlayOneShot(soundLevelup);
             resultText.text = "\nYou have reached level\n\n\n\n\nCongratulations!";
             resultLevel.text = PlayerPrefs.GetInt("Level") + "";
             resultI.overrideSprite = trophy;

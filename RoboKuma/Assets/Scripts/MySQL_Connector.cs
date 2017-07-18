@@ -12,7 +12,7 @@ public class MySQL_Connector
     private string dbPassword;
     private string dbName;
 
-    public MySQL_Connector(string localHost, string dbName, string dbUser, string dbPassword, string localPort )
+    public MySQL_Connector(string localHost, string dbName, string dbUser, string dbPassword, string localPort)
     {
         this.localHost = localHost;
         this.dbName = dbName;
@@ -64,6 +64,8 @@ public class MySQL_Connector
                 }
             } while (isNotUnique);
 
+            dataReader.Close();
+
             sql = "INSERT INTO player (local_id, date_start) VALUES ('" +
                     local_id + "', '" + temp_player.date_start + "');";
             cmd = new MySqlCommand(sql, conn);
@@ -102,22 +104,18 @@ public class MySQL_Connector
             {
                 string sql = "";
 
-                sql = "INSERT INTO player_logs (player_id, test_id, time_start, time_end, prev_status, new_status, game_progress, is_uploaded) VALUES(" +
+                sql = "INSERT INTO player_logs (player_id, test_id, time_start, time_end) VALUES(" +
                         player_id + ", " +
                         log.test_id + ", '" +
                         log.time_start + "', '" +
-                        log.time_end + "', '" +
-                        log.prev_status + "', '" +
-                        log.new_status + "', '" +
-                        log.game_progress + "', " +
-                        log.is_uploaded + ");";
+                        log.time_end + "');";
 
                 cmd = new MySqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
 
                 sql = "SELECT LAST_INSERT_ID();";
 
-                cmd = new MySqlCommand(sql, conn);
+                cmd.CommandText = sql;
                 int last_log_id = Convert.ToInt32(cmd.ExecuteScalar());
 
 
