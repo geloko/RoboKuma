@@ -71,6 +71,7 @@ public class MainMenuScript : MonoBehaviour {
     public IEnumerator speechCoroutine;
 
     public SQLiteDatabase sn;
+    public SSH_Connector ssh_connect;
 
     public Sprite body_1, body_2, body_3, body_4, body_5;
     public Sprite leg_1, leg_2, leg_3;
@@ -120,6 +121,7 @@ public class MainMenuScript : MonoBehaviour {
         dailyPanel.SetActive(false);
 
         sn = new SQLiteDatabase();
+
         status = "STABLE";
 
         bookComments = new String[2];
@@ -174,6 +176,7 @@ public class MainMenuScript : MonoBehaviour {
         if (PlayerPrefs.GetInt("DB", -1) == -1)
         {
             sn.Start();
+            //ssh_connect.callSyncPlayerData();
             PlayerPrefs.SetInt("DB", 1);
             Debug.Log("DB");
 
@@ -233,6 +236,7 @@ public class MainMenuScript : MonoBehaviour {
         }
         else
         {
+            //ssh_connect.callUploadPlayerLogs();
             resultI.overrideSprite = null;
             resultLevel.text = "";
             rewards.SetActive(false);

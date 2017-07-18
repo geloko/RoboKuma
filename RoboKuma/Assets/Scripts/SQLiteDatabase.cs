@@ -249,32 +249,6 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = null;
 	}
 
-	public static void updateLogsPlayerID(int old_id, int new_id)
-	{
-		_dbc = new SqliteConnection(_constr);
-		_dbc.Open();
-
-		_dbcm = _dbc.CreateCommand();
-		sql = "SELECT * FROM player_logs WHERE player_id = " + old_id + ";";
-		_dbcm.CommandText = sql;
-		_idr = _dbcm.ExecuteReader();
-
-		while(_idr.Read())
-		{
-			sql = "UPDATE player_logs SET player_id = " + new_id +" WHERE log_id = " + _idr["log_id"] + ";";
-			_dbcm = _dbc.CreateCommand();
-			_dbcm.CommandText = sql;
-			_dbcm.ExecuteNonQuery();
-		}
-
-		_idr.Close ();
-		_idr = null;
-		_dbcm.Dispose ();
-		_dbcm = null;
-		_dbc.Close ();
-		_dbc = null;
-	}
-
 	public void insertintoPlayer(int player_id, int local_id, string date_start)
 	{
 		_dbc = new SqliteConnection(_constr);
@@ -293,13 +267,13 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = null;
 	}
 
-	public static Player getPlayer(int temp_id)
+	public static Player getPlayer()
 	{
 		Player temp = null;
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		_dbcm = _dbc.CreateCommand();
-		sql = "SELECT * FROM player WHERE player_id = " + temp_id + ";";
+		sql = "SELECT * FROM player;";
 		_dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader();
 
@@ -336,9 +310,36 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = null;
 
 		updateLogsPlayerID(old_id, player.player_id);
-	}
-		
-	public void insertintoCorsi(int player_id, int log_id, int correct_trials, int correct_length, int seq_length, int trial_count)
+        PlayerPrefs.SetInt("player_id", player.player_id);
+    }
+
+    public static void updateLogsPlayerID(int old_id, int new_id)
+    {
+        _dbc = new SqliteConnection(_constr);
+        _dbc.Open();
+
+        _dbcm = _dbc.CreateCommand();
+        sql = "SELECT * FROM player_logs WHERE player_id = " + old_id + ";";
+        _dbcm.CommandText = sql;
+        _idr = _dbcm.ExecuteReader();
+
+        while (_idr.Read())
+        {
+            sql = "UPDATE player_logs SET player_id = " + new_id + " WHERE log_id = " + _idr["log_id"] + ";";
+            _dbcm = _dbc.CreateCommand();
+            _dbcm.CommandText = sql;
+            _dbcm.ExecuteNonQuery();
+        }
+
+        _idr.Close();
+        _idr = null;
+        _dbcm.Dispose();
+        _dbcm = null;
+        _dbc.Close();
+        _dbc = null;
+    }
+
+    public void insertintoCorsi(int player_id, int log_id, int correct_trials, int correct_length, int seq_length, int trial_count)
 	{
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
@@ -1187,18 +1188,15 @@ public class SQLiteDatabase : MonoBehaviour {
 		return uploadList;
 	}
 
-	public void updateUploadedLogs(List<PlayerLogs> uploadList)
+	public static void updateUploadedLog(int log_id)
 	{
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 
-		foreach (PlayerLogs log in uploadList)
-		{
-			sql = "UPDATE player_logs SET is_uploaded = 1 WHERE log_id = " + log.log_id + ";";
-			_dbcm = _dbc.CreateCommand();
-			_dbcm.CommandText = sql;
-			_dbcm.ExecuteNonQuery();
-		}
+		sql = "UPDATE player_logs SET is_uploaded = 1 WHERE log_id = " + log_id + ";";
+		_dbcm = _dbc.CreateCommand();
+		_dbcm.CommandText = sql;
+		_dbcm.ExecuteNonQuery();
 
 		_dbcm.Dispose ();
 		_dbcm = null;

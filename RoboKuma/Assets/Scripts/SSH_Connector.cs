@@ -34,7 +34,7 @@ public class SSH_Connector
     // Only perform ONCE
     public void callSyncPlayerData()
     {
-        connectionInfo = new PasswordConnectionInfo(remoteHost, remoteUser, remotePassword);
+        PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("128.199.240.82", "admin_kuma", "admin1234");
         connectionInfo.Timeout = TimeSpan.FromSeconds(30);
 
         using (var client = new SshClient(connectionInfo))
@@ -53,7 +53,11 @@ public class SSH_Connector
                 }
 
                 Console.WriteLine("\r\nTrying port forwarding...");
-                var portFwld = new ForwardedPortLocal(localHost, localPort, remoteHost, remotePort);
+                var portFwld = new ForwardedPortLocal("127.0.0.1", 3306, "127.0.0.1", 3306);
+                Console.WriteLine(portFwld.BoundHost);
+                Console.WriteLine(portFwld.BoundPort);
+                Console.WriteLine(portFwld.Host);
+                Console.WriteLine(portFwld.Port);
                 client.AddForwardedPort(portFwld);
                 portFwld.Start();
                 if (portFwld.IsStarted)
@@ -75,16 +79,16 @@ public class SSH_Connector
                 Console.WriteLine("Socket connection error: {0}", e.Message);
             }
 
-            Debug.Log("\r\nTrying database connection...");
-            MySQL_Connector dbConnect = new MySQL_Connector(localHost, dbName, dbUser, dbPassword, localPort.ToString());
+            Console.WriteLine("\r\nTrying database connection...");
+            MySQL_Connector dbConnect = new MySQL_Connector("127.0.0.1", "robokuma", "admin_kuma", "admin1234", "22");
             dbConnect.syncPlayerData();
         }
     }
 
     // Only perform after callSyncPlayerData() has been initially performed
-    public void callUploadPlayerLogs(int player_id)
+    public void callUploadPlayerLogs()
     {
-        connectionInfo = new PasswordConnectionInfo(remoteHost, remoteUser, remotePassword);
+        PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("128.199.240.82", "admin_kuma", "admin1234");
         connectionInfo.Timeout = TimeSpan.FromSeconds(30);
 
         using (var client = new SshClient(connectionInfo))
@@ -103,7 +107,11 @@ public class SSH_Connector
                 }
 
                 Console.WriteLine("\r\nTrying port forwarding...");
-                var portFwld = new ForwardedPortLocal(localHost, localPort, remoteHost, remotePort);
+                var portFwld = new ForwardedPortLocal("127.0.0.1", 3306, "127.0.0.1", 3306);
+                Console.WriteLine(portFwld.BoundHost);
+                Console.WriteLine(portFwld.BoundPort);
+                Console.WriteLine(portFwld.Host);
+                Console.WriteLine(portFwld.Port);
                 client.AddForwardedPort(portFwld);
                 portFwld.Start();
                 if (portFwld.IsStarted)
@@ -125,9 +133,9 @@ public class SSH_Connector
                 Console.WriteLine("Socket connection error: {0}", e.Message);
             }
 
-            Debug.Log("\r\nTrying database connection...");
-            MySQL_Connector dbConnect = new MySQL_Connector(localHost, dbName, dbUser, dbPassword, localPort.ToString());
-            dbConnect.uploadPlayerLogs(player_id);
+            Console.WriteLine("\r\nTrying database connection...");
+            MySQL_Connector dbConnect = new MySQL_Connector("127.0.0.1", "robokuma", "admin_kuma", "admin1234", "22");
+            dbConnect.uploadPlayerLogs();
         }
     }
 }

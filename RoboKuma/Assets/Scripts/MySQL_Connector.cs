@@ -43,7 +43,7 @@ public class MySQL_Connector
 
         if (OpenConnection() == true)
         {
-            Player temp_player = SQLiteDatabase.getPlayer(1);
+            Player temp_player = SQLiteDatabase.getPlayer();
 
             do
             {
@@ -89,13 +89,14 @@ public class MySQL_Connector
 
     }
 
-    public void uploadPlayerLogs(int player_id)
+    public void uploadPlayerLogs()
     {
         MySqlCommand cmd;
 
         if (OpenConnection() == true)
         {
             List<PlayerLogs> uploadList = SQLiteDatabase.getLogsToUpload();
+            int player_id = SQLiteDatabase.getPlayer().player_id;
 
             foreach (PlayerLogs log in uploadList)
             {
@@ -114,12 +115,18 @@ public class MySQL_Connector
                 cmd = new MySqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
 
+                sql = "SELECT LAST_INSERT_ID();";
+
+                cmd = new MySqlCommand(sql, conn);
+                int last_log_id = Convert.ToInt32(cmd.ExecuteScalar());
+
+
                 switch (log.test_id)
                 {
                     case 1:
                         GoNoGoData temp1 = SQLiteDatabase.getGoNoGoToUpload(log.log_id);
                         sql = "INSERT INTO gonogo_data (log_id, correct_go_count, correct_nogo_count, mean_time, go_count, trial_count) VALUES (" +
-                                temp1.log_id + ", " +
+                                last_log_id + ", " +
                                 temp1.correct_go_count + ", " +
                                 temp1.correct_nogo_count + ", " +
                                 temp1.mean_time + ", " +
@@ -129,7 +136,7 @@ public class MySQL_Connector
                     case 2:
                         CorsiData temp2 = SQLiteDatabase.getCorsiToUpload(log.log_id);
                         sql = "INSERT INTO corsi_data (log_id, correct_trials, correct_length, seq_length, trial_count) VALUES (" +
-                                temp2.log_id + ", " +
+                                last_log_id + ", " +
                                 temp2.correct_trials + ", " +
                                 temp2.correct_length + ", " +
                                 temp2.seq_length + ", " +
@@ -138,7 +145,7 @@ public class MySQL_Connector
                     case 3:
                         NBackData temp3 = SQLiteDatabase.getNBackToUpload(log.log_id);
                         sql = "INSERT INTO nback_data (log_id, mean_time, correct_count, n_count, element_count, trial_count) VALUES (" +
-                                temp3.log_id + ", " +
+                                last_log_id + ", " +
                                 temp3.mean_time + ", " +
                                 temp3.correct_count + ", " +
                                 temp3.n_count + ", " +
@@ -148,7 +155,7 @@ public class MySQL_Connector
                     case 4:
                         EriksenData temp4 = SQLiteDatabase.getEriksenToUpload(log.log_id);
                         sql = "INSERT INTO eriksen_data (log_id, correct_congruent, time_congruent, correct_incongruent, time_incongruent, congruent_count, trial_count) VALUES (" +
-                                temp4.log_id + ", " +
+                                last_log_id + ", " +
                                 temp4.correct_congruent + ", " +
                                 temp4.time_congruent + ", " +
                                 temp4.correct_incongruent + ", " +
@@ -160,6 +167,8 @@ public class MySQL_Connector
 
                 cmd = new MySqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
+
+                SQLiteDatabase.updateUploadedLog(log.log_id);
             }
 
             CloseConnection();
