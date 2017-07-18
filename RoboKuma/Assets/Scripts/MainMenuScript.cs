@@ -21,6 +21,7 @@ public class MainMenuScript : MonoBehaviour {
     public GameObject popup;
     public GameObject dailyPanel;
     public GameObject rewards;
+    public GameObject deletePanel;
 
     public Slider Memory, Response, Speed, Accuracy, MemoryR, ResponseR, SpeedR, AccuracyR, MemoryS, ResponseS, SpeedS, AccuracyS;
     public Image MemoryRF, ResponseRF, SpeedRF, AccuracyRF, MemorySF, ResponseSF, SpeedSF, AccuracySF;
@@ -112,6 +113,7 @@ public class MainMenuScript : MonoBehaviour {
         Q1.gameObject.SetActive(false);
         Q2.gameObject.SetActive(false);
         Q3.gameObject.SetActive(false);
+        deletePanel.SetActive(false);
 
         back.gameObject.SetActive(false);
 
@@ -864,7 +866,10 @@ public class MainMenuScript : MonoBehaviour {
             SettingsScreen.gameObject.SetActive(!SettingsScreen.gameObject.activeSelf);
 
             if (SettingsScreen.gameObject.activeSelf)
+            {
                 back.gameObject.SetActive(true);
+                deletePanel.SetActive(false);
+            }
             else
             {
                 back.gameObject.SetActive(false);
@@ -1365,6 +1370,22 @@ public class MainMenuScript : MonoBehaviour {
             speechCoroutine = closeSpeechBubble();
             StartCoroutine(speechCoroutine);
         }
+    }
+
+    public void deleteData()
+    {
+        PlayerPrefs.DeleteAll();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void donotDeletePress()
+    {
+        deletePanel.SetActive(false);
+    }
+
+    public void deletePress()
+    {
+        deletePanel.SetActive(true);
     }
 
 }
