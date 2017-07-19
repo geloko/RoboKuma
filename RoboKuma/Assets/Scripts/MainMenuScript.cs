@@ -83,7 +83,6 @@ public class MainMenuScript : MonoBehaviour {
 
     public String dailyReward = "";
     public String achievementReward = "";
-
     //for sounds SFX
     public AudioSource audioHandler;
     public AudioClip soundStable;
@@ -1070,6 +1069,11 @@ public class MainMenuScript : MonoBehaviour {
             eyes.overrideSprite = eyes_2;
             RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
         }
+        else if (stats[0] >= 100 && stats[1] >= 100 && stats[2] >= 100 && stats[3] >= 100)
+        {
+            status = "GOD";
+            RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
+        }
         else
         {
             RKAnimation.GetComponent<Animator>().SetBool("isFidgety", false);
@@ -1234,9 +1238,9 @@ public class MainMenuScript : MonoBehaviour {
         {
             audioHandler.PlayOneShot(soundFidgety);
             RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
-            RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 250;
-            RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 30000);
-            
+            RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 100;
+            RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 35000);
+
         }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping())
         {
@@ -1318,6 +1322,14 @@ public class MainMenuScript : MonoBehaviour {
             case "LISTLESS":
                 popupText.text = "Robokuma is listless because his RESPONSE attribute is lagging behind. Respond faster when playing GO/NO-GO and ERIKSEN FLANKER games to increase the response attribute.";
                 SpeechBubble.SetActive(true);
+                if (!inTutorial)
+                    speechBubbleText.text = "I am listless.";
+                break;
+            case "GOD":
+                popupText.text = "Robokuma has broken through the limits of his cognitive abilities. Congratulations!";
+                SpeechBubble.SetActive(true);
+                if (!inTutorial)
+                    speechBubbleText.text = "I am a god?";
                 break;
             case "STABLE":
                 popupText.text = "Robokuma is currently stable, keep up the good work!";
@@ -1375,7 +1387,7 @@ public class MainMenuScript : MonoBehaviour {
     public void deleteData()
     {
         PlayerPrefs.DeleteAll();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene("Main ver 2");
     }
 
     public void donotDeletePress()
