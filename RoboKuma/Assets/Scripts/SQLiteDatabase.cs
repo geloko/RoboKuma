@@ -697,7 +697,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbcm = _dbc.CreateCommand();
 		sql = "SELECT T.test_name FROM tests T, " +
               "(SELECT test_id, COUNT(*), game_progress FROM player_logs " +
-              "GROUP BY test_id ORDER BY COUNT(*) DESC LIMIT 1) as L " + 
+              "WHERE game_progress = 'FINISHED' GROUP BY test_id ORDER BY COUNT(*) DESC LIMIT 1) as L " + 
               "WHERE T.test_id = L.test_id " +
               "AND L.game_progress = 'FINISHED'; ";
         _dbcm.CommandText = sql;
@@ -728,7 +728,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbcm = _dbc.CreateCommand();
 		sql = "SELECT T.test_name FROM tests T, " +
               "(SELECT test_id, COUNT(*), game_progress FROM player_logs " +
-              "GROUP BY test_id ORDER BY COUNT(*) ASC LIMIT 1) as L " +
+              "WHERE game_progress = 'FINISHED' GROUP BY test_id ORDER BY COUNT(*) ASC LIMIT 1) as L " +
               "WHERE T.test_id = L.test_id " +
               "AND L.game_progress = 'FINISHED'; ";
         _dbcm.CommandText = sql;
@@ -834,7 +834,7 @@ public class SQLiteDatabase : MonoBehaviour {
             avgGoNoGo[0] = _idr.GetInt32(_idr.GetOrdinal("trial_count"));
             avgGoNoGo[1] = _idr.GetInt32(_idr.GetOrdinal("COUNT(G.log_id)"));
             avgGoNoGo[2] = _idr.GetDouble(_idr.GetOrdinal("AVG(G.mean_time)"));
-            avgGoNoGo[2] = _idr.GetDouble(_idr.GetOrdinal("AVG((G.mean_time * G.mean_time))"));
+            //avgGoNoGo[3] = _idr.GetDouble(_idr.GetOrdinal("AVG((G.mean_time * G.mean_time))"));
         }
 
         _idr.Close();
@@ -931,7 +931,7 @@ public class SQLiteDatabase : MonoBehaviour {
         _dbc = new SqliteConnection(_constr);
         _dbc.Open();
         _dbcm = _dbc.CreateCommand();
-        sql = "SELECT N.n_count, COUNT(N.log_id), AVG(N.correct_count / N.trial_count) " +
+        sql = "SELECT N.n_count, COUNT(N.log_id), SUM(N.correct_count) * 1.0 / SUM(N.trial_count) " +
                 "FROM nback_data N, player_logs P " +
                 "WHERE P.game_progress = 'FINISHED' " +
                 "AND P.log_id = N.log_id " +
@@ -944,7 +944,7 @@ public class SQLiteDatabase : MonoBehaviour {
         {
             avgNBack[0] = _idr.GetInt32(_idr.GetOrdinal("n_count"));
             avgNBack[1] = _idr.GetInt32(_idr.GetOrdinal("COUNT(N.log_id)"));
-            avgNBack[2] = _idr.GetInt32(_idr.GetOrdinal("AVG(N.correct_count / N.trial_count)"));
+            avgNBack[2] = _idr.GetDouble(_idr.GetOrdinal("SUM(N.correct_count) * 1.0 / SUM(N.trial_count)"));
         }
 
         _idr.Close();
@@ -1000,7 +1000,7 @@ public class SQLiteDatabase : MonoBehaviour {
         _dbc = new SqliteConnection(_constr);
         _dbc.Open();
         _dbcm = _dbc.CreateCommand();
-        sql = "SELECT C.seq_length, COUNT(C.log_id), AVG(C.correct_length / C.seq_length) " +
+        sql = "SELECT C.seq_length, COUNT(C.log_id), SUM(C.correct_length) * 1.0 / SUM(C.seq_length) " +
                 "FROM corsi_data C, player_logs P " +
                 "WHERE P.game_progress = 'FINISHED' " +
                 "AND P.log_id = C.log_id " +
@@ -1013,7 +1013,8 @@ public class SQLiteDatabase : MonoBehaviour {
         {
             avgCorsi[0] = _idr.GetInt32(_idr.GetOrdinal("seq_length"));
             avgCorsi[1] = _idr.GetInt32(_idr.GetOrdinal("COUNT(C.log_id)"));
-            avgCorsi[2] = _idr.GetInt32(_idr.GetOrdinal("AVG(C.correct_length / C.seq_length)"));
+            avgCorsi[2] = _idr.GetDouble(_idr.GetOrdinal("SUM(C.correct_length) * 1.0 / SUM(C.seq_length)"));
+            Debug.Log("Corsi:" + avgCorsi[2]);
         }
 
         _idr.Close();
@@ -1126,7 +1127,7 @@ public class SQLiteDatabase : MonoBehaviour {
             avgEriksen[2] = _idr.GetDouble(_idr.GetOrdinal("AVG(E.time_congruent)"));
             avgEriksen[3] = _idr.GetDouble(_idr.GetOrdinal("AVG(E.time_incongruent)"));
             avgEriksen[4] = _idr.GetInt32(_idr.GetOrdinal("AVG(E.correct_congruent + E.correct_incongruent)"));
-            avgEriksen[4] = _idr.GetInt32(_idr.GetOrdinal("AVG((E.correct_congruent + E.correct_incongruent) * (E.correct_congruent + E.correct_incongruent))"));
+            //avgEriksen[5] = _idr.GetInt32(_idr.GetOrdinal("AVG((E.correct_congruent + E.correct_incongruent) * (E.correct_congruent + E.correct_incongruent))"));
         }
 
         _idr.Close();

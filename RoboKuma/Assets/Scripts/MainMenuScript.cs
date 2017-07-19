@@ -1204,7 +1204,7 @@ public class MainMenuScript : MonoBehaviour {
         if (sn.getAvgNBack()[2] == null)
             testsAverage[1].text = "Accuracy: No Data";
         else
-            testsAverage[1].text = "Accuracy: " + ((Int32)float.Parse(sn.getAvgNBack()[2].ToString()) * 100) + "%";
+            testsAverage[1].text = "Accuracy: " + ((Int32)(Double.Parse(sn.getAvgNBack()[2].ToString()) * 100)) + "%";
         
         NBackData n = sn.getBestNBack();
         if(n == null)
@@ -1212,12 +1212,12 @@ public class MainMenuScript : MonoBehaviour {
             testsBest[1].text = "Score: No Data\nN Count: No Data";
         }
         else
-            testsBest[1].text = "Score: " + n.correct_count + "/" + n.element_count + "\nN Count: " + n.n_count;
+            testsBest[1].text = "Score: " + n.correct_count + "/" + n.trial_count + "\nN Count: " + n.n_count;
 
         if (sn.getAvgCorsi()[2] == null)
             testsAverage[2].text = "Accuracy: No Data\nCurrent Difficulty: " + (PlayerPrefs.GetInt("Corsi_Difficulty", 0) + 4) + " items";
         else
-            testsAverage[2].text = "Accuracy: " + ((Int32)float.Parse(sn.getAvgCorsi()[2].ToString()) * 100) + "%" + "\nCurrent Difficulty: " + (PlayerPrefs.GetInt("Corsi_Difficulty", 0) + 4) + " items";
+            testsAverage[2].text = "Accuracy: " + ((Int32)(float.Parse(sn.getAvgCorsi()[2].ToString()) * 100)) + "%" + "\nCurrent Difficulty: " + (PlayerPrefs.GetInt("Corsi_Difficulty", 0) + 4) + " items";
         
         CorsiData c = sn.getBestCorsi();
         if(c == null)
@@ -1229,7 +1229,7 @@ public class MainMenuScript : MonoBehaviour {
         if (sn.getAvgEriksen()[2] == null)
             testsAverage[3].text = "Ave. Reaction Time (Congruent): No Data" + "\nAve. Reaction Time (Incongruent): No Data" + "\nAverage Score: No Data";
         else
-            testsAverage[3].text = "Ave. Reaction Time (Congruent): " + ((Int32)float.Parse(sn.getAvgEriksen()[2].ToString())) + " ms" + "\nAve. Reaction Time (Incongruent): " + ((Int32)float.Parse(sn.getAvgEriksen()[3].ToString())) + " ms" + "\nAverage Score: " + sn.getAvgEriksen()[4];
+            testsAverage[3].text = "Ave. Reaction Time (Congruent): " + ((Int32)Double.Parse(sn.getAvgEriksen()[2].ToString())) + " ms" + "\nAve. Reaction Time (Incongruent): " + ((Int32)float.Parse(sn.getAvgEriksen()[3].ToString())) + " ms" + "\nAverage Score: " + sn.getAvgEriksen()[4];
 
         EriksenData e = sn.getBestEriksen();
         if(e == null)
