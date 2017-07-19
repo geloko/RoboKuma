@@ -14,7 +14,7 @@ public class SSH_Connector : MonoBehaviour
     private static string dbName = "robokuma";
     private static string dbUser = "admin_kuma";
     private static string dbPassword = "admin1234";
-    private static Toast toast = new Toast();
+    //private static Toast toast = new Toast();
 
     // Perform FIRST Once Online
     // Only perform ONCE
@@ -59,7 +59,7 @@ public class SSH_Connector : MonoBehaviour
                 MySQL_Connector dbConnect = new MySQL_Connector(localHost, dbName, dbUser, dbPassword, remotePort);
                 dbConnect.syncPlayerData();
                 Debug.Log("Successfully Updated Player Data!");
-                toast.showToastOnUiThread("Successfully Updated Player Data!");
+                //toast.showToastOnUiThread("Successfully Updated Player Data!");
             }
             catch (SshException e)
             {
@@ -114,7 +114,7 @@ public class SSH_Connector : MonoBehaviour
                 MySQL_Connector dbConnect = new MySQL_Connector(localHost, dbName, dbUser, dbPassword, remotePort);
                 dbConnect.uploadPlayerLogs();
                 Debug.Log("Successfully Uploaded Player Logs!");
-                toast.showToastOnUiThread("Successfully Uploaded Player Logs!");
+                //toast.showToastOnUiThread("Successfully Uploaded Player Logs!");
             }
             catch (SshException e)
             {
