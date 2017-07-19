@@ -83,9 +83,9 @@ public class MainMenuScript : MonoBehaviour {
 
     public String dailyReward = "";
     public String achievementReward = "";
+
     //for sounds SFX
     public AudioSource audioHandler;
-    public AudioSource audioBackground;
     public AudioClip soundStable;
     public AudioClip soundSlow;
     public AudioClip soundFidgety;
