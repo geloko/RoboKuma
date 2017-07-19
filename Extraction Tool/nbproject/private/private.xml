@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/Projects/NetBeansProjects/RoboKuma/src/db_connection/config.txt</file>
+            <file>file:/D:/Projects/NetBeansProjects/RoboKuma/src/model/QueryModel.java</file>
+            <file>file:/D:/Projects/NetBeansProjects/RoboKuma/src/export/CSV_Writer.java</file>
+            <file>file:/D:/Projects/NetBeansProjects/RoboKuma/src/model/GoNoGo.java</file>
+            <file>file:/D:/Projects/NetBeansProjects/RoboKuma/src/model/Eriksen.java</file>
+            <file>file:/D:/Projects/NetBeansProjects/RoboKuma/src/model/Log.java</file>
+            <file>file:/D:/Projects/NetBeansProjects/RoboKuma/src/model/Corsi.java</file>
+            <file>file:/D:/Projects/NetBeansProjects/RoboKuma/src/view/AppView.java</file>
+            <file>file:/D:/Projects/NetBeansProjects/RoboKuma/src/controller/Driver.java</file>
+            <file>file:/D:/Projects/NetBeansProjects/RoboKuma/src/model/NBack.java</file>
+        </group>
+    </open-files>
+</project-private>
