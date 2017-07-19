@@ -1065,13 +1065,13 @@ public class MainMenuScript : MonoBehaviour {
         if (stats[1] >= Manager.Instance.pStats[1])
         {
             AccuracyS.value = stats[1];
-            AccuracyR.value = Manager.Instance.pStats[2];
+            AccuracyR.value = Manager.Instance.pStats[1];
 
         }
         else
         {
             AccuracyR.value = stats[1];
-            AccuracyS.value = Manager.Instance.pStats[2];
+            AccuracyS.value = Manager.Instance.pStats[1];
             AccuracySF.color = new Color32(253, 95, 95, 255);
             AccuracyRF.color = new Color32(255, 255, 255, 255);
 
