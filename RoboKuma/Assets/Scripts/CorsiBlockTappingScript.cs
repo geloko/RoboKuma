@@ -240,7 +240,6 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         PlayerPrefs.SetString("Last_Played", System.DateTime.Now.ToString("g"));
 
         sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
-        sn.getPlayerStatistics(1);
 
         PlayerPrefs.SetInt("Experience", exp);
         PlayerPrefs.SetInt("Bearya", coins);

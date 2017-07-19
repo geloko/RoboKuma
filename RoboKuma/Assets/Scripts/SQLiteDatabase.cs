@@ -273,6 +273,8 @@ public class SQLiteDatabase : MonoBehaviour {
 			temp.date_start = _idr["date_start"].ToString();
 		}
 
+		Debug.Log ("get player.player_id = " + temp.player_id);
+
 		_idr.Close ();
 		_idr = null;
 		_dbcm.Dispose ();
@@ -288,6 +290,11 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		sql = "UPDATE player SET player_id = " + player.player_id + ", local_id = '" + player.local_id + "' WHERE player_id = " + old_id + ";";
+		_dbcm = _dbc.CreateCommand();
+		_dbcm.CommandText = sql;
+		_dbcm.ExecuteNonQuery();
+
+		sql = "UPDATE player_data_table SET player_id = " + player.player_id + " WHERE player_id = " + old_id + ";";
 		_dbcm = _dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
