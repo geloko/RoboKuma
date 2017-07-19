@@ -1206,11 +1206,11 @@ public class SQLiteDatabase : MonoBehaviour {
 		if(_idr.Read())
 		{
             temp = new GoNoGoData();
-            temp.log_id = _idr.GetInt32(_idr.GetOrdinal("player_id"));
+            temp.log_id = _idr.GetInt32(_idr.GetOrdinal("log_id"));
             temp.correct_go_count = _idr.GetInt32(_idr.GetOrdinal("correct_go_count")); ;
             temp.correct_nogo_count = _idr.GetInt32(_idr.GetOrdinal("correct_nogo_count"));
             temp.mean_time = _idr.GetDouble(_idr.GetOrdinal("mean_time"));
-            temp.go_count = _idr.GetInt32(_idr.GetOrdinal("go_count   ")); ;
+            temp.go_count = _idr.GetInt32(_idr.GetOrdinal("go_count")); ;
             temp.trial_count = _idr.GetInt32(_idr.GetOrdinal("trial_count")); ;
         }
 
