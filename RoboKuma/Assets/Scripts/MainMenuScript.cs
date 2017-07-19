@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System;
+using System.Threading;
 using Assets.SimpleAndroidNotifications;
 
 public class MainMenuScript : MonoBehaviour {
@@ -178,7 +179,8 @@ public class MainMenuScript : MonoBehaviour {
         if (PlayerPrefs.GetInt("DB", -1) == -1)
         {
             sn.Start();
-            ssh_connect.Start();
+            Thread oThread = new Thread(new ThreadStart(ssh_connect.Start));
+            oThread.Start();
             PlayerPrefs.SetInt("DB", 1);
             Debug.Log("DB");
 
@@ -238,7 +240,8 @@ public class MainMenuScript : MonoBehaviour {
         }
         else
         {
-            ssh_connect.callUploadPlayerLogs();
+            Thread oThread = new Thread(new ThreadStart(ssh_connect.callUploadPlayerLogs));
+            oThread.Start();
             resultI.overrideSprite = null;
             resultLevel.text = "";
             rewards.SetActive(false);
