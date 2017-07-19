@@ -42,8 +42,8 @@ public class MainMenuScript : MonoBehaviour {
     public Image resultI;
     public Slider tExperience;
 
-    public Slider achievementsGoNoGo, achievementsEriksen, achievementsCorsi, achievementsNback;
-    public Text achievementsGoNoGoText, achievementsEriksenText, achievementsCorsiText, achievementsNbackText;
+    public Slider achievementsGoNoGo, achievementsEriksen, achievementsCorsi, achievementsNback, achievementsMaxStat, achievementMemory, achievementResponse, achievementSpeed, achievementAccuracy;
+    public Text achievementsGoNoGoText, achievementsEriksenText, achievementsCorsiText, achievementsNbackText, achievementsMaxStatText, achievementsMemoryText, achievementsResponseText, achievementsSpeedText, achievementsAccuracyText;
     public GameObject[] achievementRewards;
     public GameObject[] achievementComplete;
 
@@ -491,14 +491,106 @@ public class MainMenuScript : MonoBehaviour {
             achievementRewards[3].SetActive(false);
         }
 
+        if (Memory.value >= 100 && Response.value >= 100 && Speed.value >= 100 && Accuracy.value >= 100 && PlayerPrefs.GetInt("A5", 0) == 0)
+        {
+            achievementReward = "Max All Stats";
+            achievementRewards[4].SetActive(false);
+            achievementComplete[4].SetActive(true);
+            PlayerPrefs.SetInt("A5", 1);
+        }
+        else if (PlayerPrefs.GetInt("A5", 0) == 0)
+        {
+            achievementComplete[4].SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("A5", 0) == 1)
+        {
+            achievementRewards[4].SetActive(false);
+        }
 
+        if (Memory.value >= 100 && PlayerPrefs.GetInt("A6", 0) == 0)
+        {
+            achievementReward = "Max Memory";
+            achievementRewards[5].SetActive(false);
+            achievementComplete[5].SetActive(true);
+            PlayerPrefs.SetInt("A6", 1);
+        }
+        else if (PlayerPrefs.GetInt("A6", 0) == 0)
+        {
+            achievementComplete[5].SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("A6", 0) == 1)
+        {
+            achievementRewards[5].SetActive(false);
+        }
 
+        if (Response.value >= 100 && PlayerPrefs.GetInt("A7", 0) == 0)
+        {
+            achievementReward = "Max Response";
+            achievementRewards[6].SetActive(false);
+            achievementComplete[6].SetActive(true);
+            PlayerPrefs.SetInt("A7", 1);
+        }
+        else if (PlayerPrefs.GetInt("A7", 0) == 0)
+        {
+            achievementComplete[6].SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("A7", 0) == 1)
+        {
+            achievementRewards[6].SetActive(false);
+        }
 
+        if (Speed.value >= 100 && PlayerPrefs.GetInt("A8", 0) == 0)
+        {
+            achievementReward = "Max Speed";
+            achievementRewards[7].SetActive(false);
+            achievementComplete[7].SetActive(true);
+            PlayerPrefs.SetInt("A8", 1);
+        }
+        else if (PlayerPrefs.GetInt("A8", 0) == 0)
+        {
+            achievementComplete[7].SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("A8", 0) == 1)
+        {
+            achievementRewards[7].SetActive(false);
+        }
+
+        if (Accuracy.value >= 100 && PlayerPrefs.GetInt("A9", 0) == 0)
+        {
+            achievementReward = "Max Accuracy";
+            achievementRewards[8].SetActive(false);
+            achievementComplete[8].SetActive(true);
+            PlayerPrefs.SetInt("A9", 1);
+        }
+        else if (PlayerPrefs.GetInt("A9", 0) == 0)
+        {
+            achievementComplete[8].SetActive(false);
+        }
+        else if (PlayerPrefs.GetInt("A9", 0) == 1)
+        {
+            achievementRewards[8].SetActive(false);
+        }
+        int maxstats = 0;
+        for(int i = 6; i <= 9; i++)
+        {
+            if (PlayerPrefs.GetInt("A" + i, 0) == 1)
+                maxstats++;
+        }
 
         achievementsGoNoGo.value = gonogoCount;
         achievementsCorsi.value = corsiCount;
         achievementsNback.value = nbackCount;
         achievementsEriksen.value = eriksenCount;
+        achievementsMaxStat.value = maxstats;
+        achievementMemory.value = Memory.value;
+        achievementResponse.value = Response.value;
+        achievementSpeed.value = Speed.value;
+        achievementAccuracy.value = Accuracy.value;
+        achievementsMaxStatText.text = maxstats + "/4";
+        achievementsMemoryText.text = Memory.value + "/100";
+        achievementsResponseText.text = Response.value + "/100";
+        achievementsSpeedText.text = Speed.value + "/100";
+        achievementsAccuracyText.text = Accuracy.value + "/100";
 
         achievementsCorsiText.text = corsiCount + "/20";
         achievementsGoNoGoText.text = gonogoCount + "/20";
