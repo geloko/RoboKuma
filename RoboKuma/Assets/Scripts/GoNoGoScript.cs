@@ -157,7 +157,7 @@ public class GoNoGoScript : MonoBehaviour {
             PlayerPrefs.SetInt("Bearya", coins);
             PlayerPrefs.SetString("Last_Played", System.DateTime.Now.ToString("g"));
 
-            sn.insertintoGoNoGo (PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt ("log_id"), goCorrect, noGoCorrect, ave, time, goCnt, trialCount);
+			sn.insertintoGoNoGo (SQLiteDatabase.getPlayer().player_id,PlayerPrefs.GetInt ("log_id"), goCorrect, noGoCorrect, ave, time, goCnt, trialCount);
 
 			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
         }

@@ -263,7 +263,7 @@ public class EriksenFlankerScript : MonoBehaviour {
             PlayerPrefs.SetInt("Bearya", coins);
             PlayerPrefs.SetString("Last_Played", System.DateTime.Now.ToString("g"));
 
-            sn.insertintoEriksen (PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt("log_id"),correctCongruent, timeCongruentAve, correctIncongruent, timeIncongruentAve, time, congruentCount, trialCount);
+			sn.insertintoEriksen (SQLiteDatabase.getPlayer().player_id,PlayerPrefs.GetInt("log_id"),correctCongruent, timeCongruentAve, correctIncongruent, timeIncongruentAve, time, congruentCount, trialCount);
 
 			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
             endTxt.text = score + "";

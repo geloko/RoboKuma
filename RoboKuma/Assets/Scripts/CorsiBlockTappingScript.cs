@@ -236,7 +236,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
         EndMessage.text = "OUT OF " + sequenceLength + "\n\n\n\n\n\nTAP ANYWHERE TO CONTINUE";
 
 
-        sn.insertintoCorsi(PlayerPrefs.GetInt("player_id"),PlayerPrefs.GetInt("log_id"), correct_trials, score, sequenceLength, 1);
+		sn.insertintoCorsi(SQLiteDatabase.getPlayer().player_id,PlayerPrefs.GetInt("log_id"), correct_trials, score, sequenceLength, 1);
         PlayerPrefs.SetString("Last_Played", System.DateTime.Now.ToString("g"));
 
         sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
