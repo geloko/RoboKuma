@@ -357,7 +357,7 @@ public class SQLiteDatabase : MonoBehaviour {
 			log_id + ", " + correct_congruent + ", " + time_congruent + ", " + correct_incongruent + ", " + time_incongruent + ", " + 
 			congruent_count + ", " + trial_count + ");";
 		_dbcm = _dbc.CreateCommand();
-
+	
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
 		Debug.Log (sql);

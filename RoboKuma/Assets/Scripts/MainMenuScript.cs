@@ -157,11 +157,11 @@ public class MainMenuScript : MonoBehaviour {
 
             if (reduction > 0)
             {
-                Manager.Instance.pStats = sn.getPlayerStatistics(1);
+				Manager.Instance.pStats = sn.getPlayerStatistics(SQLiteDatabase.getPlayer().player_id);
                 PlayerPrefs.SetString("Last_Played", System.DateTime.Now.ToString("g"));
                 attributesReduced = true;
 
-                int[] attributes = sn.getPlayerStatistics(1);
+				int[] attributes = sn.getPlayerStatistics(SQLiteDatabase.getPlayer().player_id);
                 Debug.Log("Reduce by: " + reduction);
                 for (int i = 0; i < attributes.Length; i++)
                 {
@@ -584,14 +584,23 @@ public class MainMenuScript : MonoBehaviour {
         }
 
         achievementsGoNoGo.value = gonogoCount;
+		achievementsGoNoGo.maxValue = 20;
         achievementsCorsi.value = corsiCount;
+		achievementsCorsi.maxValue = 20;
         achievementsNback.value = nbackCount;
+		achievementsNback.maxValue = 20;
         achievementsEriksen.value = eriksenCount;
+		achievementsEriksen.maxValue = 20;
         achievementsMaxStat.value = maxstats;
+		achievementsMaxStat.maxValue = 4;
         achievementMemory.value = Memory.value;
+		achievementMemory.maxValue = 100;
         achievementResponse.value = Response.value;
+		achievementResponse.maxValue = 100;
         achievementSpeed.value = Speed.value;
+		achievementSpeed.maxValue = 100;
         achievementAccuracy.value = Accuracy.value;
+		achievementAccuracy.maxValue = 100;
         achievementsMaxStatText.text = maxstats + "/4";
         achievementsMemoryText.text = Memory.value + "/100";
         achievementsResponseText.text = Response.value + "/100";
@@ -1015,31 +1024,31 @@ public class MainMenuScript : MonoBehaviour {
 
     public void gonogoPress()
     {
-        Manager.Instance.pStats = sn.getPlayerStatistics(1);
+		Manager.Instance.pStats = sn.getPlayerStatistics(SQLiteDatabase.getPlayer().player_id);
         SceneManager.LoadScene("Go No-Go");
     }
 
     public void nbackPress()
     {
-        Manager.Instance.pStats = sn.getPlayerStatistics(1);
+		Manager.Instance.pStats = sn.getPlayerStatistics(SQLiteDatabase.getPlayer().player_id);
         SceneManager.LoadScene("NBack");
     }
 
     public void corsiPress()
     {
-        Manager.Instance.pStats = sn.getPlayerStatistics(1);
+		Manager.Instance.pStats = sn.getPlayerStatistics(SQLiteDatabase.getPlayer().player_id);
         SceneManager.LoadScene("Corsi Block Tapping");
     }
 
     public void eriksenPress()
     {
-        Manager.Instance.pStats = sn.getPlayerStatistics(1);
+		Manager.Instance.pStats = sn.getPlayerStatistics(SQLiteDatabase.getPlayer().player_id);
         SceneManager.LoadScene("Eriksen Flanker");
     }
 
     public void updateAttributes()
     {
-        int[] stats = sn.getPlayerStatistics(1);
+		int[] stats = sn.getPlayerStatistics(SQLiteDatabase.getPlayer().player_id);
         Debug.Log("STATS " + stats[0] + " " + stats[1] + " " + stats[2] + " " + stats[3] + "");
         Debug.Log("PSTATS " + Manager.Instance.pStats[0] + " " + Manager.Instance.pStats[1] + " " + Manager.Instance.pStats[2] + " " + Manager.Instance.pStats[3] + "");
 
