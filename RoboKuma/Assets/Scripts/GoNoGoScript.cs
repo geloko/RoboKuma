@@ -96,7 +96,7 @@ public class GoNoGoScript : MonoBehaviour {
 
         string currentTime = System.DateTime.Now.ToString("g");
         //player_id, log_id, time_start, time_end, prev_status, new_status, game_progress, is_updated
-        log_id = sn.insertintoPlayerLog(PlayerPrefs.GetInt("player_id"), 1, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
+		log_id = sn.insertintoPlayerLog(SQLiteDatabase.getPlayer().player_id, 1, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
         PlayerPrefs.SetInt("log_id", log_id);
 
         stopwatch.Start();

@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 
+
 public class MySQL_Connector 
 {
     static MySqlConnection conn;
@@ -19,7 +20,6 @@ public class MySQL_Connector
         this.dbUser = dbUser;
         this.dbPassword = dbPassword;
         this.localPort = localPort;
-
         Initialize();
     }
 
@@ -30,7 +30,13 @@ public class MySQL_Connector
         connectionString = "SERVER=" + localHost + ";" + "DATABASE=" +
         dbName + ";" + "UID=" + dbUser + ";" + "PASSWORD=" + dbPassword + ";";
 
-        conn = new MySqlConnection(connectionString);
+		Debug.Log ("Before applying mySQLConnection");
+		try{
+			conn = new MySqlConnection (connectionString);
+			Debug.Log("Applied MySqlConnection");
+		}catch(System.NotSupportedException ex) {
+			Debug.Log (ex.Message);
+		}
     }
 
     public void syncPlayerData()
@@ -40,6 +46,8 @@ public class MySQL_Connector
         string local_id = "";
         MySqlCommand cmd;
         MySqlDataReader dataReader;
+
+		Debug.Log ("Syncing player data");
 
         if (OpenConnection() == true)
         {
@@ -74,6 +82,8 @@ public class MySQL_Connector
             sql = "SELECT * FROM player WHERE local_id = '" + local_id + "';";
             cmd = new MySqlCommand(sql, conn);
             dataReader = cmd.ExecuteReader();
+
+
 
             if (dataReader.Read())
             {
@@ -177,7 +187,9 @@ public class MySQL_Connector
     {
         try
         {
+			Debug.Log("Trying to connect.Open()");
             conn.Open();
+			Debug.Log("Successfully connected to database connection");
             return true;
         }
         catch (MySqlException ex)
@@ -191,9 +203,19 @@ public class MySQL_Connector
                 case 1045:
                     Debug.Log("Invalid username/password, please try again.");
                     break;
+				default:
+					Debug.Log("Unknown error:" + ex.Message);
+					break;
             }
+			Debug.Log ("Unable to open connection");
             return false;
-        }
+		}
+		catch(Exception ex)
+		{
+			Debug.Log (ex.Message);
+			return false;
+		}
+
     }
 
     private static bool CloseConnection()

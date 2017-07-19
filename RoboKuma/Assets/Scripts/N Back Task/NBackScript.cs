@@ -114,7 +114,7 @@ public class NBackScript : MonoBehaviour {
 
 
         string currentTime = System.DateTime.Now.ToString("g");
-        log_id = sn.insertintoPlayerLog(PlayerPrefs.GetInt("player_id"), 3, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
+		log_id = sn.insertintoPlayerLog(SQLiteDatabase.getPlayer().player_id, 3, currentTime, "null", PlayerPrefs.GetString("status"), "null", "Started", 0);
         PlayerPrefs.SetInt("log_id", log_id);
 
         int item0 = Random.Range(0, objects.Length);
