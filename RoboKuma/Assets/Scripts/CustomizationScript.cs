@@ -264,7 +264,7 @@ public class CustomizationScript : MonoBehaviour
         if (item == 22)
             price = 500;
 
-        if (item == 36)
+        if (item == 36 || item == 37)
             price = 500;
 
         if (item == 43)
@@ -324,10 +324,16 @@ public class CustomizationScript : MonoBehaviour
                     popupTxt.text = "Buy a Red Shirt for " + price + " bearyas?";
                     break;
                 case 34:
-                    popupTxt.text = "Buy a Black Shirt for " + price + " bearyas?";
+                    popupTxt.text = "Buy a Orange Shirt for " + price + " bearyas?";
                     break;
                 case 35:
-                    popupTxt.text = "Buy a Yellow Shirt for " + price + " bearyas?";
+                    popupTxt.text = "Buy a Purple Shirt for " + price + " bearyas?";
+                    break;
+                case 36:
+                    popupTxt.text = "Buy a Black Shirt for " + price + " bearyas?";
+                    break;
+                case 37:
+                    popupTxt.text = "Buy a White Shirt for " + price + " bearyas?";
                     break;
                 case 41:
                     popupTxt.text = "Buy a Blue Shorts for " + price + " bearyas?";

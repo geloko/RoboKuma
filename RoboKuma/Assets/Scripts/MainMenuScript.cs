@@ -80,7 +80,7 @@ public class MainMenuScript : MonoBehaviour {
     public Sprite[] legSprites;
     public Sprite[] headSprites;
     public Sprite[] accessorySprites;
-    public Sprite trophy, sad_icon, eyes_2;
+    public Sprite trophy, sad_icon, eyes_2, dailyCompleted;
 
 
     public String dailyReward = "";
@@ -303,8 +303,8 @@ public class MainMenuScript : MonoBehaviour {
                 experience.text = "50";
                 bearya.text = "50";
                 audioHandler.PlayOneShot(soundAchievement);
-                resultText.text = "\nYou have unlocked\n\n\n\n\n" + dailyReward;
-                resultI.overrideSprite = trophy;
+                resultText.text = "\nYou have completed\n\n\n\n\n" + dailyReward;
+                resultI.overrideSprite = dailyCompleted;
 
                 dailyReward = "";
             }
@@ -1211,9 +1211,9 @@ public class MainMenuScript : MonoBehaviour {
     public void updateStatistics()
     {
         if (sn.getAvgGoNoGo()[2] == null)
-            testsAverage[0].text = "Average Reaction Time: No Data";
+            testsAverage[0].text = "Avg. Reaction Time: No Data";
         else
-            testsAverage[0].text = "Average Reaction Time: " + ((Int32)float.Parse(sn.getAvgGoNoGo()[2].ToString())) + " ms";
+            testsAverage[0].text = "Avg. Reaction Time: " + ((Int32)float.Parse(sn.getAvgGoNoGo()[2].ToString())) + " ms";
         
         GoNoGoData g = sn.getBestGoNoGo();
         if(g == null)
@@ -1252,18 +1252,18 @@ public class MainMenuScript : MonoBehaviour {
 
 
         if (sn.getAvgEriksen()[2] == null)
-            testsAverage[3].text = "Ave. Reaction Time (Congruent): No Data" + "\nAve. Reaction Time (Incongruent): No Data" + "\nAverage Score: No Data";
+            testsAverage[3].text = "Avg. Reaction Time (Congruent): No Data" + "\nAvg. Reaction Time (Incongruent): No Data" + "\nAvg. Score: No Data";
         else
-            testsAverage[3].text = "Ave. Reaction Time (Congruent): " + ((Int32)Double.Parse(sn.getAvgEriksen()[2].ToString())) + " ms" + "\nAve. Reaction Time (Incongruent): " + ((Int32)float.Parse(sn.getAvgEriksen()[3].ToString())) + " ms" + "\nAverage Score: " + sn.getAvgEriksen()[4];
+            testsAverage[3].text = "Avg. Reaction Time (Congruent): " + ((Int32)Double.Parse(sn.getAvgEriksen()[2].ToString())) + " ms" + "\nAvg. Reaction Time (Incongruent): " + ((Int32)float.Parse(sn.getAvgEriksen()[3].ToString())) + " ms" + "\nAvg. Score: " + sn.getAvgEriksen()[4];
 
         EriksenData e = sn.getBestEriksen();
         if(e == null)
-            testsBest[3].text = "Score: No Data\nAve.Reaction Time (Congruent): No Data\nAve.Reaction Time (Incongruent): No Data\nCorrect Congruent: No Data\nCorrect Inconguent: No Data";
+            testsBest[3].text = "Score: No Data\nAvg. Reaction Time (Congruent): No Data\nAvg. Reaction Time (Incongruent): No Data\nCorrect Congruent: No Data\nCorrect Inconguent: No Data";
         else
         {
             testsBest[3].text = "Score: " + (e.correct_congruent + e.correct_incongruent) + "/" + e.trial_count
-                    + "\nAve.Reaction Time (Congruent): " + ((Int32) e.time_congruent) + " ms" 
-                    + "\nAve.Reaction Time (Incongruent): " + ((Int32) e.time_incongruent) + " ms"
+                    + "\nAvg. Reaction Time (Congruent): " + ((Int32) e.time_congruent) + " ms" 
+                    + "\nAvg. Reaction Time (Incongruent): " + ((Int32) e.time_incongruent) + " ms"
                     + "\nCorrect Congruent: " + e.correct_congruent
                     + "\nCorrect Inconguent: " + e.correct_incongruent; 
         }
