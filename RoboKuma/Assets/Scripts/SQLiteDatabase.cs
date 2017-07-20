@@ -305,7 +305,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = null;
 
 		updateLogsPlayerID(old_id, player.player_id);
-        PlayerPrefs.SetInt("player_id", player.player_id);
+        //PlayerPrefs.SetInt("player_id", player.player_id);
     }
 
     public static void updateLogsPlayerID(int old_id, int new_id)

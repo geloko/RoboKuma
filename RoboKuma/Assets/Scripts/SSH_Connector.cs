@@ -5,15 +5,15 @@ using Renci.SshNet.Common;
 
 public class SSH_Connector : MonoBehaviour
 {
-    private static string remoteHost = "128.199.240.82";
+    private static string remoteHost = "139.59.127.87";
     private static string remotePort = "22";
     private static string remoteUser = "admin_kuma";
-    private static string remotePassword = "admin1234";
+    private static string remotePassword = "Potangina23!";
     private static string localHost = "127.0.0.1";
     private static uint localPort = 3306;
     private static string dbName = "robokuma";
     private static string dbUser = "admin_kuma";
-    private static string dbPassword = "admin1234";
+    private static string dbPassword = "Potangina23!";
     //private static Toast toast = new Toast();
 
     // Perform FIRST Once Online
