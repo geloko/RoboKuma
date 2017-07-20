@@ -54,6 +54,7 @@ public class MainMenuScript : MonoBehaviour {
     public GameObject[] dailyComplete;
 
     public Image leg, body, head, accessory, eyes;
+    public CustomizationScript customScript;
 
     public Button back;
     public Image pointer1;
@@ -75,15 +76,16 @@ public class MainMenuScript : MonoBehaviour {
     public SQLiteDatabase sn;
     public SSH_Connector ssh_connect;
 
-    public Sprite body_1, body_2, body_3, body_4, body_5;
-    public Sprite leg_1, leg_2, leg_3;
-    public Sprite head_1, head_2;
-    public Sprite accessory_1;
+    public Sprite[] bodySprites;
+    public Sprite[] legSprites;
+    public Sprite[] headSprites;
+    public Sprite[] accessorySprites;
     public Sprite trophy, sad_icon, eyes_2;
 
 
     public String dailyReward = "";
     public String achievementReward = "";
+    public ArrayList achievements;
     
     //for sounds SFX
     public AudioSource audioHandler;
@@ -122,6 +124,8 @@ public class MainMenuScript : MonoBehaviour {
         pointer1.gameObject.SetActive(false);
         popup.SetActive(false);
         dailyPanel.SetActive(false);
+
+        customScript = (CustomizationScript) CustomizationScreen.GetComponent(typeof(CustomizationScript));
 
         sn = new SQLiteDatabase();
         ssh_connect = new SSH_Connector();
@@ -176,6 +180,7 @@ public class MainMenuScript : MonoBehaviour {
         }
 
         messages = new ArrayList();
+        achievements = new ArrayList();
 
         if (PlayerPrefs.GetInt("DB", -1) == -1)
         {
@@ -247,20 +252,20 @@ public class MainMenuScript : MonoBehaviour {
             resultLevel.text = "";
             rewards.SetActive(false);
 
-            if (achievementReward.Length != 0)
+            for(int i = 0; i < achievements.Count; i++)
             {
-                int exp = PlayerPrefs.GetInt("TExperience", 0) + PlayerPrefs.GetInt("Experience", 0);
-                int bear = PlayerPrefs.GetInt("TBearya", 0) + PlayerPrefs.GetInt("Bearya", 0);
+                int exp = PlayerPrefs.GetInt("TExperience", 0);
+                int bear = PlayerPrefs.GetInt("TBearya", 0);
                 exp += 500;
-                bear += 500;
+                bear += 600;
                 PlayerPrefs.SetInt("TBearya", bear);
                 PlayerPrefs.SetInt("TExperience", exp);
             }
 
             if(dailyReward.Length != 0)
             {
-                int exp = PlayerPrefs.GetInt("TExperience", 0) + PlayerPrefs.GetInt("Experience", 0);
-                int bear = PlayerPrefs.GetInt("TBearya", 0) + PlayerPrefs.GetInt("Bearya", 0);
+                int exp = PlayerPrefs.GetInt("TExperience", 0);
+                int bear = PlayerPrefs.GetInt("TBearya", 0);
                 exp += 50;
                 bear += 50;
                 PlayerPrefs.SetInt("TBearya", bear);
@@ -280,16 +285,16 @@ public class MainMenuScript : MonoBehaviour {
             }
 
             
-            if (achievementReward.Length != 0)
+            if (achievements.Count != 0)
             {
                 rewards.SetActive(true);
                 audioHandler.PlayOneShot(soundAchievement);
                 experience.text = "500";
-                bearya.text = "500";
-                resultText.text = "\nYou have unlocked\n\n\n\n\n" + achievementReward;
+                bearya.text = "600";
+                resultText.text = "\nYou have unlocked\n\n\n\n\n" + achievements[0].ToString();
                 resultI.overrideSprite = trophy;
 
-                achievementReward = "";
+                achievements.RemoveAt(0);
 
             }
             else if (dailyReward.Length != 0)
@@ -330,6 +335,7 @@ public class MainMenuScript : MonoBehaviour {
         tBearya.text = PlayerPrefs.GetInt("TBearya", 0) + "";
         tXP.text = "" + (PlayerPrefs.GetInt("TExperience", 0) - Math.Pow((PlayerPrefs.GetInt("Level", 0)), 3)) + "/" + (Math.Pow((PlayerPrefs.GetInt("Level", 0) + 1), 3) - Math.Pow((PlayerPrefs.GetInt("Level", 0)), 3));
 
+        customScript.updateLockedItems();
 
         Debug.Log(PlayerPrefs.GetInt("TExperience", 0));
         Debug.Log(Math.Pow((PlayerPrefs.GetInt("Level", 0)), 3));
@@ -431,9 +437,9 @@ public class MainMenuScript : MonoBehaviour {
         int nbackCount = sn.count("nback");
         int corsiCount = sn.count("corsi");
         
-        if(gonogoCount == 20 && PlayerPrefs.GetInt("A1", 0) == 0)
+        if(gonogoCount == 30 && PlayerPrefs.GetInt("A1", 0) == 0)
         {
-            achievementReward = "Go/No-Go Veteran";
+            achievements.Add("Go/No-Go Veteran");
             achievementRewards[0].SetActive(false);
             achievementComplete[0].SetActive(true);
             PlayerPrefs.SetInt("A1", 1); 
@@ -447,9 +453,9 @@ public class MainMenuScript : MonoBehaviour {
             achievementRewards[0].SetActive(false);
         }
 
-        if (nbackCount == 20 && PlayerPrefs.GetInt("A2", 0) == 0)
+        if (nbackCount == 30 && PlayerPrefs.GetInt("A2", 0) == 0)
         {
-            achievementReward = "N-Back Veteran";
+            achievements.Add("N-Back Veteran");
             achievementRewards[1].SetActive(false);
             achievementComplete[1].SetActive(true);
             PlayerPrefs.SetInt("A2", 1);
@@ -463,9 +469,9 @@ public class MainMenuScript : MonoBehaviour {
             achievementRewards[1].SetActive(false);
         }
 
-        if (corsiCount == 20 && PlayerPrefs.GetInt("A3", 0) == 0)
+        if (corsiCount == 30 && PlayerPrefs.GetInt("A3", 0) == 0)
         {
-            achievementReward = "Corsi Block-Tapping Veteran";
+            achievements.Add("Corsi Block-Tapping Veteran");
             achievementRewards[2].SetActive(false);
             achievementComplete[2].SetActive(true);
             PlayerPrefs.SetInt("A3", 1);
@@ -479,9 +485,9 @@ public class MainMenuScript : MonoBehaviour {
             achievementRewards[2].SetActive(false);
         }
 
-        if (eriksenCount == 20 && PlayerPrefs.GetInt("A4", 0) == 0)
+        if (eriksenCount == 30 && PlayerPrefs.GetInt("A4", 0) == 0)
         {
-            achievementReward = "Eriksen Flanker Veteran";
+            achievements.Add(achievementReward = "Eriksen Flanker Veteran");
             achievementRewards[3].SetActive(false);
             achievementComplete[3].SetActive(true);
             PlayerPrefs.SetInt("A4", 1);
@@ -497,7 +503,7 @@ public class MainMenuScript : MonoBehaviour {
 
         if (Memory.value >= 100 && Response.value >= 100 && Speed.value >= 100 && Accuracy.value >= 100 && PlayerPrefs.GetInt("A5", 0) == 0)
         {
-            achievementReward = "Max All Stats";
+            achievements.Add("Max All Stats");
             achievementRewards[4].SetActive(false);
             achievementComplete[4].SetActive(true);
             PlayerPrefs.SetInt("A5", 1);
@@ -513,7 +519,7 @@ public class MainMenuScript : MonoBehaviour {
 
         if (Memory.value >= 100 && PlayerPrefs.GetInt("A6", 0) == 0)
         {
-            achievementReward = "Max Memory";
+            achievements.Add("Max Memory");
             achievementRewards[5].SetActive(false);
             achievementComplete[5].SetActive(true);
             PlayerPrefs.SetInt("A6", 1);
@@ -529,7 +535,7 @@ public class MainMenuScript : MonoBehaviour {
 
         if (Response.value >= 100 && PlayerPrefs.GetInt("A7", 0) == 0)
         {
-            achievementReward = "Max Response";
+            achievements.Add("Max Response");
             achievementRewards[6].SetActive(false);
             achievementComplete[6].SetActive(true);
             PlayerPrefs.SetInt("A7", 1);
@@ -545,7 +551,7 @@ public class MainMenuScript : MonoBehaviour {
 
         if (Speed.value >= 100 && PlayerPrefs.GetInt("A8", 0) == 0)
         {
-            achievementReward = "Max Speed";
+            achievements.Add("Max Speed");
             achievementRewards[7].SetActive(false);
             achievementComplete[7].SetActive(true);
             PlayerPrefs.SetInt("A8", 1);
@@ -561,7 +567,7 @@ public class MainMenuScript : MonoBehaviour {
 
         if (Accuracy.value >= 100 && PlayerPrefs.GetInt("A9", 0) == 0)
         {
-            achievementReward = "Max Accuracy";
+            achievements.Add("Max Accuracy");
             achievementRewards[8].SetActive(false);
             achievementComplete[8].SetActive(true);
             PlayerPrefs.SetInt("A9", 1);
@@ -582,13 +588,13 @@ public class MainMenuScript : MonoBehaviour {
         }
 
         achievementsGoNoGo.value = gonogoCount;
-		achievementsGoNoGo.maxValue = 20;
+		achievementsGoNoGo.maxValue = 30;
         achievementsCorsi.value = corsiCount;
-		achievementsCorsi.maxValue = 20;
+		achievementsCorsi.maxValue = 30;
         achievementsNback.value = nbackCount;
-		achievementsNback.maxValue = 20;
+		achievementsNback.maxValue = 30;
         achievementsEriksen.value = eriksenCount;
-		achievementsEriksen.maxValue = 20;
+		achievementsEriksen.maxValue = 30;
         achievementsMaxStat.value = maxstats;
 		achievementsMaxStat.maxValue = 4;
         achievementMemory.value = Memory.value;
@@ -605,10 +611,10 @@ public class MainMenuScript : MonoBehaviour {
         achievementsSpeedText.text = Speed.value + "/100";
         achievementsAccuracyText.text = Accuracy.value + "/100";
 
-        achievementsCorsiText.text = corsiCount + "/20";
-        achievementsGoNoGoText.text = gonogoCount + "/20";
-        achievementsEriksenText.text = eriksenCount + "/20";
-        achievementsNbackText.text = nbackCount + "/20";
+        achievementsCorsiText.text = corsiCount + "/30";
+        achievementsGoNoGoText.text = gonogoCount + "/30";
+        achievementsEriksenText.text = eriksenCount + "/30";
+        achievementsNbackText.text = nbackCount + "/30";
 
         //Notify the user when an achievement is unlocked
         //resultText.text = "\n\nCongratulations!\nYou've completed the task\n\n\n\n\nPlay Go/No-Go";
@@ -628,15 +634,18 @@ public class MainMenuScript : MonoBehaviour {
 		{
 			gonogoCount = 1;
 		}
-		else if (eriksenCount > 1)
+
+        if (eriksenCount > 1)
 		{
 			eriksenCount = 1;
 		}
-		else if (nbackCount > 1)
+
+        if (nbackCount > 1)
 		{
 			nbackCount = 1;
 		}
-		else if (corsiCount > 1)
+
+        if (corsiCount > 1)
 		{
 			corsiCount = 1;
 		}
@@ -724,66 +733,78 @@ public class MainMenuScript : MonoBehaviour {
 
     public void updateAssets()
     {
-        if (PlayerPrefs.GetInt("accessory") == 11)
-            accessory.overrideSprite = accessory_1;
-        else
-            accessory.overrideSprite = null;
-
-        switch (PlayerPrefs.GetInt("head"))
+        for (int i = 0; i < accessorySprites.Length; i++)
         {
-            case 21:
-                head.overrideSprite = head_1;
+            if (PlayerPrefs.GetInt("accessory") == 11 + i)
+                accessory.overrideSprite = accessorySprites[i];
+            else if(PlayerPrefs.GetInt("accessory") == 0)
+            {
+                accessory.overrideSprite = null;
                 break;
-            case 22:
-                head.overrideSprite = head_2;
-                break;
-            case 0:
+            }
+        }
+
+        for (int i = 0; i < headSprites.Length; i++)
+        {
+            if (PlayerPrefs.GetInt("head") == 21 + i)
+                head.overrideSprite = headSprites[i];
+            else if (PlayerPrefs.GetInt("head") == 0)
+            {
                 head.overrideSprite = null;
                 break;
+            }
         }
 
-        switch (PlayerPrefs.GetInt("leg"))
+        for (int i = 0; i < bodySprites.Length; i++)
         {
-            case 41:
-                leg.overrideSprite = leg_1;
-                break;
-            case 42:
-                leg.overrideSprite = leg_2;
-                break;
-            case 43:
-                leg.overrideSprite = leg_3;
-                break;
-            case 0:
-                leg.overrideSprite = null;
-                break;
-        }
-
-        switch (PlayerPrefs.GetInt("body"))
-        {
-            case 31:
-                body.overrideSprite = body_1;
-                break;
-            case 32:
-                body.overrideSprite = body_2;
-                break;
-            case 33:
-                body.overrideSprite = body_3;
-                break;
-            case 34:
-                body.overrideSprite = body_4;
-                break;
-            case 35:
-                body.overrideSprite = body_5;
-                break;
-            case 0:
+            if (PlayerPrefs.GetInt("body") == 31 + i)
+                body.overrideSprite = bodySprites[i];
+            else if (PlayerPrefs.GetInt("body") == 0)
+            {
                 body.overrideSprite = null;
                 break;
+            }
+        }
+
+        for (int i = 0; i < legSprites.Length; i++)
+        {
+            if (PlayerPrefs.GetInt("leg") == 41 + i)
+                leg.overrideSprite = legSprites[i];
+            else if (PlayerPrefs.GetInt("leg") == 0)
+            {
+                leg.overrideSprite = null;
+                break;
+            }
         }
     }
 
     public void tryAsset(int itemNum)
     {
-        if(itemNum == PlayerPrefs.GetInt("accessory"))
+        for (int i = 0; i < accessorySprites.Length; i++)
+        {
+            if (itemNum == 11 + i)
+                accessory.overrideSprite = accessorySprites[i];
+        }
+
+        for (int i = 0; i < headSprites.Length; i++)
+        {
+            if (itemNum == 21 + i)
+                head.overrideSprite = headSprites[i];
+        }
+
+        for (int i = 0; i < bodySprites.Length; i++)
+        {
+            if (itemNum == 31 + i)
+                body.overrideSprite = bodySprites[i];
+        }
+
+        for (int i = 0; i < legSprites.Length; i++)
+        {
+            if (itemNum == 41 + i)
+                leg.overrideSprite = legSprites[i];
+        }
+
+        /*if (itemNum == PlayerPrefs.GetInt("accessory"))
         {
             accessory.overrideSprite = null;
         }
@@ -801,44 +822,7 @@ public class MainMenuScript : MonoBehaviour {
         if (itemNum == PlayerPrefs.GetInt("leg"))
         {
             leg.overrideSprite = null;
-        }
-
-        switch (itemNum)
-        {
-            case 11:
-                accessory.overrideSprite = accessory_1;
-                break;
-            case 21:
-                head.overrideSprite = head_1;
-                break;
-            case 22:
-                head.overrideSprite = head_2;
-                break;
-            case 31:
-                body.overrideSprite = body_1;
-                break;
-            case 32:
-                body.overrideSprite = body_2;
-                break;
-            case 33:
-                body.overrideSprite = body_3;
-                break;
-            case 34:
-                body.overrideSprite = body_4;
-                break;
-            case 35:
-                body.overrideSprite = body_5;
-                break;
-            case 41:
-                leg.overrideSprite = leg_1;
-                break;
-            case 42:
-                leg.overrideSprite = leg_2;
-                break;
-            case 43:
-                leg.overrideSprite = leg_3;
-                break;
-        }
+        }*/
 
         dailyPanel.SetActive(false);
         popup.SetActive(false);
@@ -985,16 +969,16 @@ public class MainMenuScript : MonoBehaviour {
 
     public void resultsPress()
     {
-        if (achievementReward.Length != 0)
+        if (achievements.Count != 0)
         {
             rewards.SetActive(true);
             experience.text = "500";
             bearya.text = "500";
             audioHandler.PlayOneShot(soundAchievement);
-            resultText.text = "\nYou have unlocked\n\n\n\n\n" + achievementReward;
+            resultText.text = "\nYou have unlocked\n\n\n\n\n" + achievements[0].ToString();
             resultI.overrideSprite = trophy;
 
-            achievementReward = "";
+            achievements.RemoveAt(0);
 
         }
         else if (dailyReward.Length != 0)
