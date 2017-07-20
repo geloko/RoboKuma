@@ -528,7 +528,7 @@ public class SQLiteDatabase : MonoBehaviour {
 
                 for (int i = 0; i < timeStamps.Length; i++)
                 {
-                    if (timeStamps[i] != -1 && (timeStamps[i] <= aveTime + gngSD))
+                    if (timeStamps[i] > 0 && (timeStamps[i] <= aveTime + gngSD))
                     {
                         fasterThanAveCnt++;
                     }
@@ -536,7 +536,7 @@ public class SQLiteDatabase : MonoBehaviour {
                 Debug.Log("FTAC:: " + fasterThanAveCnt);
                 pCorrect = correct * 1.0 / total;
 			    pWrong = (total - correct) * 1.0 / total;
-                response = (fasterThanAveCnt + correct_nogo * 1.0) / total * 1.2;
+                response = (fasterThanAveCnt + correct_nogo * 1.0) / total;
                 Debug.Log("Average Speed:" + aveTime);
 			    speed = (difficulty + 600) / aveTime;
 			    accuracy = (pCorrect - pWrong) * difficulty * 1.3;
