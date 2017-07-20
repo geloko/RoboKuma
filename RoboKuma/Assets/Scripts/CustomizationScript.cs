@@ -58,51 +58,7 @@ public class CustomizationScript : MonoBehaviour
         iBodyB.color = new Color32(184, 112, 92, 255);
         iLegB.color = new Color32(184, 112, 92, 255);
 
-        if (PlayerPrefs.GetInt("Level", 1) >= 10)
-        {
-            lockedB[0].gameObject.SetActive(false);
-            bodyB[3].interactable = true;
-            bodyI[3].overrideSprite = null;
-            bodyA[3].text = "250";
-            lockedL[0].gameObject.SetActive(false);
-            legI[2].overrideSprite = null;
-            legB[2].interactable = true;
-            legA[2].text = "250";
-            lockedA[0].gameObject.SetActive(false);
-            accessoryI[0].overrideSprite = null;
-            accessoryB[0].interactable = true;
-            accessoryA[0].text = "250";
-        }
-        else
-        {
-            lockedB[0].gameObject.SetActive(true);
-            bodyB[3].interactable = false;
-            bodyI[3].overrideSprite = lockedI;
-            bodyA[3].text = "Unlocked at Level 10";
-            lockedL[0].gameObject.SetActive(true);
-            legI[2].overrideSprite = lockedI;
-            legB[2].interactable = false;
-            legA[2].text = "Unlocked at Level 10";
-            lockedA[0].gameObject.SetActive(true);
-            accessoryI[0].overrideSprite = lockedI;
-            accessoryB[0].interactable = false;
-            accessoryA[0].text = "Unlocked at Level 10";
-        }
-
-        if (PlayerPrefs.GetInt("Level", 1) >= 20)
-        {
-            lockedB[1].gameObject.SetActive(false);
-            bodyB[4].interactable = true;
-            bodyI[4].overrideSprite = null;
-            bodyA[4].text = "250";
-        }
-        else
-        {
-            lockedB[1].gameObject.SetActive(true);
-            bodyB[4].interactable = false;
-            bodyI[4].overrideSprite = lockedI;
-            bodyA[4].text = "Unlocked at Level 20";
-        }
+        
 
         for (int i = 0; i < bodyA.Length; i++)
         {
@@ -152,6 +108,55 @@ public class CustomizationScript : MonoBehaviour
         if (PlayerPrefs.GetInt("leg") != 0)
             legA[PlayerPrefs.GetInt("leg") - 41].text = "Equipped";
 
+    }
+
+    public void updateLockedItems()
+    {
+        if (PlayerPrefs.GetInt("Level", 1) >= 10)
+        {
+            lockedB[0].gameObject.SetActive(false);
+            bodyB[5].interactable = true;
+            bodyI[5].overrideSprite = null;
+            bodyA[5].text = "350";
+            lockedL[0].gameObject.SetActive(false);
+            legI[2].overrideSprite = null;
+            legB[2].interactable = true;
+            legA[2].text = "350";
+            lockedA[0].gameObject.SetActive(false);
+            accessoryI[0].overrideSprite = null;
+            accessoryB[0].interactable = true;
+            accessoryA[0].text = "350";
+        }
+        else
+        {
+            lockedB[0].gameObject.SetActive(true);
+            bodyB[5].interactable = false;
+            bodyI[5].overrideSprite = lockedI;
+            bodyA[5].text = "Unlocked at Level 10";
+            lockedL[0].gameObject.SetActive(true);
+            legI[2].overrideSprite = lockedI;
+            legB[2].interactable = false;
+            legA[2].text = "Unlocked at Level 10";
+            lockedA[0].gameObject.SetActive(true);
+            accessoryI[0].overrideSprite = lockedI;
+            accessoryB[0].interactable = false;
+            accessoryA[0].text = "Unlocked at Level 10";
+        }
+
+        if (PlayerPrefs.GetInt("Level", 1) >= 20)
+        {
+            lockedB[1].gameObject.SetActive(false);
+            bodyB[6].interactable = true;
+            bodyI[6].overrideSprite = null;
+            bodyA[6].text = "350";
+        }
+        else
+        {
+            lockedB[1].gameObject.SetActive(true);
+            bodyB[6].interactable = false;
+            bodyI[6].overrideSprite = lockedI;
+            bodyA[6].text = "Unlocked at Level 20";
+        }
     }
 
     // Update is called once per frame
@@ -252,8 +257,10 @@ public class CustomizationScript : MonoBehaviour
     {
 
         this.itemNum = item;
-        this.price = 250;
+        this.price = 350;
 
+        if (item > 10 && item < 20)
+            this.price = 500;
         
         
         if (PlayerPrefs.GetInt("item_" + item) == 1)

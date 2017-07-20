@@ -213,7 +213,7 @@ public class CorsiBlockTappingScript : MonoBehaviour {
     {
 
         int exp = (int)(score * 1.0 / sequenceLength * 10.0 * (sequenceLength/4.0));
-        int coins = (int)(score * 1.0 / sequenceLength * 50.0 * (sequenceLength / 4.0));
+        int coins = (int)(score * 1.0 / sequenceLength * 25.0 * (sequenceLength / 4.0));
 
        
 

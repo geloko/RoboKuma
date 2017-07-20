@@ -227,7 +227,7 @@ public class EriksenFlankerScript : MonoBehaviour {
             audioHandler.clip = soundSuccess;
             audioHandler.Play();
             int exp = (int)((score * 1.0 / trialCount) * 10.0 * (trialCount/10.00));
-            int coins = (int)((score * 1.0 / trialCount) * 50.0 * (trialCount / 10.00));
+            int coins = (int)((score * 1.0 / trialCount) * 25.0 * (trialCount / 10.00));
 
             End.gameObject.SetActive(true);
             endTxt.text = score + "";
