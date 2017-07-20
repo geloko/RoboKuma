@@ -538,8 +538,8 @@ public class SQLiteDatabase : MonoBehaviour {
 			    pWrong = (total - correct) * 1.0 / total;
                 response = (fasterThanAveCnt + correct_nogo * 1.0) / total * 1.5;
                 Debug.Log("Average Speed:" + aveTime);
-			    speed = (difficulty + 1000) / aveTime;
-			    accuracy = (pCorrect - pWrong) * difficulty * 2;
+			    speed = (difficulty + 750) / aveTime;
+			    accuracy = (pCorrect - pWrong) * difficulty * 1.3;
 			    newResponse = oResponse + Convert.ToInt32 (response);
 			    newSpeed = oSpeed + Convert.ToInt32 (speed);
 			    newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
@@ -586,8 +586,8 @@ public class SQLiteDatabase : MonoBehaviour {
                 pCorrect = correct * 1.0 / total;
 			    pWrong = (total - correct) * 1.0 / total;
 			    response = (fasterThanAveCnt * 1.0) / total * 1.5;
-			    speed = (difficulty + 1000) / aveTime;
-			    accuracy = (pCorrect - pWrong) * difficulty * 2;
+			    speed = (difficulty + 750) / aveTime;
+			    accuracy = (pCorrect - pWrong) * difficulty * 1.3;
 			    newResponse = oResponse + Convert.ToInt32 (response);
 			    newSpeed = oSpeed + Convert.ToInt32 (speed);
 			    newAccuracy = oAccuracy + Convert.ToInt32 (accuracy);
@@ -596,7 +596,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		    case "corsi":
 			    pCorrect = correct * 1.0 / total;
                 pWrong = (total - correct) * 1.0 / total;
-                memory = (pCorrect - pWrong) * difficulty * 2;
+                memory = (pCorrect - pWrong) * difficulty * 1.5;
                     //if (pCorrect == 1) {
                     newMemory = oMemory + Convert.ToInt32 (memory);
 			    /*} else {

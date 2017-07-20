@@ -97,10 +97,10 @@ public class CustomizationScript : MonoBehaviour
         }
 
         if (PlayerPrefs.GetInt("accessory") != 0)
-            bodyA[PlayerPrefs.GetInt("accessory") - 11].text = "Equipped";
+            accessoryA[PlayerPrefs.GetInt("accessory") - 11].text = "Equipped";
 
         if (PlayerPrefs.GetInt("head") != 0)
-            bodyA[PlayerPrefs.GetInt("head") - 21].text = "Equipped";
+            headA[PlayerPrefs.GetInt("head") - 21].text = "Equipped";
 
         if (PlayerPrefs.GetInt("body") != 0)
             bodyA[PlayerPrefs.GetInt("body") - 31].text = "Equipped";
@@ -117,15 +117,15 @@ public class CustomizationScript : MonoBehaviour
             lockedB[0].gameObject.SetActive(false);
             bodyB[5].interactable = true;
             bodyI[5].overrideSprite = null;
-            bodyA[5].text = "350";
+            bodyA[5].text = "500";
             lockedL[0].gameObject.SetActive(false);
             legI[2].overrideSprite = null;
             legB[2].interactable = true;
-            legA[2].text = "350";
+            legA[2].text = "500";
             lockedA[0].gameObject.SetActive(false);
             accessoryI[0].overrideSprite = null;
             accessoryB[0].interactable = true;
-            accessoryA[0].text = "350";
+            accessoryA[0].text = "1000";
         }
         else
         {
@@ -143,7 +143,7 @@ public class CustomizationScript : MonoBehaviour
             accessoryA[0].text = "Unlocked at Level 10";
         }
 
-        if (PlayerPrefs.GetInt("Level", 1) >= 20)
+        if (PlayerPrefs.GetInt("Level", 1) >= 15)
         {
             lockedB[1].gameObject.SetActive(false);
             bodyB[6].interactable = true;
@@ -155,7 +155,7 @@ public class CustomizationScript : MonoBehaviour
             lockedB[1].gameObject.SetActive(true);
             bodyB[6].interactable = false;
             bodyI[6].overrideSprite = lockedI;
-            bodyA[6].text = "Unlocked at Level 20";
+            bodyA[6].text = "Unlocked at Level 15";
         }
     }
 
@@ -260,7 +260,15 @@ public class CustomizationScript : MonoBehaviour
         this.price = 350;
 
         if (item > 10 && item < 20)
-            this.price = 500;
+            this.price = 1000;
+        if (item == 22)
+            price = 500;
+
+        if (item == 36)
+            price = 500;
+
+        if (item == 43)
+            price = 500;
         
         
         if (PlayerPrefs.GetInt("item_" + item) == 1)

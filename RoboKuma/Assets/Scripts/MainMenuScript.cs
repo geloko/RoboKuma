@@ -436,8 +436,28 @@ public class MainMenuScript : MonoBehaviour {
         int eriksenCount = sn.count("eriksen");
         int nbackCount = sn.count("nback");
         int corsiCount = sn.count("corsi");
-        
-        if(gonogoCount == 30 && PlayerPrefs.GetInt("A1", 0) == 0)
+
+        if (gonogoCount > 30)
+        {
+            gonogoCount = 30;
+        }
+
+        if (eriksenCount > 30)
+        {
+            eriksenCount = 30;
+        }
+
+        if (nbackCount > 30)
+        {
+            nbackCount = 30;
+        }
+
+        if (corsiCount > 30)
+        {
+            corsiCount = 30;
+        }
+
+        if (gonogoCount == 30 && PlayerPrefs.GetInt("A1", 0) == 0)
         {
             achievements.Add("Go/No-Go Veteran");
             achievementRewards[0].SetActive(false);
@@ -1039,6 +1059,20 @@ public class MainMenuScript : MonoBehaviour {
         Accuracy.value = stats[1];
         Speed.value = stats[2];
         Response.value = stats[3];
+
+        if (stats[0] >= 100)
+            stats[0] = 100;
+
+        if (stats[1] >= 100)
+            stats[1] = 100;
+
+        if (stats[2] >= 100)
+            stats[2] = 100;
+    
+        if (stats[3] >= 100)
+            stats[3] = 100;
+
+
         if (stats[0] >= Manager.Instance.pStats[0])
         {
             MemoryS.value = stats[0];
