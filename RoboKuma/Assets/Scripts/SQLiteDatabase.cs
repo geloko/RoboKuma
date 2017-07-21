@@ -1154,7 +1154,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
 		_dbcm = _dbc.CreateCommand();
-		sql = "SELECT * FROM player_logs WHERE is_uploaded = 0;";
+		sql = "SELECT * FROM player_logs WHERE is_uploaded = 0 AND game_progress = 'FINISHED';";
 		_dbcm.CommandText = sql;
 		_idr = _dbcm.ExecuteReader();
 
