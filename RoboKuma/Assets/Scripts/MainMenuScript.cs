@@ -74,7 +74,7 @@ public class MainMenuScript : MonoBehaviour {
     public IEnumerator speechCoroutine;
 
     public SQLiteDatabase sn;
-    public SSH_Connector ssh_connect;
+	public SSH_Connector ssh_connector;
 
     public Sprite[] bodySprites;
     public Sprite[] legSprites;
@@ -128,8 +128,7 @@ public class MainMenuScript : MonoBehaviour {
         customScript = (CustomizationScript) CustomizationScreen.GetComponent(typeof(CustomizationScript));
 
         sn = new SQLiteDatabase();
-        ssh_connect = new SSH_Connector();
-
+		ssh_connector = new SSH_Connector ();
         status = "STABLE";
 
         bookComments = new String[2];
@@ -181,12 +180,12 @@ public class MainMenuScript : MonoBehaviour {
 
         messages = new ArrayList();
         achievements = new ArrayList();
-
+		ThreadPool.SetMaxThreads (1, 1);
         if (PlayerPrefs.GetInt("DB", -1) == -1)
         {
             sn.Start();
-            Thread oThread = new Thread(new ThreadStart(ssh_connect.Start));
-            oThread.Start();
+			object state;
+			ThreadPool.QueueUserWorkItem (ssh_connector.Start);
             PlayerPrefs.SetInt("DB", 1);
             Debug.Log("DB");
 
@@ -247,8 +246,8 @@ public class MainMenuScript : MonoBehaviour {
         }
         else
         {
-            Thread oThread = new Thread(new ThreadStart(ssh_connect.callUploadPlayerLogs));
-            oThread.Start();
+			object state;
+			ThreadPool.QueueUserWorkItem(ssh_connector.callUploadPlayerLogs);
             resultI.overrideSprite = null;
             resultLevel.text = "";
             rewards.SetActive(false);
@@ -1523,5 +1522,4 @@ public class MainMenuScript : MonoBehaviour {
     {
         deletePanel.SetActive(true);
     }
-
 }

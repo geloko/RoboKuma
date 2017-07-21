@@ -3,7 +3,7 @@ using UnityEngine;
 using Renci.SshNet;
 using Renci.SshNet.Common;
 
-public class SSH_Connector : MonoBehaviour
+public class SSH_Connector
 {
     private static string remoteHost = "139.59.127.87";
     private static string remotePort = "22";
@@ -18,7 +18,8 @@ public class SSH_Connector : MonoBehaviour
 
     // Perform FIRST Once Online
     // Only perform ONCE
-    public void Start()
+	//Added object state to comply with threadpool requirements
+	public void Start(object state)
     {
         PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo(remoteHost, remoteUser, remotePassword);
         connectionInfo.Timeout = TimeSpan.FromSeconds(30);
@@ -73,7 +74,8 @@ public class SSH_Connector : MonoBehaviour
     }
 
     // Only perform after Start() has been initially performed
-    public void callUploadPlayerLogs()
+	//Added object state to comply with threadpool requirements
+	public void callUploadPlayerLogs(object state)
     {
         PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo(remoteHost, remoteUser, remotePassword);
         connectionInfo.Timeout = TimeSpan.FromSeconds(30);
