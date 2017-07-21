@@ -194,15 +194,16 @@ public class MainMenuScript : MonoBehaviour {
 
             inTutorial = true;
 
-            messages.Add("Hi, I am Robokuma, nice to meet you.");
+            messages.Add("Hi I am Robokuma, nice to meet you.");
             messages.Add("I believe you're here to help me improve my skills.");
             messages.Add("You can do so by playing the mini-games here.");
-            messages.Add("You can see my attributes and your performance here.");
+            messages.Add("Doing so would affect my attributes and current status.");
+            messages.Add("You can see my attributes and your performance in the mini-games here.");
             messages.Add("You can see my current status here.");
-            messages.Add("You can also customize my looks here");
-            messages.Add("and view achievements you can unlock here.");
+            messages.Add("You can customize my looks here.");
+            messages.Add("You can view the achievements you have unlocked here.");
             messages.Add("Also remember to play everyday to get the daily rewards");
-            messages.Add("and prevent the degradation of my skills.");
+            messages.Add("Playing regularly also prevents the degradation of my skills.");
             messages.Add("For more information, you can refer here.");
             messages.Add("You can now start by playing a mini-game.");
             messages.Add("Good Luck!");
@@ -377,16 +378,16 @@ public class MainMenuScript : MonoBehaviour {
                     //pointer1.gameObject.SetActive(true);
                     //pointer1.GetComponent<Animator>().SetBool("pointer", true);
                     break;
-                case "You can see my attributes and your performance here.":
+                case "You can see my attributes and your performance in the mini-games here.":
                     mBtn.interactable = false;
                     sBtn.interactable = true;
                     //pointer2.gameObject.SetActive(true);
                     //pointer2.GetComponent<Animator>().SetBool("pointer", true);
                     break;
-                case "You can also customize my looks here":
+                case "You can customize my looks here":
                     cBtn.interactable = true;
                     break;
-                case "and view achievements you can unlock here.":
+                case "You can view the achievements you have unlocked here.":
                     cBtn.interactable = false;
                     aBtn.interactable = true;
                     break;
