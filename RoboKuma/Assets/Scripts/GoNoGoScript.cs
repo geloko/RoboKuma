@@ -188,7 +188,10 @@ public class GoNoGoScript : MonoBehaviour {
 			noGoCorrect++;
             scoreTxt.text = "" + score;
             timeTxt.text = "GREAT!";
-        
+
+            audioHandler.clip = soundCorrect;
+            audioHandler.Play();
+
             button.image.overrideSprite = null;
             button.gameObject.SetActive(false);
             yield return new WaitForSecondsRealtime(2);

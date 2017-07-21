@@ -533,7 +533,7 @@ public class SQLiteDatabase : MonoBehaviour {
                         fasterThanAveCnt++;
                     }
                 }
-                Debug.Log("FTAC:: " + fasterThanAveCnt);
+                Debug.Log("FTAC:: " + fasterThanAveCnt + " No-Go: " + correct_nogo);
                 pCorrect = correct * 1.0 / total;
 			    pWrong = (total - correct) * 1.0 / total;
                 response = (fasterThanAveCnt + correct_nogo * 1.0) / total;
