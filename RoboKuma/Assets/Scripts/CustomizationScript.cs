@@ -173,6 +173,23 @@ public class CustomizationScript : MonoBehaviour
             bodyI[8].overrideSprite = lockedI;
             bodyA[8].text = "Unlocked at Level 15";
         }
+
+        if (PlayerPrefs.GetInt("A5", 0) == 1)
+        {
+            lockedB[4].gameObject.SetActive(false);
+            bodyB[9].interactable = true;
+            bodyI[9].overrideSprite = null;
+            bodyA[9].text = "750";
+        }
+        else
+        {
+            lockedB[4].gameObject.SetActive(true);
+            bodyB[9].interactable = false;
+            bodyI[9].overrideSprite = lockedI;
+            bodyA[9].text = "Unlock Achievement: Max All Stats";
+        }
+
+
     }
 
     // Update is called once per frame
@@ -222,7 +239,7 @@ public class CustomizationScript : MonoBehaviour
             }
         }
 
-        if (itemNum > 30 && itemNum < 40)
+        if (itemNum > 30 && itemNum <= 40)
         {
             if(PlayerPrefs.GetInt("body") != 0)
                 bodyA[PlayerPrefs.GetInt("body") - 31].text = "Purchased";
@@ -283,7 +300,7 @@ public class CustomizationScript : MonoBehaviour
         if (item == 36 || item == 37)
             price = 500;
 
-        if (item == 38 || item == 39)
+        if (item == 38 || item == 39 || item == 40)
             price = 750;
 
         if (item == 43)
@@ -359,6 +376,9 @@ public class CustomizationScript : MonoBehaviour
                     break;
                 case 39:
                     popupTxt.text = "Buy a Printed Red Shirt for " + price + " bearyas?";
+                    break;
+                case 40:
+                    popupTxt.text = "Buy a God Shirt for " + price + " bearyas?";
                     break;
                 case 41:
                     popupTxt.text = "Buy a Blue Shorts for " + price + " bearyas?";
