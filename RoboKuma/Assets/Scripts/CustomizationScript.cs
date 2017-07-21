@@ -148,7 +148,15 @@ public class CustomizationScript : MonoBehaviour
             lockedB[1].gameObject.SetActive(false);
             bodyB[6].interactable = true;
             bodyI[6].overrideSprite = null;
-            bodyA[6].text = "350";
+            bodyA[6].text = "500";
+            lockedB[2].gameObject.SetActive(false);
+            bodyB[7].interactable = true;
+            bodyI[7].overrideSprite = null;
+            bodyA[7].text = "750";
+            lockedB[3].gameObject.SetActive(false);
+            bodyB[8].interactable = true;
+            bodyI[8].overrideSprite = null;
+            bodyA[8].text = "750";
         }
         else
         {
@@ -156,6 +164,14 @@ public class CustomizationScript : MonoBehaviour
             bodyB[6].interactable = false;
             bodyI[6].overrideSprite = lockedI;
             bodyA[6].text = "Unlocked at Level 15";
+            lockedB[2].gameObject.SetActive(true);
+            bodyB[7].interactable = false;
+            bodyI[7].overrideSprite = lockedI;
+            bodyA[7].text = "Unlocked at Level 15";
+            lockedB[3].gameObject.SetActive(true);
+            bodyB[8].interactable = false;
+            bodyI[8].overrideSprite = lockedI;
+            bodyA[8].text = "Unlocked at Level 15";
         }
     }
 
@@ -267,6 +283,9 @@ public class CustomizationScript : MonoBehaviour
         if (item == 36 || item == 37)
             price = 500;
 
+        if (item == 38 || item == 39)
+            price = 750;
+
         if (item == 43)
             price = 500;
         
@@ -334,6 +353,12 @@ public class CustomizationScript : MonoBehaviour
                     break;
                 case 37:
                     popupTxt.text = "Buy a White Shirt for " + price + " bearyas?";
+                    break;
+                case 38:
+                    popupTxt.text = "Buy a Printed Blue Shirt for " + price + " bearyas?";
+                    break;
+                case 39:
+                    popupTxt.text = "Buy a Printed Red Shirt for " + price + " bearyas?";
                     break;
                 case 41:
                     popupTxt.text = "Buy a Blue Shorts for " + price + " bearyas?";
