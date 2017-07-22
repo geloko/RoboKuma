@@ -43,8 +43,9 @@ public class SQLiteDatabase : MonoBehaviour {
 		"CREATE TABLE player (" +
 		"player_id INTEGER PRIMARY KEY, " +
 		"local_id varchar(45) NOT NULL, " +
-		"date_start varchar(45) NOT NULL" +
-		")";
+		"date_start varchar(45) NOT NULL," +
+        "is_synced INTEGER NOT NULL" +
+        ")";
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery ();
 
@@ -148,7 +149,7 @@ public class SQLiteDatabase : MonoBehaviour {
 
         //Inserting default data
         string date_start = System.DateTime.Now.ToString("g");
-        sql = "INSERT INTO player (player_id, local_id, date_start) VALUES (1, '000000', '" + date_start + "');";
+        sql = "INSERT INTO player (player_id, local_id, date_start, is_synced) VALUES (1, '000000', '" + date_start + "', 0);";
         _dbcm.CommandText = sql;
         _dbcm.ExecuteNonQuery();
 
@@ -271,7 +272,8 @@ public class SQLiteDatabase : MonoBehaviour {
 			temp.player_id = _idr.GetInt32(_idr.GetOrdinal("player_id"));
             temp.local_id = _idr["local_id"].ToString();
 			temp.date_start = _idr["date_start"].ToString();
-		}
+            temp.is_synced = _idr.GetInt32(_idr.GetOrdinal("is_synced"));
+        }
 
 		Debug.Log ("get player.player_id = " + temp.player_id);
 
@@ -289,7 +291,7 @@ public class SQLiteDatabase : MonoBehaviour {
 	{
 		_dbc = new SqliteConnection(_constr);
 		_dbc.Open();
-		sql = "UPDATE player SET player_id = " + player.player_id + ", local_id = '" + player.local_id + "' WHERE player_id = " + old_id + ";";
+		sql = "UPDATE player SET player_id = " + player.player_id + ", local_id = '" + player.local_id + "', is_synced = 1 WHERE player_id = " + old_id + ";";
 		_dbcm = _dbc.CreateCommand();
 		_dbcm.CommandText = sql;
 		_dbcm.ExecuteNonQuery();
@@ -395,7 +397,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc.Close ();
 		_dbc = null;
 
-		updatePlayerStatistics(correct_go_count + correct_nogo_count, correct_nogo_count, trial_count, mean_time, time, 1, "gonogo", player_id);
+		updatePlayerStatistics(correct_go_count + correct_nogo_count, correct_go_count, trial_count, mean_time, time, 1, "gonogo", player_id);
 	}
 
 	public void insertintoNback(int player_id, int log_id, double mean_time, int correct_count, int n_count, int element_count, int trial_count)
@@ -533,10 +535,10 @@ public class SQLiteDatabase : MonoBehaviour {
                         fasterThanAveCnt++;
                     }
                 }
-                Debug.Log("FTAC:: " + fasterThanAveCnt + " No-Go: " + correct_nogo + " Total: " + total + " Response: " + ((fasterThanAveCnt + correct_nogo * 1.0) / total));
+                Debug.Log("FTAC:: " + fasterThanAveCnt + " No-Go: " + correct_nogo);
                 pCorrect = correct * 1.0 / total;
 			    pWrong = (total - correct) * 1.0 / total;
-                response = (fasterThanAveCnt + correct_nogo * 1.0) / total * 1.5;
+                response = (fasterThanAveCnt + correct_nogo * 1.0) / total;
                 Debug.Log("Average Speed:" + aveTime);
 			    speed = (difficulty + 600) / aveTime;
 			    accuracy = (pCorrect - pWrong) * difficulty * 1.3;

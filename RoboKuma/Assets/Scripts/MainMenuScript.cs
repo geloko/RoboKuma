@@ -383,7 +383,7 @@ public class MainMenuScript : MonoBehaviour {
                     //pointer2.gameObject.SetActive(true);
                     //pointer2.GetComponent<Animator>().SetBool("pointer", true);
                     break;
-                case "You can customize my looks here.":
+                case "You can customize my looks here":
                     cBtn.interactable = true;
                     break;
                 case "You can view the achievements you have unlocked here.":

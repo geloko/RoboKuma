@@ -5,6 +5,7 @@ public class Player
 	public int player_id { get; set; }
     public string local_id { get; set; }
     public string date_start { get; set; }
+    public int is_synced { get; set; }
     public int level { get; set; }
     public int exp { get; set; }
     public int bearya { get; set; }

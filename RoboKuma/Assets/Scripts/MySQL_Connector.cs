@@ -83,8 +83,6 @@ public class MySQL_Connector
             cmd = new MySqlCommand(sql, conn);
             dataReader = cmd.ExecuteReader();
 
-
-
             if (dataReader.Read())
             {
                 Player new_player = new Player();
@@ -99,6 +97,18 @@ public class MySQL_Connector
             CloseConnection();
         }
 
+    }
+
+    public void uploadIfSynced(int is_synced)
+    {
+        if (is_synced == 1)
+        {
+            uploadPlayerLogs();
+        } else
+        {
+            syncPlayerData();
+            uploadPlayerLogs();
+        }
     }
 
     public void uploadPlayerLogs()

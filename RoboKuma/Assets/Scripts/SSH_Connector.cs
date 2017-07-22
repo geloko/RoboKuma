@@ -114,7 +114,7 @@ public class SSH_Connector
 
                 Debug.Log("Trying database connection...");
                 MySQL_Connector dbConnect = new MySQL_Connector(localHost, dbName, dbUser, dbPassword, remotePort);
-                dbConnect.uploadPlayerLogs();
+                dbConnect.uploadIfSynced(SQLiteDatabase.getPlayer().is_synced);
                 Debug.Log("Successfully Uploaded Player Logs!");
                 //toast.showToastOnUiThread("Successfully Uploaded Player Logs!");
             }
