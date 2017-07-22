@@ -142,7 +142,7 @@ public class MainMenuScript : MonoBehaviour {
         bearyaComments[2] = "Money often costs too much.";
         bearyaComments[3] = "The best thing money can buy is financial freedom.";
 
-        //PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteAll();
         Debug.Log(PlayerPrefs.GetInt("DB"));
 
         audioHandler.clip = backGround;
@@ -390,7 +390,7 @@ public class MainMenuScript : MonoBehaviour {
                     cBtn.interactable = false;
                     aBtn.interactable = true;
                     break;
-                case "Also remember to play everyday to get the daily rewards":
+                case "Also remember to play everyday to get the daily rewards.":
                     aBtn.interactable = false;
                     dBtn.SetActive(true);
                     break;

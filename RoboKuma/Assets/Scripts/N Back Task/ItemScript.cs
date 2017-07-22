@@ -112,7 +112,7 @@ public class ItemScript : MonoBehaviour {
             ReturnMainScript.returnToMainWithNotif();
     }
 
-    public void createObject()
+    public IEnumerator createObject()
     {
         if(count <= trialCount + 1)
         {
@@ -158,6 +158,7 @@ public class ItemScript : MonoBehaviour {
                 UnityEngine.Debug.Log("Time: " + time[i]);
             }
 
+            yield return new WaitForSecondsRealtime(0.5F);
 
             int exp = (int)((score * 1.0 / trialCount) * 15.0 * (trialCount/10.0));
             int coins = (int)((score * 1.0 / trialCount) * 40.0  * (trialCount/10.0));
@@ -192,6 +193,9 @@ public class ItemScript : MonoBehaviour {
 
 			sn.updatePlayerLog (PlayerPrefs.GetInt ("log_id"), System.DateTime.Now.ToString("g"), PlayerPrefs.GetString ("status"), "FINISHED");
         }
+        
+        Destroy(gameObject);
+
     }
 
     void OnTriggerEnter2D()
@@ -223,8 +227,7 @@ public class ItemScript : MonoBehaviour {
             display.text = "";
 
         }
-        createObject();
-        Destroy(gameObject);
+        StartCoroutine(createObject());
     }
 
     public void SwipeForComputer()
