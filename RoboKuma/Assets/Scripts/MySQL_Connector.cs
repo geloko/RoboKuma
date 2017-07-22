@@ -101,7 +101,7 @@ public class MySQL_Connector
 
     public void uploadIfSynced(int is_synced)
     {
-        if (is_synced == 1)
+        if(is_synced == 1)
         {
             uploadPlayerLogs();
         } else

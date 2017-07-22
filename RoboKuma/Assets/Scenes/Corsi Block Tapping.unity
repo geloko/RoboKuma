@@ -2405,9 +2405,9 @@ MonoBehaviour:
   incorrectSprite: {fileID: 21300000, guid: b79f999f50d1710428623aa0ed049872, type: 3}
   correctSprite: {fileID: 21300000, guid: 618fa32cf157ac7499cc884f238e152a, type: 3}
   sequenceSprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 14c24350599803245a19b7f7cabbcf0f, type: 3}
+  - {fileID: 21300000, guid: a6579b47d9a09ea499898bab04264af2, type: 3}
+  - {fileID: 21300000, guid: 8ef9f6208dc56fa4ea4da8e1f619e6e6, type: 3}
   display: {fileID: 1536124001}
   endTxt: {fileID: 1217888341}
   coinsTxt: {fileID: 145915443}

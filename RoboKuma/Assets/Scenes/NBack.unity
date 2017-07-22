@@ -763,6 +763,37 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 143005734}
+--- !u!1 &180144278
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1433752143585522, guid: ea93dc59235f5024091003f01fb85d87,
+    type: 2}
+  m_PrefabInternal: {fileID: 714326884}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 180144279}
+  - component: {fileID: 986929629}
+  m_Layer: 0
+  m_Name: Audio Handler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &180144279
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4494529670309908, guid: ea93dc59235f5024091003f01fb85d87,
+    type: 2}
+  m_PrefabInternal: {fileID: 714326884}
+  m_GameObject: {fileID: 180144278}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &223350878
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,7 +1037,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1.2
   m_Text: We see another wrench but 2 items ago, we saw a pair of pliers. Thus, we
-    ignore the item.
+    ignore the wrench.
 --- !u!222 &231908843
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1030,7 +1061,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &258989227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1493,8 +1524,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.3
-  m_Text: Do so by remembering the items as they show up. The first item that appeared
-    it a wrench.
+  m_Text: Do so by remembering the items as they show up. Here we have a wrench as
+    the first item.
 --- !u!222 &403355904
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1585,7 +1616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &424099207
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2379,7 +2410,7 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ea93dc59235f5024091003f01fb85d87, type: 2}
-  m_RootGameObject: {fileID: 858644286}
+  m_RootGameObject: {fileID: 180144278}
   m_IsPrefabParent: 0
 --- !u!1 &758453446
 GameObject:
@@ -3006,37 +3037,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 852215050}
---- !u!1 &858644286
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1433752143585522, guid: ea93dc59235f5024091003f01fb85d87,
-    type: 2}
-  m_PrefabInternal: {fileID: 714326884}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 858644287}
-  - component: {fileID: 986929629}
-  m_Layer: 0
-  m_Name: Audio Handler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &858644287
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4494529670309908, guid: ea93dc59235f5024091003f01fb85d87,
-    type: 2}
-  m_PrefabInternal: {fileID: 714326884}
-  m_GameObject: {fileID: 858644286}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &879666931
 GameObject:
   m_ObjectHideFlags: 0
@@ -3522,7 +3522,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 82635125774043702, guid: ea93dc59235f5024091003f01fb85d87,
     type: 2}
   m_PrefabInternal: {fileID: 714326884}
-  m_GameObject: {fileID: 858644286}
+  m_GameObject: {fileID: 180144278}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -4760,7 +4760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000002861, y: -88.257}
+  m_AnchoredPosition: {x: 0.0000028610002, y: -88.257}
   m_SizeDelta: {x: 47.8, y: 44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1710530585

@@ -43,7 +43,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		"CREATE TABLE player (" +
 		"player_id INTEGER PRIMARY KEY, " +
 		"local_id varchar(45) NOT NULL, " +
-		"date_start varchar(45) NOT NULL," +
+		"date_start varchar(45) NOT NULL, " +
         "is_synced INTEGER NOT NULL" +
         ")";
 		_dbcm.CommandText = sql;
@@ -397,7 +397,7 @@ public class SQLiteDatabase : MonoBehaviour {
 		_dbc.Close ();
 		_dbc = null;
 
-		updatePlayerStatistics(correct_go_count + correct_nogo_count, correct_go_count, trial_count, mean_time, time, 1, "gonogo", player_id);
+		updatePlayerStatistics(correct_go_count + correct_nogo_count, correct_nogo_count, trial_count, mean_time, time, 1, "gonogo", player_id);
 	}
 
 	public void insertintoNback(int player_id, int log_id, double mean_time, int correct_count, int n_count, int element_count, int trial_count)
@@ -535,10 +535,10 @@ public class SQLiteDatabase : MonoBehaviour {
                         fasterThanAveCnt++;
                     }
                 }
-                Debug.Log("FTAC:: " + fasterThanAveCnt + " No-Go: " + correct_nogo);
+                Debug.Log("FTAC:: " + fasterThanAveCnt + " No-Go: " + correct_nogo + " Total: " + total + " Response: " + ((fasterThanAveCnt + correct_nogo * 1.0) / total));
                 pCorrect = correct * 1.0 / total;
 			    pWrong = (total - correct) * 1.0 / total;
-                response = (fasterThanAveCnt + correct_nogo * 1.0) / total;
+                response = (fasterThanAveCnt + correct_nogo * 1.0) / total * 1.5;
                 Debug.Log("Average Speed:" + aveTime);
 			    speed = (difficulty + 600) / aveTime;
 			    accuracy = (pCorrect - pWrong) * difficulty * 1.3;

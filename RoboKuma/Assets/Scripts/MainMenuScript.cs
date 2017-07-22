@@ -201,7 +201,7 @@ public class MainMenuScript : MonoBehaviour {
             messages.Add("You can see my current status here.");
             messages.Add("You can customize my looks here.");
             messages.Add("You can view the achievements you have unlocked here.");
-            messages.Add("Also remember to play everyday to get the daily rewards");
+            messages.Add("Also remember to play everyday to get the daily rewards.");
             messages.Add("Playing regularly also prevents the degradation of my skills.");
             messages.Add("For more information, you can refer here.");
             messages.Add("You can now start by playing a mini-game.");
@@ -383,7 +383,7 @@ public class MainMenuScript : MonoBehaviour {
                     //pointer2.gameObject.SetActive(true);
                     //pointer2.GetComponent<Animator>().SetBool("pointer", true);
                     break;
-                case "You can customize my looks here":
+                case "You can customize my looks here.":
                     cBtn.interactable = true;
                     break;
                 case "You can view the achievements you have unlocked here.":

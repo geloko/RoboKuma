@@ -2386,8 +2386,8 @@ MonoBehaviour:
   - {fileID: 218665176}
   - {fileID: 871169303}
   sprites:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: b7ce8e5fad0619147b790d9779b1d190, type: 3}
+  - {fileID: 21300000, guid: 9f210a4c9d104fe4c9c64bf1c46268d7, type: 3}
   firstPressPos: {x: 0, y: 0}
   secondPressPos: {x: 0, y: 0}
   currentSwipe: {x: 0, y: 0}
@@ -3642,8 +3642,8 @@ MonoBehaviour:
   - {fileID: 218665176}
   - {fileID: 871169303}
   sprites:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: b7ce8e5fad0619147b790d9779b1d190, type: 3}
+  - {fileID: 21300000, guid: 9f210a4c9d104fe4c9c64bf1c46268d7, type: 3}
   firstPressPos: {x: 0, y: 0}
   secondPressPos: {x: 0, y: 0}
   currentSwipe: {x: 0, y: 0}
