@@ -1365,12 +1365,22 @@ public class MainMenuScript : MonoBehaviour {
             RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 35000);
 
         }
+        else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping() && status.Equals("CLUMSY"))
+        {
+            audioHandler.PlayOneShot(soundStable);
+            RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
+            RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 250;
+            RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 30000);
+
+        }
         else if (RoboKuma.GetComponent<Rigidbody2D>().IsSleeping())
         {
             audioHandler.PlayOneShot(soundStable);
             RoboKuma.GetComponent<Rigidbody2D>().WakeUp();
             RoboKuma.GetComponent<Rigidbody2D>().gravityScale = 250;
             RoboKuma.GetComponent<Rigidbody2D>().AddForce(transform.up * 30000);
+            CustomizationScreen.GetComponent<CustomizationScript>().unequipItem();
+            updateAssets();
 
         }
 

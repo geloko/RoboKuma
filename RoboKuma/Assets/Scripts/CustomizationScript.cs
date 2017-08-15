@@ -198,6 +198,36 @@ public class CustomizationScript : MonoBehaviour
         SwipeForComputer();
     }
 
+    public void unequipItem()
+    {
+        int part = Random.Range(0, 10);
+        Debug.Log(part);
+        switch(part)
+        {
+            case 1:
+                if(PlayerPrefs.GetInt("accessory", 0) != 0)
+                    accessoryA[PlayerPrefs.GetInt("accessory", 0) - 11].text = "Purchased";
+                PlayerPrefs.SetInt("accessory", 0);
+                break;
+            case 2:
+                if (PlayerPrefs.GetInt("head", 0) != 0)
+                    headA[PlayerPrefs.GetInt("head", 0) - 21].text = "Purchased";
+                PlayerPrefs.SetInt("head", 0);
+                break;
+            case 3:
+                if (PlayerPrefs.GetInt("body", 0) != 0)
+                    bodyA[PlayerPrefs.GetInt("body", 0) - 31].text = "Purchased";
+                PlayerPrefs.SetInt("body", 0);
+                break;
+            case 4:
+                if (PlayerPrefs.GetInt("leg", 0) != 0)
+                    legA[PlayerPrefs.GetInt("leg", 0) - 41].text = "Purchased";
+                PlayerPrefs.SetInt("leg", 0);
+                break;
+                
+        }
+    }
+
     public void equipItem()
     {
         PlayerPrefs.SetInt("item_" + itemNum, 1);
